@@ -1,0 +1,27 @@
+# shiro核心参数 ShiroCoreParameters类
+shiro:
+  # 令牌过期时间（单位：秒）
+  token_expiration_time: 3800
+  # 加密名称（当前必填:md5，否者需要修改UserController代码）
+  hash_algorithm_name: md5
+  # 哈希加密迭代次数
+  hash_iterations: 2
+  # 同一个帐号最大会话数
+  max_session: 2
+  # false顶掉当前登录的用户/true顶掉之前登录的用户
+  kickout_after: true
+  # 令牌名称
+  token_key: "Authorization"
+  # 令牌值前缀
+  token_value_prefix: "Bearer "
+  # shiro-redis相关参数配置
+  shiro-redis:
+    host: ${spring.redis.host}:${spring.redis.port}
+    password: ${spring.redis.password}
+    database: ${spring.redis.database}
+    # 在线用户token缓存前缀
+    prefix_user_auth: "system_name:shiro:session:"
+    # 账号异地在线数量缓存前缀
+    prefix_online: "system_name:shiro:online_user:"
+    # 其他信息缓存前缀
+    prefix_other: "system_name:shiro:"

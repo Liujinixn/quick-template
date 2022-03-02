@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.quick.auth.mapper.RolePermissionMapper">
+
+    <sql id="permission">
+        `permission`
+    </sql>
+    <sql id="role_permission">
+        `role_permission`
+    </sql>
+    <sql id="role">
+        `role`
+    </sql>
+    <sql id="user_role">
+        `user_role`
+    </sql>
+    <sql id="user">
+        `user`
+    </sql>
+
+    <insert id="batchInstall">
+        INSERT INTO <include refid="role_permission"/>
+        (role_id, permission_id)
+        VALUES
+        <foreach collection="list" item="rp" separator=",">
+            (#{rp.roleId} , #{rp.permissionId})
+        </foreach>
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM <include refid="role_permission"/> WHERE role_id = #{roleId}
+    </delete>
+</mapper>

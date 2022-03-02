@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quick.auth.mapper.UserMapper">
+
+    <sql id="permission">
+        `permission`
+    </sql>
+    <sql id="role_permission">
+        `role_permission`
+    </sql>
+    <sql id="role">
+        `role`
+    </sql>
+    <sql id="user_role">
+        `user_role`
+    </sql>
+    <sql id="user">
+        `user`
+    </sql>
+
+    <sql id="Base_Column_List">
+        id, user_id, username, `password`, salt, email, phone, sex, age, `status`,
+        create_time, update_time, last_login_time
+    </sql>
+
+    <resultMap id="AllInfo" type="com.quick.auth.entity.User">
+        <id column="uId" property="id"/>
+        <id column="user_id" property="userId"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="salt" property="salt"/>
+        <result column="email" property="email"/>
+        <result column="phone" property="phone"/>
+        <result column="sex" property="sex"/>
+        <result column="age" property="age"/>
+        <result column="status" property="status"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="last_login_time" property="lastLoginTime"/>
+        <collection property="roles" ofType="com.quick.auth.entity.Role" javaType="java.util.List">
+            <result column="rId" property="id"/>
+            <result column="role_id" property="roleId"/>
+            <result column="roleName" property="name"/>
+            <collection property="permissions" ofType="com.quick.auth.entity.Permission" javaType="java.util.List">
+                <result column="pId" property="id"/>
+                <result column="permission_id" property="permissionId"/>
+                <result column="permissionName" property="name"/>
+                <result column="url" property="url"/>
+                <result column="perms" property="perms"/>
+                <result column="parent_id" property="parentId"/>
+                <result column="type" property="type"/>
+                <result column="icon" property="icon"/>
+                <result column="order_num" property="orderNum"/>
+            </collection>
+        </collection>
+    </resultMap>
+
+
+    <select id="findUserAllInfoInfoByUsername" resultMap="AllInfo">
+        SELECT
+            u.id AS uId,
+            u.user_id,
+            u.username,
+            u.password,
+            u.salt,
+            u.email,
+            u.phone,
+            u.sex,
+            u.age,
+            u.status,
+            u.create_time,
+            u.update_time,
+            u.last_login_time,
+
+            r.id AS rId,
+            r.role_id,
+            r.name AS roleName,
+
+            p.id AS pId,
+            p.permission_id,
+            p.name AS permissionName,
+            p.url,
+            p.perms,
+            p.parent_id,
+            p.type,
+            p.icon,
+            p.order_num
+        FROM
+            <include refid="user"/> u
+        LEFT JOIN <include refid="user_role"/> ur ON u.user_id = ur.user_id
+        LEFT JOIN <include refid="role"/> r ON ur.role_id = r.role_id
+        LEFT JOIN <include refid="role_permission"/> rp ON rp.role_id = r.role_id
+        LEFT JOIN <include refid="permission"/> p ON p.permission_id = rp.permission_id
+        WHERE u.username=#{username} AND u.status = #{status}
+    </select>
+
+    <select id="findUserSimpleInfoByUsername" resultType="com.quick.auth.entity.User">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM <include refid="user"/>
+        WHERE username = #{username} AND status = #{status}
+    </select>
+
+    <select id="findUserByUserId" resultType="com.quick.auth.entity.User">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM <include refid="user"/> WHERE user_id = #{userId,jdbcType=VARCHAR} AND status = #{status}
+    </select>
+
+    <update id="updateLastLoginTime" parameterType="com.quick.auth.entity.User">
+        UPDATE <include refid="user"/> SET last_login_time = now() WHERE user_id = #{userId}
+    </update>
+
+    <update id="updateByUserId" parameterType="com.quick.auth.entity.User">
+        UPDATE <include refid="user"/>
+        SET
+        <if test="id != null">
+            id = #{id},
+        </if>
+        <if test="userId != null and userId != '' ">
+            user_id = #{userId},
+        </if>
+        <if test="username != null and username != '' ">
+            username = #{username},
+        </if>
+        <if test="password != null and password != '' ">
+            password = #{password},
+        </if>
+        <if test="salt != null and salt != '' ">
+            salt = #{salt},
+        </if>
+        <if test="email != null and email != '' ">
+            email = #{email},
+        </if>
+        <if test="phone != null and phone != '' ">
+            phone = #{phone},
+        </if>
+        <if test="sex != null">
+            sex = #{sex},
+        </if>
+        <if test="age != null">
+            age = #{age},
+        </if>
+        <if test="status != null">
+            status = #{status},
+        </if>
+        <if test="lastLoginTime != null">
+            last_login_time = #{lastLoginTime},
+        </if>
+        <if test="loginIpAddress != null and loginIpAddress != '' ">
+            login_ip_address = #{loginIpAddress},
+        </if>
+        update_time = now()
+        WHERE user_id = #{userId,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateStatusBatch" parameterType="map">
+        UPDATE
+        <include refid="user"/>
+        SET
+        status=#{status}, update_time=now()
+        WHERE
+        user_id IN
+        <foreach collection="userIds" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <select id="findByRoleId" resultType="com.quick.auth.entity.User">
+        SELECT u.id, u.user_id, u.username, u.password, u.salt, u.email, u.phone, u.sex, u.age, u.status,
+        u.create_time, u.update_time, u.last_login_time
+        FROM <include refid="user"/> u
+        INNER JOIN <include refid="user_role"/> ur ON u.user_id = ur.user_id
+        WHERE ur.role_id = #{roleId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="findByRoleIds" resultType="com.quick.auth.entity.User">
+        SELECT u.id, u.user_id, u.username, u.password, u.salt, u.email, u.phone, u.sex, u.age, u.status,
+        u.create_time, u.update_time, u.last_login_time
+        FROM <include refid="user"/> u
+        INNER JOIN <include refid="user_role"/> ur ON u.user_id = ur.user_id
+        WHERE ur.role_id IN
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <resultMap id="UserInfoAndRoleInfo" type="com.quick.auth.entity.User">
+        <id column="uId" property="id"/>
+        <id column="user_id" property="userId"/>
+        <result column="username" property="username"/>
+        <result column="email" property="email"/>
+        <result column="phone" property="phone"/>
+        <result column="sex" property="sex"/>
+        <result column="age" property="age"/>
+        <result column="status" property="status"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="last_login_time" property="lastLoginTime"/>
+        <result column="login_ip_address" property="loginIpAddress"/>
+        <collection property="roles" ofType="com.quick.auth.entity.Role" javaType="java.util.List">
+            <result column="rId" property="id"/>
+            <result column="role_id" property="roleId"/>
+            <result column="roleName" property="name"/>
+            <result column="roleStatus" property="status"/>
+            <result column="description" property="description"/>
+        </collection>
+    </resultMap>
+
+    <select id="findUsers" resultMap="UserInfoAndRoleInfo">
+        SELECT
+        u.id AS uId,
+        u.user_id,
+        u.username,
+        u.email,
+        u.phone,
+        u.sex,
+        u.age,
+        u.status,
+        u.create_time,
+        u.update_time,
+        u.last_login_time,
+        u.login_ip_address,
+
+        r.id AS rId,
+        r.role_id,
+        r.name AS roleName,
+        r.description,
+        r.status AS roleStatus
+
+        FROM <include refid="user"/> u
+        LEFT JOIN <include refid="user_role"/> ur ON ur.user_id = u.user_id
+        LEFT JOIN <include refid="role"/> r ON r.role_id = ur.role_id
+        WHERE
+        u.status = #{status}
+        <if test="username !=null and username !='' and username !='null' ">
+            AND u.username LIKE concat('%', #{username}, '%')
+        </if>
+        <if test="email !=null and email !='' and email !='null' ">
+            AND u.email LIKE concat('%', #{email}, '%')
+        </if>
+        <if test="phone !=null and phone !='' and phone !='null' ">
+            AND u.phone LIKE concat('%', #{phone}, '%')
+        </if>
+    </select>
+
+    <select id="findUserAndRoleByUserId" resultMap="UserInfoAndRoleInfo">
+        SELECT
+        u.id AS uId,
+        u.user_id,
+        u.username,
+        u.email,
+        u.phone,
+        u.sex,
+        u.age,
+        u.status,
+        u.create_time,
+        u.update_time,
+        u.last_login_time,
+        u.login_ip_address,
+
+        r.id AS rId,
+        r.role_id,
+        r.name AS roleName,
+        r.description,
+        r.status AS roleStatus
+
+        FROM <include refid="user"/> u
+        LEFT JOIN <include refid="user_role"/> ur ON ur.user_id = u.user_id
+        LEFT JOIN <include refid="role"/> r ON r.role_id = ur.role_id
+        WHERE
+        u.status = #{status} AND u.user_id = #{userId}
+    </select>
+
+    <select id="findUsersWhetherExistByUsernameOrUserId" resultType="java.lang.Integer">
+        SELECT count(id) FROM <include refid="user"/> WHERE username = #{username} AND status = #{status}
+        <if test="userId != null">
+            AND user_id != #{userId}
+        </if>
+    </select>
+
+    <insert id="insertUser">
+        INSERT INTO <include refid="user"/>
+        (
+        <if test="id != null">
+            id,
+        </if>
+        <if test="userId != null and userId != '' ">
+            user_id,
+        </if>
+        <if test="username != null and username != '' ">
+            username,
+        </if>
+        <if test="password != null and password != '' ">
+            password,
+        </if>
+        <if test="salt != null and salt != '' ">
+            salt,
+        </if>
+        <if test="email != null and email != '' ">
+            email,
+        </if>
+        <if test="phone != null and phone != '' ">
+            phone,
+        </if>
+        <if test="sex != null">
+            sex,
+        </if>
+        <if test="age != null">
+            age,
+        </if>
+        <if test="status != null">
+            status,
+        </if>
+        <if test="lastLoginTime != null">
+            last_login_time,
+        </if>
+        <if test="loginIpAddress != null and loginIpAddress != '' ">
+            login_ip_address,
+        </if>
+        create_time,
+        update_time
+        )
+        VALUES(
+        <if test="id != null">
+            #{id},
+        </if>
+        <if test="userId != null and userId != '' ">
+            #{userId},
+        </if>
+        <if test="username != null and username != '' ">
+            #{username},
+        </if>
+        <if test="password != null and password != '' ">
+            #{password},
+        </if>
+        <if test="salt != null and salt != '' ">
+            #{salt},
+        </if>
+        <if test="email != null and email != '' ">
+            #{email},
+        </if>
+        <if test="phone != null and phone != '' ">
+            #{phone},
+        </if>
+        <if test="sex != null">
+            #{sex},
+        </if>
+        <if test="age != null">
+            #{age},
+        </if>
+        <if test="status != null">
+            #{status},
+        </if>
+        <if test="lastLoginTime != null">
+            #{lastLoginTime},
+        </if>
+        <if test="loginIpAddress != null and loginIpAddress != '' ">
+            #{loginIpAddress},
+        </if>
+        now(),
+        now()
+        )
+    </insert>
+
+</mapper>

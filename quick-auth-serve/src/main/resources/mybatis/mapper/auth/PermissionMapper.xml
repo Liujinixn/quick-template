@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.quick.auth.mapper.PermissionMapper">
+
+    <sql id="permission">
+        `permission`
+    </sql>
+    <sql id="role_permission">
+        `role_permission`
+    </sql>
+    <sql id="role">
+        `role`
+    </sql>
+    <sql id="user_role">
+        `user_role`
+    </sql>
+    <sql id="user">
+        `user`
+    </sql>
+
+    <sql id="Base_Column_List">
+        id,
+        permission_id,
+        name,
+        description,
+        url,
+        perms,
+        parent_id,
+        type,
+        order_num,
+        icon,
+        status,
+        create_time,
+        update_time
+    </sql>
+
+    <resultMap id="menuInfo" type="com.quick.auth.vo.MenuVo">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="url" property="url"></result>
+        <result column="type" property="type"></result>
+        <result column="order_num" property="orderNum"></result>
+        <result column="icon" property="icon"></result>
+        <result column="description" property="description"></result>
+        <collection property="menuList" select="findAllMenuInfoLevel"
+                    column="{parentId=id,status=status,userId=user_id}"></collection>
+    </resultMap>
+
+    <resultMap id="permissionInfoLevel" type="com.quick.auth.entity.Permission">
+        <id column="id" property="id"></id>
+        <result column="permission_id" property="permissionId"></result>
+        <result column="name" property="name"></result>
+        <result column="description" property="description"></result>
+        <result column="url" property="url"></result>
+        <result column="perms" property="perms"></result>
+        <result column="parent_id" property="parentId"></result>
+        <result column="type" property="type"></result>
+        <result column="order_num" property="orderNum"></result>
+        <result column="icon" property="icon"></result>
+        <result column="status" property="status"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="update_time" property="updateTime"></result>
+        <collection property="permissionList" select="findAllPermissionListLevel"
+                    column="{parentId=id,status=status}"></collection>
+    </resultMap>
+
+    <select id="findAllPermissionList" resultType="com.quick.auth.entity.Permission">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM <include refid="permission"/>
+        WHERE status=#{status} ORDER BY order_num
+    </select>
+
+    <select id="findAllPermissionListLevel" resultMap="permissionInfoLevel">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM <include refid="permission"/>
+        WHERE
+        parent_id = #{parentId}
+        AND status = #{status}
+        ORDER BY order_num
+    </select>
+
+    <select id="findAllMenuInfoLevel" resultMap="menuInfo">
+        SELECT
+            p.id,
+            p.`name`,
+            p.url,
+            p.type,
+            p.order_num,
+            p.icon,
+            p.description,
+            p.`status`,
+            u.user_id
+        FROM
+            <include refid="permission"/> p
+        LEFT JOIN <include refid="role_permission"/> rp ON p.permission_id = rp.permission_id
+        LEFT JOIN <include refid="role"/> r ON rp.role_id = r.role_id
+        LEFT JOIN <include refid="user_role"/> ur ON r.role_id = ur.role_id
+        LEFT JOIN <include refid="user"/> u ON u.user_id = ur.user_id
+
+        WHERE p.parent_id = #{parentId}
+        AND p.`status` = #{status}
+        AND u.user_id = #{userId}
+        ORDER BY
+        p.order_num
+    </select>
+
+    <insert id="insertPermission">
+        INSERT INTO <include refid="permission"/> (
+        <if test="id != null">
+            id,
+        </if>
+        <if test="permissionId != null and permissionId != '' ">
+            permission_id,
+        </if>
+        <if test="name != null and name != '' ">
+            name,
+        </if>
+        <if test="description != null and description != '' ">
+            description,
+        </if>
+        <if test="url != null and url != '' ">
+            url,
+        </if>
+        <if test="perms != null and perms != '' ">
+            perms,
+        </if>
+        <if test="parentId != null">
+            parent_id,
+        </if>
+        <if test="type != null">
+            type,
+        </if>
+        <if test="orderNum != null">
+            order_num,
+        </if>
+        <if test="icon != null and icon != '' ">
+            icon,
+        </if>
+        <if test="status != null">
+            status,
+        </if>
+        create_time,
+        update_time
+        )
+        VALUES(
+        <if test="id != null">
+            #{id},
+        </if>
+        <if test="permissionId != null and permissionId != '' ">
+            #{permissionId},
+        </if>
+        <if test="name != null and name != '' ">
+            #{name},
+        </if>
+        <if test="description != null and description != '' ">
+            #{description},
+        </if>
+        <if test="url != null and url != '' ">
+            #{url},
+        </if>
+        <if test="perms != null and perms != '' ">
+            #{perms},
+        </if>
+        <if test="parentId != null">
+            #{parentId},
+        </if>
+        <if test="type != null">
+            #{type},
+        </if>
+        <if test="orderNum != null">
+            #{orderNum},
+        </if>
+        <if test="icon != null and icon != '' ">
+            #{icon},
+        </if>
+        <if test="status != null">
+            #{status},
+        </if>
+        now(),
+        now()
+        )
+    </insert>
+
+    <update id="updatePermission">
+        UPDATE <include refid="permission"/> SET
+        <if test="id != null">
+            id = #{id},
+        </if>
+        <if test="permissionId != null and permissionId != '' ">
+            permission_id = #{permissionId},
+        </if>
+        <if test="name != null and name != '' ">
+            name = #{name},
+        </if>
+        <if test="description != null and description != '' ">
+            description = #{description},
+        </if>
+        <if test="url != null and url != '' ">
+            url = #{url},
+        </if>
+        <if test="perms != null and perms != '' ">
+            perms = #{perms},
+        </if>
+        <if test="parentId != null">
+            parent_id = #{parentId},
+        </if>
+        <if test="type != null">
+            type = #{type},
+        </if>
+        <if test="orderNum != null">
+            order_num = #{orderNum},
+        </if>
+        <if test="icon != null and icon != '' ">
+            icon = #{icon},
+        </if>
+        <if test="status != null">
+            status = #{status},
+        </if>
+        <if test="createTime != null">
+            create_time = #{createTime},
+        </if>
+        update_time=now()
+        WHERE permission_id = #{permissionId}
+    </update>
+
+    <update id="updatePermissionStatus">
+        UPDATE <include refid="permission"/> SET status = #{status}, update_time=now() WHERE permission_id = #{permissionId}
+    </update>
+
+    <select id="selectSubPermsByPermissionId" resultType="java.lang.Integer">
+        SELECT count(id) FROM <include refid="permission"/> WHERE parent_id = #{parentId} AND status = #{status}
+    </select>
+
+    <select id="findPermissionsWhetherExistByPermissionNameOrPermissionId" resultType="java.lang.Integer">
+        SELECT count(id) FROM <include refid="permission"/> WHERE name = #{name} AND status = #{status}
+        <if test="permissionId != null">
+            AND permission_id != #{permissionId}
+        </if>
+    </select>
+
+</mapper>

@@ -1,0 +1,57 @@
+spring:
+  datasource:
+    # auth 数据源
+    auth:
+      druid:
+        authMapperLocations: classpath:mybatis/mapper/auth/*.xml
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        filters: stat,wall,slf4j
+        initialSize: 3
+        maxActive: 20
+        maxWait: 60000
+        minIdle: 10
+        password: ark123
+        testOnBorrow: false
+        testOnReturn: false
+        testWhileIdle: true
+        timeBetweenEvictionRunsMillis: 60000
+        url: jdbc:mysql://47.102.144.221:3306/zb-shiro?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=Asia/Shanghai
+        username: root
+        validationQuery: SELECT 1 FROM DUAL
+      # base 数据源
+    base:
+      druid:
+        baseMapperLocations: classpath:mybatis/mapper/base/*.xml
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        filters: stat,wall,slf4j
+        initialSize: 5
+        maxActive: 20
+        maxWait: 60000
+        minIdle: 10
+        password: ark123
+        testOnBorrow: false
+        testOnReturn: false
+        testWhileIdle: true
+        timeBetweenEvictionRunsMillis: 60000
+        url: jdbc:mysql://47.102.144.221:3306/temp?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=Asia/Shanghai
+        username: root
+        validationQuery: SELECT 1 FROM DUAL
+    # druid监控
+    druid:
+      filter:
+        stat:
+          enabled: true
+          log-slow-sql: true
+          merge-sql: true
+          slow-sql-millis: 1000
+        wall:
+          config:
+            multi-statement-allow: true
+      statViewServlet:
+        enabled: true
+        login-password: root
+        login-username: root
+        url-pattern: /druid/*
+      use-global-data-source-stat: true
+      webStatFilter:
+        enabled: true
