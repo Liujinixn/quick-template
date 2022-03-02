@@ -1,37 +1,20 @@
+
 # quick-template
 
 #### 介绍
 springboot多模块架构，争对企业级开发设计，已集成认证功能，开箱即用，无需多余配置
 
 #### 软件架构
-软件架构说明
+SpringBoot多模块 + shiro实现权限认证 + redis实现单点登录控制（可控制账户同时在线人数）
+![<img src>](https://img-blog.csdnimg.cn/0a8003279fed4b919a9cd11a11030069.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAQXJr5pa56Iif,size_20,color_FFFFFF,t_70,g_se,x_16)
+
+<br>
+1. 系统中quick-auth-serve 为认证服务，后续开发新的模块时，只需要新建一个 类似于 quick-base-serve模块工程即可 ，灵活管理项目架构
+不同得子模块需要在 config模块中 新建 自己得数据源，即已实现了 各个子模块实现自己得数据源连接不同得数据库操作。
+
+<br>
+2. 不同得子模块在swagger中对应不同得模块如下图：
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/0018a7f48a67431198af5947abb9eb86.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAQXJr5pa56Iif,size_20,color_FFFFFF,t_70,g_se,x_16)
 
 
-#### 安装教程
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### 使用说明
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### 参与贡献
-
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
-
-
-#### 特技
-
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
