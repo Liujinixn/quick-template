@@ -1,3 +1,4 @@
+# redis配置
 spring:
   redis:
     host: 47.102.144.221
