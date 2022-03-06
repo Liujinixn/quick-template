@@ -1,7 +1,7 @@
 package com.quick.auth.config.filter;
 
 import com.alibaba.fastjson.JSONObject;
-import com.quick.auth.vo.base.Result;
+import com.quick.common.vo.Result;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,9 +11,9 @@ import java.io.PrintWriter;
 /**
  * 该拦截器的作用是为了处理 未登录、权限不足、踢出登录的响应信息 进行返回响应结果
  * 对如下接口进行拦截：
- *      /tourist/noLogin  （未登录/凭证失效）
- *      /tourist/noAuth   （权限不足）
- *      /tourist/kickout  （踢出登录）
+ * /tourist/noLogin  （未登录/凭证失效）
+ * /tourist/noAuth   （权限不足）
+ * /tourist/kickout  （踢出登录）
  */
 public class AuthErrorResponseInterceptor implements HandlerInterceptor {
 
@@ -27,13 +27,13 @@ public class AuthErrorResponseInterceptor implements HandlerInterceptor {
         Result result = null;
         switch (url) {
             case "/tourist/noLogin":
-                result = new Result().build("登录凭证失效");
+                result = Result.build("登录凭证失效");
                 break;
             case "/tourist/noAuth":
-                result = new Result().build("账户权限不足");
+                result = Result.build("账户权限不足");
                 break;
             case "/tourist/kickout":
-                result = new Result().build("您已被踢出");
+                result = Result.build("您已被踢出");
                 break;
         }
         JSONObject jsonObject = (JSONObject) JSONObject.toJSON(result);

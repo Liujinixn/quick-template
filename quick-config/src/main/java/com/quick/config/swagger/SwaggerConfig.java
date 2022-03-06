@@ -39,6 +39,26 @@ public class SwaggerConfig {
     }
 
     /**
+     * 日志服务分组
+     */
+    @Bean
+    public Docket docketBase_log() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .apiInfo(new ApiInfoBuilder()
+                        .title("日志服务")
+                        .description("日志服务API")
+                        .termsOfServiceUrl("")
+                        .version("1.0")
+                        .build())
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.quick.log.controller"))
+                .paths(PathSelectors.any())     //正则匹配请求路径，并分配至当前分组，当前所有接口
+                .build()
+                .groupName("日志服务")           //分组名称
+                .globalOperationParameters(null);
+    }
+
+    /**
      * 基础服务分组
      */
     @Bean

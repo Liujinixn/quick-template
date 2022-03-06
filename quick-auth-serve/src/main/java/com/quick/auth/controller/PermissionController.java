@@ -3,7 +3,7 @@ package com.quick.auth.controller;
 import com.quick.auth.dto.PermissionOperateDTO;
 import com.quick.auth.entity.Permission;
 import com.quick.auth.service.PermissionService;
-import com.quick.auth.vo.base.Result;
+import com.quick.common.vo.Result;
 import com.quick.common.utils.constant.CoreConst;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;

@@ -8,7 +8,7 @@ import com.quick.auth.service.UserService;
 import com.quick.auth.shiro.ShiroCoreParameters;
 import com.quick.auth.shiro.realm.UserRealm;
 import com.quick.auth.utils.ShiroUtil;
-import com.quick.auth.vo.base.Result;
+import com.quick.common.vo.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;

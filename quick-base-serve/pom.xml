@@ -24,6 +24,11 @@
             <artifactId>quick-auth-serve</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <!--springboot web启动器-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
         <!--lombok依赖-->
         <dependency>
             <groupId>org.projectlombok</groupId>

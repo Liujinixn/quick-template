@@ -1,4 +1,4 @@
-package com.quick.auth.vo.base;
+package com.quick.common.vo;
 
 import io.swagger.annotations.ApiModelProperty;
 

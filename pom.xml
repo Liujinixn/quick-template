@@ -200,11 +200,12 @@
     </dependencyManagement>
 
     <modules>
-        <module>quick-common</module>
-        <module>quick-config</module>
-        <module>quick-base-serve</module>
-        <module>quick-auth-serve</module>
         <module>quick-web</module>
+        <module>quick-config</module>
+        <module>quick-common</module>
+        <module>quick-auth-serve</module>
+        <module>quick-base-serve</module>
+        <module>quick-log-serve</module>
     </modules>
 
 </project>

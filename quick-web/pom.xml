@@ -25,6 +25,11 @@
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
+            <groupId>quick.log.serve</groupId>
+            <artifactId>quick-log-serve</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>quick.base.serve</groupId>
             <artifactId>quick-base-serve</artifactId>
             <version>0.0.1-SNAPSHOT</version>
