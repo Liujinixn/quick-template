@@ -32,6 +32,19 @@ public class ShiroConfig {
 
     /**
      * ShrioFilterFactoryBean 过滤bean
+     * <p>
+     * 简写(加粗为常用)        名称        优先级(1为最高)           说明-对应Java类
+     * anon                 匿名拦截器	    1               不需要登录就能访问,一般用于静态资源,或者移动端接口 - org.apache.shiro.web.filter.authc.AnonymousFilter
+     * authc                登录拦截器	    2	            需要登录认证才能访问的资源	- org.apache.shiro.web.filter.authc.FormAuthenticationFilter
+     * authcBasic           Http拦截器	    3               Http身份验证拦截器,非常用类型,不太了解 - org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter
+     * logout               登出拦截器	    4	            用户登出拦截器,主要属性:redirectURL退出登录后重定向的地址 - org.apache.shiro.web.filter.authc.LogoutFilter
+     * noSessionCreation    不创建会话拦截器	5	            调用 subject.getSession(false) 不会有什么问题，但是如果 subject.getSession(true) 将抛出 DisabledSessionException 异常 - org.apache.shiro.web.filter.authc.NoSessionCreationFilter
+     * prems	            权限拦截器	    6	            验证用户是否拥有资源权限 - org.apache.shiro.web.filter.authc.PermissionsAuthorizationFilter
+     * port	                端口拦截器	    7	            其主要属性: port(80) 如果用户访问该页面是非 80，将自动将请求端口改为 80 并重定向到该 80 端口 - org.apache.shiro.web.filter.authc.PortFilter
+     * rest	                rest风格拦截器	8	            rest 风格拦截器，自动根据请求方法构建权限字符串构建权限字符串；非常用类型拦截器 - org.apache.shiro.web.filter.authc.HttpMethodPermissionFilter
+     * roles	            角色拦截器	    9	            验证用户是否拥有资源角色 - org.apache.shiro.web.filter.authc.RolesAuthorizationFilter
+     * ssl	                SSL拦截器	    10	            只有请求协议是https才能通过,否则你会自动跳转到https端口(443) - org.apache.shiro.web.filter.authc.SslFilter
+     * user	                用户拦截器	    11	            用户拦截器，用户已经身份验证 / 记住我登录的都可 - org.apache.shiro.web.filter.authc.UserFilter
      */
     @Bean
     public ShiroFilterFactoryBean getShiroFilterFactoryBean(@Qualifier("securityManager") DefaultWebSecurityManager defaultWebSecurityManager,
