@@ -19,7 +19,7 @@ import java.nio.charset.StandardCharsets;
 @RestController
 @Api(tags = "日志模块")
 @RequestMapping("/logback")
-public class LogController {
+public class LogbackController {
 
     @Value("${log.file.path}")
     private String logFilePath;
