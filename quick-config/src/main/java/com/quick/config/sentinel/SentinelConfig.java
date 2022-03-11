@@ -3,9 +3,9 @@ package com.quick.config.sentinel;
 import com.alibaba.csp.sentinel.slots.block.RuleConstant;
 import com.alibaba.csp.sentinel.slots.block.flow.FlowRule;
 import com.alibaba.csp.sentinel.slots.block.flow.FlowRuleManager;
-import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
@@ -24,6 +24,7 @@ import java.util.*;
  * 接口流控配置
  */
 @Configuration
+@ConditionalOnProperty(prefix = "sentinel", name = "enable", havingValue = "true", matchIfMissing = true)
 class SentinelConfig {
 
     @Autowired
@@ -102,7 +103,7 @@ class SentinelConfig {
         FlowRule rule = new FlowRule();
         rule.setResource(url);
         rule.setGrade(RuleConstant.FLOW_GRADE_QPS);
-        // 每秒调用最大次数为 1 次
+        // 每秒调用最大次数
         rule.setCount(sentinelFlowGradeQpsCount);
         return rule;
     }

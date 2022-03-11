@@ -48,6 +48,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
+                    <!-- 打包时会将本地jar一起打包 -->
                     <includeSystemScope>true</includeSystemScope>
                 </configuration>
             </plugin>
