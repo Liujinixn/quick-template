@@ -2,6 +2,7 @@ package com.quick.base.controller;
 
 import com.alibaba.excel.EasyExcel;
 import com.quick.auth.entity.User;
+import com.quick.common.utils.flie.WordPdfUtil;
 import com.quick.common.vo.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -48,5 +49,18 @@ public class TestController {
         // 写入数据到Excel中
         EasyExcel.write(response.getOutputStream(), User.class).sheet("模板").doWrite(userList);
     }
+
+
+    @RequestMapping(value = "/fileExp2",method = RequestMethod.GET)
+    @ApiOperation(value = "wenjian2")
+    public void fileExp2(HttpServletResponse response) throws Exception {
+        WordPdfUtil.setResponseInfo(response, "测试.pdf");
+        HashMap<String, Object> objectObjectHashMap = new HashMap<>();
+        objectObjectHashMap.put("name", "张三");
+        byte[] bytes = WordPdfUtil.wordTemplateGeneratePdf(objectObjectHashMap, "test.docx");
+        response.getOutputStream().write(bytes);
+    }
+
+
 
 }

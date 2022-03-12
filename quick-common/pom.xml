@@ -79,6 +79,13 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.aspose</groupId>
+            <artifactId>aspose-words</artifactId>
+            <version>15.8.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/aspose-words-15.8.0-jdk16.jar</systemPath>
+        </dependency>
     </dependencies>
 
 </project>

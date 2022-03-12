@@ -43,6 +43,7 @@ public class ShiroService {
         filterChainDefinitionMap.put("/images/**", "anon");
         filterChainDefinitionMap.put("/js/**", "anon");
         filterChainDefinitionMap.put("/css/**", "anon");
+        filterChainDefinitionMap.put("/fileExp2", "anon");
 
         List<Permission> permissionList = permissionService.findAllPermissionList();
         for (Permission permission : permissionList) {
