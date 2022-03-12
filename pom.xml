@@ -35,7 +35,7 @@
         <xdocreport-pdf.version>1.0.6</xdocreport-pdf.version>
         <xdocreport-docx.version>2.0.1</xdocreport-docx.version>
         <xdocreport-freemarker.version>2.0.1</xdocreport-freemarker.version>
-        <hutool-all.version>5.7.21</hutool-all.version>
+        <hutool-all.version>5.7.22</hutool-all.version>
         <common.version>2.6</common.version>
         <assertj-core.version>1.6.1</assertj-core.version>
         <commons-collections4.version>4.4</commons-collections4.version>

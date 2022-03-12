@@ -1,5 +1,6 @@
 package com.quick.common.vo;
 
+import com.quick.common.utils.constant.CoreConst;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
@@ -19,11 +20,11 @@ public class Result<T> {
     private T data;
 
     public static <T> Result<T> ok(T data){
-        return new Result<T>(200, "ok", data);
+        return new Result<T>(CoreConst.SUCCESS_CODE, "ok", data);
     }
 
     public static <T> Result<T> build(String msg){
-        return new Result<T>(500, msg, null);
+        return new Result<T>(CoreConst.FAIL_CODE, msg, null);
     }
 
     public static <T> Result<T> build(int status, String msg){

@@ -5,7 +5,6 @@ import org.apache.poi.xwpf.converter.pdf.PdfOptions;
 import org.apache.poi.xwpf.usermodel.*;
 import org.springframework.core.io.ClassPathResource;
 
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
@@ -22,35 +21,39 @@ import java.util.regex.Pattern;
  */
 public class WordPdfUtil {
 
+    /**
+     * 系统模板文件路径
+     */
     private static final String TEMPLATE_FILE_PATH = "template_file/";
 
+    /**
+     * 模板文件变量规则 例：${name}
+     */
     private static final String VARIABLE_SUBSTITUTION_RULE = "\\$\\{(.+?)}";
 
     /**
-     * <p>根据 resources 目录下的word模板和params参数 ，生成新的word文件并转成PDF文件;</p>
-     * <p>模板中的变量使用 ${xxx}格式，如：${name}。</p>
+     * 根据指定的word模板文件，生成PDF文件
+     * <p>
+     * 示例：
+     * Map<String, Object> params = new HashMap<>();
+     * params.put("name", "司马徽");
+     * params.put("age", "30");
+     * params.put("sex", "男");
+     * byte[] bytes = WordPdfUtil.wordTemplateGeneratePdf(params, "test.docx");
+     * response.getOutputStream().write(bytes);
+     * WordPdfUtil.setResponseInfo(response,"打印.pdf");
      *
-     * <p><b>示例:</b></p>
-     * <p> @GetMapping("/pdf")</p>
-     * <p> public void test(HttpServletResponse response) throws Exception { </p>
-     * <p>  Map<String, Object> params = new HashMap<String, Object>(); </p>
-     * <p>  params.put("name", "司马徽"); </p>
-     * <p>  params.put("age", "30"); </p>
-     * <p>  params.put("sex", "男"); </p>
-     * <p>  WordPdfUtil.wordTemplateGeneratePDF(response.getOutputStream(), params, "word/test.docx"); </p>
-     * <p> } </p>
-     *
-     * @param servletOutputStream 提供用于向客户端发送二进制数据的输出流，可通过 HttpServletResponse.getOutputStream() 方法获取
-     * @param params              替换Word模板文件中的参数
-     * @param templateName        resources目录下的指定word模板文件名称
-     * @throws IOException 文件解析异常
+     * @param params       模板中的变量替换列表
+     * @param templateName resources/template_file/ 路径下的模板文件路径（或文件名）
+     * @return PDF文件字节数组
+     * @throws IOException file parsing exception
      */
-    public static void wordTemplateGeneratePdf(ServletOutputStream servletOutputStream, Map<String, Object> params,
-                                               String templateName) throws IOException {
+    public static byte[] wordTemplateGeneratePdf(Map<String, Object> params,
+                                                 String templateName) throws IOException {
         ClassPathResource classPathResource = new ClassPathResource(TEMPLATE_FILE_PATH + templateName);
         InputStream source = classPathResource.getInputStream();
 
-        BufferedOutputStream outputStream = new BufferedOutputStream(servletOutputStream);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         PdfOptions options = PdfOptions.create();
         XWPFDocument doc = new XWPFDocument(source);
 
@@ -58,7 +61,6 @@ public class WordPdfUtil {
         WordPdfUtil.replaceParams(doc, params);
         //替换表格里面的变量
         WordPdfUtil.replaceInTable(doc, params);
-
         // 转换为pdf
         PdfConverter.getInstance().convert(doc, outputStream, options);
 
@@ -73,10 +75,11 @@ public class WordPdfUtil {
         }
         close(outputStream);
         close(source);
+        return outputStream.toByteArray();
     }
 
     /**
-     * <p>设置下载API接口响应头描述信息和文件类型为文件下载类型</p>
+     * 设置响应头，响应内容为pdf文件
      *
      * @param response 响应头
      * @param fileName 下载的文件名称

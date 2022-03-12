@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,12 +31,13 @@ public class TestController {
     @RequestMapping(value = "/fileExp",method = RequestMethod.GET)
     @ApiOperation(value = "wenjian")
     public void fileExp(HttpServletResponse response) throws Exception {
-        WordPdfUtil.setResponseInfo(response,"打印.pdf");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("name", "司马徽");
         params.put("age", "30");
         params.put("sex", "男");
-        WordPdfUtil.wordTemplateGeneratePdf(response.getOutputStream(), params, "test.docx");
+        byte[] bytes = WordPdfUtil.wordTemplateGeneratePdf(params, "test.docx");
+        response.getOutputStream().write(bytes);
+        WordPdfUtil.setResponseInfo(response,"打印.pdf");
     }
 
 }
