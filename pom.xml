@@ -32,9 +32,7 @@
         <fastjson.version>1.2.73</fastjson.version>
         <hibernate-validator>5.2.4.Final</hibernate-validator>
         <guava.version>20.0</guava.version>
-        <xdocreport-pdf.version>1.0.6</xdocreport-pdf.version>
-        <xdocreport-docx.version>2.0.1</xdocreport-docx.version>
-        <xdocreport-freemarker.version>2.0.1</xdocreport-freemarker.version>
+        <easyexcel.version>3.0.5</easyexcel.version>
         <hutool-all.version>5.7.22</hutool-all.version>
         <common.version>2.6</common.version>
         <assertj-core.version>1.6.1</assertj-core.version>
@@ -161,22 +159,11 @@
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
             </dependency>
-            <!--word转FDP文件依赖-->
+            <!--EasyExcel 表格文件操作-->
             <dependency>
-                <groupId>fr.opensagres.xdocreport</groupId>
-                <artifactId>org.apache.poi.xwpf.converter.pdf</artifactId>
-                <version>${xdocreport-pdf.version}</version>
-            </dependency>
-            <!-- wrod模板操作依赖 -->
-            <dependency>
-                <groupId>fr.opensagres.xdocreport</groupId>
-                <artifactId>fr.opensagres.xdocreport.document.docx</artifactId>
-                <version>${xdocreport-docx.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>fr.opensagres.xdocreport</groupId>
-                <artifactId>fr.opensagres.xdocreport.template.freemarker</artifactId>
-                <version>${xdocreport-freemarker.version}</version>
+                <groupId>com.alibaba</groupId>
+                <artifactId>easyexcel</artifactId>
+                <version>${easyexcel.version}</version>
             </dependency>
             <!--hutool工具类-->
             <dependency>

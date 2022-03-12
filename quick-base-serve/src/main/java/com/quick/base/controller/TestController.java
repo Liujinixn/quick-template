@@ -1,20 +1,19 @@
 package com.quick.base.controller;
 
-import com.quick.common.utils.file.WordPdfUtil;
+import com.alibaba.excel.EasyExcel;
+import com.quick.auth.entity.User;
 import com.quick.common.vo.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ResponseHeader;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.Map;
+import java.net.URLEncoder;
+import java.util.*;
 
 @Slf4j
 @RestController
@@ -31,13 +30,23 @@ public class TestController {
     @RequestMapping(value = "/fileExp",method = RequestMethod.GET)
     @ApiOperation(value = "wenjian")
     public void fileExp(HttpServletResponse response) throws Exception {
-        Map<String, Object> params = new HashMap<>();
-        params.put("name", "司马徽");
-        params.put("age", "30");
-        params.put("sex", "男");
-        byte[] bytes = WordPdfUtil.wordTemplateGeneratePdf(params, "test.docx");
-        response.getOutputStream().write(bytes);
-        WordPdfUtil.setResponseInfo(response,"打印.pdf");
+        List<User> userList = new ArrayList<>();
+        for(int i = 0 ; i < 500000 ; i++){
+            User user = new User();
+            user.setUsername("张三"+i);
+            user.setPassword(i+"");
+            user.setEmail("13152232@163.com");
+            user.setLastLoginTime(new Date());
+            userList.add(user);
+        }
+        // 设响应头response信息
+        response.setContentType("application/vnd.ms-excel");
+        response.setCharacterEncoding("utf-8");
+        String fileName = URLEncoder.encode("测试", "UTF-8");
+        response.setHeader("Content-disposition", "attachment;filename=" + fileName + ".xlsx");
+
+        // 写入数据到Excel中
+        EasyExcel.write(response.getOutputStream(), User.class).sheet("模板").doWrite(userList);
     }
 
 }

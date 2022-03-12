@@ -1,5 +1,6 @@
 package com.quick.auth.entity;
 
+import com.alibaba.excel.annotation.ExcelProperty;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,12 +29,14 @@ public class User extends Online implements Serializable {
     /**
      * 用户名
      */
+    @ExcelProperty("账户")
     @ApiModelProperty(value = "用户名")
     private String username;
 
     /**
      * 密码
      */
+    @ExcelProperty("密码")
     @ApiModelProperty(value = "密码")
     private String password;
 
@@ -46,6 +49,7 @@ public class User extends Online implements Serializable {
     /**
      * 邮箱
      */
+    @ExcelProperty("邮箱")
     @ApiModelProperty(value = "邮箱")
     private String email;
 
@@ -76,6 +80,7 @@ public class User extends Online implements Serializable {
     /**
      * 最后登录时间
      */
+    @ExcelProperty("登录时间")
     @ApiModelProperty(value = "最后登录时间")
     private Date lastLoginTime;
 
