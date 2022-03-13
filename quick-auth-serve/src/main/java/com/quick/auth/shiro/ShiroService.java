@@ -49,6 +49,8 @@ public class ShiroService {
         filterChainDefinitionMap.put("/js/**", "anon");
         filterChainDefinitionMap.put("/css/**", "anon");
 
+        filterChainDefinitionMap.put("/logback/**", "anon");
+
         List<Permission> permissionList = permissionService.findAllPermissionList();
         for (Permission permission : permissionList) {
             if (StringUtils.isNotBlank(permission.getUrl()) && StringUtils.isNotBlank(permission.getPerms())) {
