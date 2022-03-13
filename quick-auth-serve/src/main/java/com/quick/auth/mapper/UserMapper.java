@@ -29,7 +29,7 @@ public interface UserMapper {
      * 根据用户ID查询用户（获取基本信息不含角色身份）
      *
      * @param userId 用户id
-     * @return user
+     * @return user 用户信息
      */
     User findUserByUserId(String userId, Integer status);
 
@@ -37,7 +37,8 @@ public interface UserMapper {
      * 根据userId获取用户信息（含角色名称，不含权限名称）
      *
      * @param userId 用户id
-     * @return user
+     * @param status 数据状态
+     * @return user 用户信息
      */
     User findUserAndRoleByUserId(String userId, Integer status);
 

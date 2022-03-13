@@ -2,6 +2,8 @@ package com.quick.common.utils.constant;
 
 /**
  * 核心常量
+ *
+ * @author Liujinxin
  */
 public class CoreConst {
     /**

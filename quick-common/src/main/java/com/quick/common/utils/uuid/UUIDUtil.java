@@ -2,6 +2,11 @@ package com.quick.common.utils.uuid;
 
 import java.util.UUID;
 
+/**
+ * ID操作工具累
+ *
+ * @author Liujinxin
+ */
 public class UUIDUtil {
 
     private static final int SHORT_LENGTH = 8;
@@ -25,6 +30,7 @@ public class UUIDUtil {
 
     /**
      * 通过UUId生成唯一ID
+     * 最大支持1-9个集群机器部署
      *
      * @return ID
      */
@@ -41,12 +47,12 @@ public class UUIDUtil {
         return machineId + String.format("%015d", hashCodeV);
     }
 
-    public static void main(String[] args) {
-        System.out.println(getUniqueIdByUUId());
-        System.out.println(uuid());
-    }
-
-    public static String generateShortUuid() {
+    /**
+     * 生成短 UUID
+     *
+     * @return ID
+     */
+    public static String generateShortUUId() {
         StringBuffer shortBuffer = new StringBuffer();
         String uuid = UUID.randomUUID().toString().replace("-", "");
         for (int i = 0; i < SHORT_LENGTH; i++) {
@@ -55,6 +61,11 @@ public class UUIDUtil {
             shortBuffer.append(chars[x % 0x3E]);
         }
         return shortBuffer.toString();
-
     }
+
+    public static void main(String[] args) {
+        System.out.println(getUniqueIdByUUId());
+        System.out.println(uuid());
+    }
+
 }

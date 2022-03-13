@@ -14,6 +14,8 @@ import java.io.PrintWriter;
  * /tourist/noLogin  （未登录/凭证失效）
  * /tourist/noAuth   （权限不足）
  * /tourist/kickout  （踢出登录）
+ *
+ * @author Liujinxin
  */
 public class AuthErrorResponseInterceptor implements HandlerInterceptor {
 
@@ -35,6 +37,8 @@ public class AuthErrorResponseInterceptor implements HandlerInterceptor {
             case "/tourist/kickout":
                 result = Result.build("您已被踢出");
                 break;
+            default:
+                return false;
         }
         JSONObject jsonObject = (JSONObject) JSONObject.toJSON(result);
         PrintWriter out = response.getWriter();

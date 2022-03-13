@@ -26,6 +26,8 @@ import java.util.Map;
 
 /**
  * shiro配置类
+ *
+ * @author Liujinxin
  */
 @Configuration
 public class ShiroConfig {
@@ -63,8 +65,10 @@ public class ShiroConfig {
         Map<String, String> filterChainDefinitionMap = shiroService.loadFilterChainDefinitions();
         bean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 
-        bean.setLoginUrl("/tourist/noLogin");        //没有登录
-        bean.setUnauthorizedUrl("/tourist/noAuth");  //没有权限
+        // 没有登录重定向地址
+        bean.setLoginUrl("/tourist/noLogin");
+        //没有权限重定向地址
+        bean.setUnauthorizedUrl("/tourist/noAuth");
         return bean;
     }
 
@@ -77,7 +81,8 @@ public class ShiroConfig {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         //关联UserRealm
         securityManager.setRealm(userRealm);
-        securityManager.setSessionManager(sessionManager(shiroCoreParameters));  // 安全管理器中 设置 sessionManager
+        // 安全管理器中 设置 sessionManager
+        securityManager.setSessionManager(sessionManager(shiroCoreParameters));
         securityManager.setCacheManager(cacheManager(shiroCoreParameters));
         return securityManager;
     }
@@ -110,8 +115,10 @@ public class ShiroConfig {
     public DefaultWebSessionManager sessionManager(ShiroCoreParameters shiroCoreParameters) {
         CustomSessionManager sessionManager = new CustomSessionManager();
         sessionManager.setSessionDAO(redisSessionDAO(shiroCoreParameters));
-        // sessionManager.setSessionIdCookieEnabled(false);//禁用cookie 如果禁用会影响其他地方使用cookie如Durid监控
-        sessionManager.setSessionIdUrlRewritingEnabled(false);//禁用url重写   url;jsessionid=id
+        // 禁用cookie 如果禁用会影响其他地方使用cookie如Durid监控
+        // sessionManager.setSessionIdCookieEnabled(false);
+        // 禁用url重写 url;jsessionid=id
+        sessionManager.setSessionIdUrlRewritingEnabled(false);
         return sessionManager;
     }
 
@@ -135,7 +142,8 @@ public class ShiroConfig {
         redisCacheManager.setRedisManager(getRedisManager(shiroCoreParameters));
         //设置redis过期时间，单位是秒
         redisCacheManager.setExpire(shiroCoreParameters.getTokenExpirationTime());
-        redisCacheManager.setKeyPrefix(shiroCoreParameters.getShiroRedis().getPrefixOther()); //设置权限信息缓存的名称前缀
+        //设置权限信息缓存的名称前缀
+        redisCacheManager.setKeyPrefix(shiroCoreParameters.getShiroRedis().getPrefixOther());
         return redisCacheManager;
     }
 
@@ -147,7 +155,8 @@ public class ShiroConfig {
         RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
         redisSessionDAO.setRedisManager(getRedisManager(shiroCoreParameters));
         redisSessionDAO.setExpire(shiroCoreParameters.getTokenExpirationTime());
-        redisSessionDAO.setKeyPrefix(shiroCoreParameters.getShiroRedis().getPrefixUserAuth()); //设置session缓存的名称前缀
+        //设置session缓存的名称前缀
+        redisSessionDAO.setKeyPrefix(shiroCoreParameters.getShiroRedis().getPrefixUserAuth());
         return redisSessionDAO;
     }
 

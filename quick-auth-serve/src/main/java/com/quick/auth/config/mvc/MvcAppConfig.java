@@ -11,9 +11,11 @@ import java.util.List;
 
 /**
  * 自定义Mvc拦截器规则配置
+ *
+ * @author Liujinxin
  */
 @Configuration
-public class MvcAppConfig implements WebMvcConfigurer { //这里其实 也可以 去继承 extends  WebMvcConfigurerAdapter类 重写方法
+public class MvcAppConfig implements WebMvcConfigurer {
 
     /**
      * 注入拦截器到bean

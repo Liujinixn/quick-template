@@ -8,21 +8,27 @@ import org.springframework.web.filter.CorsFilter;
 
 /**
  * 跨域配置
+ *
+ * @author Liujinxin
  */
 @Configuration
 public class CorsConfig {
     private CorsConfiguration buildConfig() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.addAllowedOrigin("*"); //允许任何域名
-        corsConfiguration.addAllowedHeader("*"); //允许任何头
-        corsConfiguration.addAllowedMethod("*"); //允许任何方法
+        // 允许任何域名
+        corsConfiguration.addAllowedOrigin("*");
+        // 允许任何头
+        corsConfiguration.addAllowedHeader("*");
+        // 允许任何方法
+        corsConfiguration.addAllowedMethod("*");
         return corsConfiguration;
     }
 
     @Bean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", buildConfig()); //注册
+        // 注册
+        source.registerCorsConfiguration("/**", buildConfig());
         return new CorsFilter(source);
     }
 }

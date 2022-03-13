@@ -54,7 +54,7 @@ public class UserController {
             @ApiImplicitParam(name = "page", value = "页码", defaultValue = "1", dataType = "int", example = "1", paramType = "query"),
             @ApiImplicitParam(name = "limit", value = "页长", defaultValue = "10", dataType = "int", example = "10", paramType = "query")
     })
-    public Result<PageInfo<User>> UserList(@RequestParam(value = "username", required = false) String username,
+    public Result<PageInfo<User>> userList(@RequestParam(value = "username", required = false) String username,
                                            @RequestParam(value = "phone", required = false) String phone,
                                            @RequestParam(value = "email", required = false) String email,
                                            @RequestParam(value = "page", required = false, defaultValue = "1") int page,
@@ -74,7 +74,7 @@ public class UserController {
     public Result addUser(UserOperateDTO userDTO, String password) {
         // 判断用户是否存在
         if (userService.findUsersWhetherExistByUsernameOrUserId(userDTO.getUsername(), null) > 0) {
-            return new Result().build("用户名已存在");
+            return Result.build("用户名已存在");
         }
         User user = new User();
         BeanUtils.copyProperties(userDTO, user);
@@ -138,7 +138,7 @@ public class UserController {
     public Result editUser(String userId, UserOperateDTO userDTO) {
         // 判断用户是否存在
         if (userService.findUsersWhetherExistByUsernameOrUserId(userDTO.getUsername(), userId) > 0) {
-            return new Result().build("用户名已存在");
+            return Result.build("用户名已存在");
         }
         User user = new User();
         BeanUtils.copyProperties(userDTO, user);

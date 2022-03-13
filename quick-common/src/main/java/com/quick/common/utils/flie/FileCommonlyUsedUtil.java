@@ -85,7 +85,6 @@ public class FileCommonlyUsedUtil {
             return false;
         } else {
             if (file.isFile()) {
-
                 return deleteFile(fileName);
             } else {
                 return deleteDirectory(fileName);
@@ -103,19 +102,16 @@ public class FileCommonlyUsedUtil {
         File file = new File(fileName);
         if (file.isFile() && file.exists()) {
             file.delete();
-            System.out.println("删除单个文件" + fileName + "成功！");
             return true;
-        } else {
-            System.out.println("删除单个文件" + fileName + "失败！");
-            return false;
         }
+        return false;
     }
 
     /**
      * 删除目录（文件夹）以及目录下的文件
      *
      * @param dir 被删除目录的文件路径
-     * @return 目录删除成功返回true, 否则返回false
+     * @return 目录删除成功返回true 否则返回false
      */
     public static boolean deleteDirectory(String dir) {
         // 如果dir不以文件分隔符结尾，自动添加文件分隔符
@@ -163,22 +159,30 @@ public class FileCommonlyUsedUtil {
         }
     }
 
-    // 删除文件夹
-    // param folderPath 文件夹完整绝对路径
+    /**
+     * 删除文件夹
+     *
+     * @param folderPath 文件夹完整绝对路径
+     */
     public static void delFolder(String folderPath) {
         try {
-            delAllFile(folderPath); // 删除完里面所有内容
+            // 删除完里面所有内容
+            delAllFile(folderPath);
             String filePath = folderPath;
-            filePath = filePath;
             java.io.File myFilePath = new java.io.File(filePath);
-            myFilePath.delete(); // 删除空文件夹
+            // 删除空文件夹
+            myFilePath.delete();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    // 删除指定文件夹下所有文件
-    // param path 文件夹完整绝对路径
+    /**
+     * 删除指定文件夹下所有文件
+     *
+     * @param path 文件夹完整绝对路径
+     * @return 目录删除成功返回true 否则返回false
+     */
     public static boolean delAllFile(String path) {
         boolean flag = false;
         File file = new File(path);
@@ -189,7 +193,7 @@ public class FileCommonlyUsedUtil {
             return flag;
         }
         String[] tempList = file.list();
-        File temp = null;
+        File temp;
         for (int i = 0; i < tempList.length; i++) {
             if (path.endsWith(File.separator)) {
                 temp = new File(path + tempList[i]);
@@ -200,8 +204,10 @@ public class FileCommonlyUsedUtil {
                 temp.delete();
             }
             if (temp.isDirectory()) {
-                delAllFile(path + "/" + tempList[i]);// 先删除文件夹里面的文件
-                delFolder(path + "/" + tempList[i]);// 再删除空文件夹
+                // 先删除文件夹里面的文件
+                delAllFile(path + "/" + tempList[i]);
+                // 再删除空文件夹
+                delFolder(path + "/" + tempList[i]);
                 flag = true;
             }
         }

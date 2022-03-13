@@ -97,8 +97,9 @@ public class WordPdfUtil {
         try {
             // 生成临时文件
             File file = new File(FileCommonlyUsedUtil.TEMPORARY_DIRECTORY_PATH + tempFileName + WORD_FILE_FORMAT_SUFFIX_NAME);
-            FileOutputStream tmpFIle = new FileOutputStream(file);
-            doc.write(tmpFIle);
+            FileOutputStream tmpFile = new FileOutputStream(file);
+            doc.write(tmpFile);
+            FileCommonlyUsedUtil.close(tmpFile);
 
             // 将临时文件转pdf文件
             Doc2Pdf.wordToPdf(FileCommonlyUsedUtil.TEMPORARY_DIRECTORY_PATH + tempFileName + WORD_FILE_FORMAT_SUFFIX_NAME, FileCommonlyUsedUtil.TEMPORARY_DIRECTORY_PATH + tempFileName + PDF_FILE_FORMAT_SUFFIX_NAME);
@@ -117,6 +118,7 @@ public class WordPdfUtil {
                 byteArrayOutputStream.write(byteBuffer.array(), 0, len);
                 byteBuffer.clear();
             }
+            FileCommonlyUsedUtil.close(fis);
 
         } catch (Exception e) {
             e.printStackTrace();

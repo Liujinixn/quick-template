@@ -51,7 +51,7 @@ public class TouristController {
         // System.out.println(new Md5Hash(password, null, 2).toString());
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(username, password);
-        Map<String, Object> info = new HashMap<>();
+        Map<String, Object> info = new HashMap<>(2);
         try {
             subject.login(usernamePasswordToken);
             info.put(shiroCoreParameters.getTokenKey(), shiroCoreParameters.getTokenValuePrefix() + subject.getSession().getId());

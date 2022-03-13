@@ -17,6 +17,7 @@ import javax.sql.DataSource;
 
 /**
  * 系统基础数据库-数据源配置
+ *  @author Liujinxin
  */
 @Configuration
 @MapperScan(basePackages = {"com.quick.base.mapper"}, sqlSessionFactoryRef = "baseSqlSessionFactory")

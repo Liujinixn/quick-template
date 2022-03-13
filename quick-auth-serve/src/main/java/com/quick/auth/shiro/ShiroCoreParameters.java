@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 
 /**
  * shiro 初始化核心参数
+ *
+ * @author Liujinxin
  */
 @Data
 @AllArgsConstructor
@@ -45,14 +47,18 @@ public class ShiroCoreParameters {
      */
     private Boolean kickoutAfter = false;
 
+    /**
+     * 令牌名称
+     */
     private String tokenKey = "token";
+
     /**
      * token值前缀
      */
     private String tokenValuePrefix = "";
 
     /**
-     * shiroReis参数
+     * shiroRedis参数
      */
     private ShiroRedis shiroRedis = new ShiroRedis();
 

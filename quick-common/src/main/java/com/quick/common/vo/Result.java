@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiModelProperty;
  * 自定义响应结果集
  *
  * @param <T> data数据类型
+ * @author Liujinxin
  */
 public class Result<T> {
 
@@ -19,18 +20,6 @@ public class Result<T> {
     @ApiModelProperty(value = "数据内容")
     private T data;
 
-    public static <T> Result<T> ok(T data){
-        return new Result<T>(CoreConst.SUCCESS_CODE, "ok", data);
-    }
-
-    public static <T> Result<T> build(String msg){
-        return new Result<T>(CoreConst.FAIL_CODE, msg, null);
-    }
-
-    public static <T> Result<T> build(int status, String msg){
-        return new Result<T>(status, msg, null);
-    }
-
     public Result() {
     }
 
@@ -38,6 +27,18 @@ public class Result<T> {
         this.status = status;
         this.msg = msg;
         this.data = data;
+    }
+
+    public static <T> Result<T> ok(T data) {
+        return new Result<T>(CoreConst.SUCCESS_CODE, "ok", data);
+    }
+
+    public static <T> Result<T> build(String msg) {
+        return new Result<T>(CoreConst.FAIL_CODE, msg, null);
+    }
+
+    public static <T> Result<T> build(int status, String msg) {
+        return new Result<T>(status, msg, null);
     }
 
     public int getStatus() {

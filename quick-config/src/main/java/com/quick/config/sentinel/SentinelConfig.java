@@ -22,6 +22,8 @@ import java.util.*;
 
 /**
  * 接口流控配置
+ *
+ * @author Liujinxin
  */
 @Configuration
 @ConditionalOnProperty(prefix = "sentinel", name = "enable", havingValue = "true", matchIfMissing = true)
@@ -67,7 +69,7 @@ class SentinelConfig {
         Map<RequestMappingInfo, HandlerMethod> map = mapping.getHandlerMethods();
         List<Map<String, String>> apiInfoList = new ArrayList<>();
         for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : map.entrySet()) {
-            Map<String, String> initMap = new HashMap<>();
+            Map<String, String> initMap = new HashMap<>(3);
             RequestMappingInfo info = entry.getKey();
             // 请求类型
             RequestMethodsRequestCondition methodsCondition = info.getMethodsCondition();

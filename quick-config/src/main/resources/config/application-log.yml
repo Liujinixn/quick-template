@@ -1,4 +1,7 @@
 # 日志服务配置
 log:
   file:
+    # 日志文件保存路径
     path: ../log
+    # 通过API接口查询日志文件密钥，多个参数使用逗号隔开 （get请求，携带参数 access_key=${access_key} 即可）
+    access_key: quick_template123

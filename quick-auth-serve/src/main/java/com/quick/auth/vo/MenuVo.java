@@ -8,7 +8,9 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 /**
- * 菜单
+ * 菜单结构响应信息
+ *
+ * @author Liujinxin
  */
 @Data
 @NoArgsConstructor

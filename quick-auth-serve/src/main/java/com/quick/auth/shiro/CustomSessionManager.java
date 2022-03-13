@@ -12,6 +12,8 @@ import java.io.Serializable;
 
 /**
  * 自定义session管理器
+ *
+ * @author Liujinxin
  */
 public class CustomSessionManager extends DefaultWebSessionManager {
 
@@ -23,6 +25,7 @@ public class CustomSessionManager extends DefaultWebSessionManager {
      * 请求头：Authorization： sessionid
      * 指定sessionId的获取方式
      */
+    @Override
     protected Serializable getSessionId(ServletRequest request, ServletResponse response) {
         //获取请求头Authorization中的数据
         String id = WebUtils.toHttp(request).getHeader(shiroCoreParameters.getTokenKey());

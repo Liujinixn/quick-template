@@ -12,6 +12,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * Swagger配置
+ *
+ * @author Liujinxin
  */
 @Configuration
 @EnableSwagger2
@@ -22,7 +24,7 @@ public class SwaggerConfig {
      * 安全认证分组
      */
     @Bean
-    public Docket docketBase_auth() {
+    public Docket docketBaseAuth() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(new ApiInfoBuilder()
                         .title("安全认证")
@@ -32,9 +34,11 @@ public class SwaggerConfig {
                         .build())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.quick.auth.controller"))
-                .paths(PathSelectors.any())     //正则匹配请求路径，并分配至当前分组，当前所有接口
+                // 正则匹配请求路径，并分配至当前分组，当前所有接口
+                .paths(PathSelectors.any())
                 .build()
-                .groupName("安全认证")           //分组名称
+                // 分组名称
+                .groupName("安全认证")
                 .globalOperationParameters(null);
     }
 
@@ -42,7 +46,7 @@ public class SwaggerConfig {
      * 日志服务分组
      */
     @Bean
-    public Docket docketBase_log() {
+    public Docket docketBaseLog() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(new ApiInfoBuilder()
                         .title("日志服务")
@@ -52,17 +56,19 @@ public class SwaggerConfig {
                         .build())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.quick.log.controller"))
-                .paths(PathSelectors.any())     //正则匹配请求路径，并分配至当前分组，当前所有接口
+                // 正则匹配请求路径，并分配至当前分组，当前所有接口
+                .paths(PathSelectors.any())
                 .build()
-                .groupName("日志服务")           //分组名称
+                // 分组名称
+                .groupName("日志服务")
                 .globalOperationParameters(null);
     }
 
     /**
-     * 基础服务分组
+     * 基础服务分组 基本
      */
     @Bean
-    public Docket docketBase_base() {
+    public Docket docketBaseBase() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(new ApiInfoBuilder()
                         .title("基础服务")
@@ -72,9 +78,11 @@ public class SwaggerConfig {
                         .build())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.quick.base.controller"))
-                .paths(PathSelectors.any())     //正则匹配请求路径，并分配至当前分组，当前所有接口
+                // 正则匹配请求路径，并分配至当前分组，当前所有接口
+                .paths(PathSelectors.any())
                 .build()
-                .groupName("基础服务")           //分组名称
+                // 分组名称
+                .groupName("基础服务")
                 .globalOperationParameters(null);
     }
 

@@ -10,6 +10,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Shiro业务处理
+ *
+ * @author Liujinxin
+ */
 @Service
 public class ShiroService {
 
