@@ -26,9 +26,10 @@ public interface UserService {
     /**
      * 更新最后登录时间
      *
-     * @param userId 用户ID
+     * @param userId         用户ID
+     * @param loginIpAddress 登录地址
      */
-    void updateLastLoginTimeByUserId(String userId);
+    void updateLastLoginTimeByUserId(String userId, String loginIpAddress);
 
     /**
      * 获取所有用户基本信息

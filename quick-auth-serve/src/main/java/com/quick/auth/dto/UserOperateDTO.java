@@ -41,4 +41,10 @@ public class UserOperateDTO {
     @ApiModelProperty(value = "年龄", example = "18", required = true)
     private Integer age;
 
+    /**
+     * 头像
+     */
+    @ApiModelProperty(value = "头像", example = "", required = false)
+    private String headPortrait;
+
 }

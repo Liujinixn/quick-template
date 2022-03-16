@@ -3,6 +3,7 @@ package com.quick.auth.controller;
 import com.quick.auth.service.UserService;
 import com.quick.auth.shiro.ShiroCoreParameters;
 import com.quick.auth.utils.ShiroUtil;
+import com.quick.common.utils.ip.IpUtil;
 import com.quick.common.vo.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,7 +49,7 @@ public class TouristController {
             @ApiImplicitParam(name = "username", value = "用户名", required = true, dataType = "string", paramType = "query"),
             @ApiImplicitParam(name = "password", value = "密码", required = true, dataType = "string", paramType = "query")
     })
-    public Result login(String username, String password) {
+    public Result login(String username, String password, HttpServletRequest request) {
         // System.out.println(new Md5Hash(password, null, 2).toString());
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(username, password);
@@ -69,9 +71,10 @@ public class TouristController {
         } catch (Exception e) {
             return Result.build("登录异常，请稍后重试");
         }
-        //更新最后登录时间
+        // 更新最后登录时间 和 登录IP
         String loginUserId = ShiroUtil.getLoginUserId();
-        userService.updateLastLoginTimeByUserId(loginUserId);
+        String loginIp = IpUtil.getIpAddr(request);
+        userService.updateLastLoginTimeByUserId(loginUserId, loginIp);
         return Result.ok(info);
     }
 

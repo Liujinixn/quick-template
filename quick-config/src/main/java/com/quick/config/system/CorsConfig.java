@@ -13,6 +13,15 @@ import org.springframework.web.filter.CorsFilter;
  */
 @Configuration
 public class CorsConfig {
+
+    @Bean
+    public CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        // 注册
+        source.registerCorsConfiguration("/**", buildConfig());
+        return new CorsFilter(source);
+    }
+
     private CorsConfiguration buildConfig() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         // 允许任何域名
@@ -22,13 +31,5 @@ public class CorsConfig {
         // 允许任何方法
         corsConfiguration.addAllowedMethod("*");
         return corsConfiguration;
-    }
-
-    @Bean
-    public CorsFilter corsFilter() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        // 注册
-        source.registerCorsConfiguration("/**", buildConfig());
-        return new CorsFilter(source);
     }
 }

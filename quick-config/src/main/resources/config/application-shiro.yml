@@ -1,5 +1,7 @@
 # shiro核心参数 ShiroCoreParameters类
 shiro:
+  # 是否开启系统权限认证功能
+  enable: false
   # 令牌过期时间（单位：秒）
   token_expiration_time: 3800
   # 加密名称（当前必填:md5，否者需要修改UserController代码）

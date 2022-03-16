@@ -22,7 +22,7 @@
 
     <sql id="Base_Column_List">
         id, user_id, username, `password`, salt, email, phone, sex, age, `status`,
-        create_time, update_time, last_login_time
+        create_time, update_time, last_login_time, head_portrait
     </sql>
 
     <resultMap id="AllInfo" type="com.quick.auth.entity.User">
@@ -39,6 +39,7 @@
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
         <result column="last_login_time" property="lastLoginTime"/>
+        <result column="head_portrait" property="headPortrait"/>
         <collection property="roles" ofType="com.quick.auth.entity.Role" javaType="java.util.List">
             <result column="rId" property="id"/>
             <result column="role_id" property="roleId"/>
@@ -73,6 +74,7 @@
             u.create_time,
             u.update_time,
             u.last_login_time,
+            u.head_portrait,
 
             r.id AS rId,
             r.role_id,
@@ -110,7 +112,7 @@
     </select>
 
     <update id="updateLastLoginTime" parameterType="com.quick.auth.entity.User">
-        UPDATE <include refid="user"/> SET last_login_time = now() WHERE user_id = #{userId}
+        UPDATE <include refid="user"/> SET last_login_time = now() , login_ip_address = #{loginIpAddress} WHERE user_id = #{userId}
     </update>
 
     <update id="updateByUserId" parameterType="com.quick.auth.entity.User">
@@ -152,6 +154,9 @@
         <if test="loginIpAddress != null and loginIpAddress != '' ">
             login_ip_address = #{loginIpAddress},
         </if>
+        <if test="headPortrait != null and headPortrait != '' ">
+            head_portrait = #{headPortrait},
+        </if>
         update_time = now()
         WHERE user_id = #{userId,jdbcType=BIGINT}
     </update>
@@ -170,7 +175,7 @@
 
     <select id="findByRoleId" resultType="com.quick.auth.entity.User">
         SELECT u.id, u.user_id, u.username, u.password, u.salt, u.email, u.phone, u.sex, u.age, u.status,
-        u.create_time, u.update_time, u.last_login_time
+        u.create_time, u.update_time, u.last_login_time, u.head_portrait
         FROM <include refid="user"/> u
         INNER JOIN <include refid="user_role"/> ur ON u.user_id = ur.user_id
         WHERE ur.role_id = #{roleId,jdbcType=VARCHAR}
@@ -178,7 +183,7 @@
 
     <select id="findByRoleIds" resultType="com.quick.auth.entity.User">
         SELECT u.id, u.user_id, u.username, u.password, u.salt, u.email, u.phone, u.sex, u.age, u.status,
-        u.create_time, u.update_time, u.last_login_time
+        u.create_time, u.update_time, u.last_login_time, u.head_portrait
         FROM <include refid="user"/> u
         INNER JOIN <include refid="user_role"/> ur ON u.user_id = ur.user_id
         WHERE ur.role_id IN
@@ -200,6 +205,7 @@
         <result column="update_time" property="updateTime"/>
         <result column="last_login_time" property="lastLoginTime"/>
         <result column="login_ip_address" property="loginIpAddress"/>
+        <result column="head_portrait" property="headPortrait"/>
         <collection property="roles" ofType="com.quick.auth.entity.Role" javaType="java.util.List">
             <result column="rId" property="id"/>
             <result column="role_id" property="roleId"/>
@@ -223,6 +229,7 @@
         u.update_time,
         u.last_login_time,
         u.login_ip_address,
+        u.head_portrait,
 
         r.id AS rId,
         r.role_id,
@@ -260,6 +267,7 @@
         u.update_time,
         u.last_login_time,
         u.login_ip_address,
+        u.head_portrait,
 
         r.id AS rId,
         r.role_id,
@@ -320,6 +328,9 @@
         <if test="loginIpAddress != null and loginIpAddress != '' ">
             login_ip_address,
         </if>
+        <if test="headPortrait != null and headPortrait != '' ">
+            head_portrait,
+        </if>
         create_time,
         update_time
         )
@@ -359,6 +370,9 @@
         </if>
         <if test="loginIpAddress != null and loginIpAddress != '' ">
             #{loginIpAddress},
+        </if>
+        <if test="headPortrait != null and headPortrait != '' ">
+            #{headPortrait},
         </if>
         now(),
         now()

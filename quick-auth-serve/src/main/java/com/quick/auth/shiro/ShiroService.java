@@ -21,6 +21,9 @@ public class ShiroService {
     @Autowired
     PermissionService permissionService;
 
+    @Autowired
+    ShiroCoreParameters shiroCoreParameters;
+
     /**
      * 初始化权限
      * shiro的内置过滤器:
@@ -32,6 +35,11 @@ public class ShiroService {
      */
     public Map<String, String> loadFilterChainDefinitions() {
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
+        if(!shiroCoreParameters.isEnable()){
+            // 系统禁用权限认证功能
+            filterChainDefinitionMap.put("/**", "anon");
+            return filterChainDefinitionMap;
+        }
         filterChainDefinitionMap.put("/tourist/**", "anon");
         //swagger/druid监控接口 权限开放
         filterChainDefinitionMap.put("*.html", "anon");

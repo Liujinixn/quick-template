@@ -23,6 +23,11 @@ public class ShiroCoreParameters {
     public static final String SHIRO_CORE_PARAMETER_PREFIX = "shiro";
 
     /**
+     * 是否开启权限认证功能
+     */
+    private boolean enable = true;
+
+    /**
      * 令牌过期时间（单位：秒）
      */
     private int tokenExpirationTime = 3600;

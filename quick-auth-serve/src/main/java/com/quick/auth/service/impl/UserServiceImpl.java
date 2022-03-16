@@ -51,8 +51,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateLastLoginTimeByUserId(String userId) {
-        userMapper.updateLastLoginTime(userId);
+    public void updateLastLoginTimeByUserId(String userId, String loginIpAddress) {
+        userMapper.updateLastLoginTime(userId, loginIpAddress);
     }
 
     @Override

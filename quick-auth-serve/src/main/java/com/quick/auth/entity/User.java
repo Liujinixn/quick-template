@@ -91,6 +91,12 @@ public class User extends Online implements Serializable {
     private String loginIpAddress;
 
     /**
+     * 头像
+     */
+    @ApiModelProperty(value = "头像")
+    private String headPortrait;
+
+    /**
      * 角色
      */
     private List<Role> roles;

@@ -46,8 +46,9 @@ public interface UserMapper {
      * 更新最后登录时间（shiro登录后使用）
      *
      * @param userId 用户ID
+     * @param loginIpAddress 登录IP
      */
-    void updateLastLoginTime(String userId);
+    void updateLastLoginTime(String userId, String loginIpAddress);
 
     /**
      * 根据用户id更新用户信息
