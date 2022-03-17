@@ -8,6 +8,8 @@ import com.aspose.words.SaveFormat;
 import com.quick.common.utils.flie.dto.ImagesAttr;
 import com.quick.common.utils.flie.dto.WordTemplateVariable;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.CollectionUtils;
 
@@ -27,6 +29,8 @@ import java.util.UUID;
  */
 public class WordToPdfUtil {
 
+    private static final Logger log = LoggerFactory.getLogger(WordToPdfUtil.class);
+
     /**
      * 模板文件格式后缀 | 模板转换后的临时word文件后缀名
      */
@@ -38,7 +42,8 @@ public class WordToPdfUtil {
     private static final String PDF_FILE_FORMAT_SUFFIX_NAME = ".pdf";
 
     /**
-     *根据指定的word模板文件，生成PDF文件
+     * 根据指定的word模板文件，生成PDF文件
+     *
      * @param templateParams Word模板参数替换对象
      * @return PDF文件字节数组
      * @throws IOException file parsing exception
@@ -74,36 +79,36 @@ public class WordToPdfUtil {
      *
      * @param templateName 模板路径|名称    resources.template_file 目录为根目录
      * @param params       模板中的变量替换列表  {
-     *                                          "name":"张三",    // 替换模板文件中变量 为普通文本
-     *                                          "headPortrait":  // 替换模板文件中变量 为图片
-     *                                               {
-     *                                                  "src": "http://img2.baidu.com/image",  // 图片地址,兼容本地磁盘和网络地址
-     *                                                  "w": "110",  // 宽度 px
-     *                                                  "h": "130"   // 高度 px
-     *                                                }
-     *                                          }
+     *                     "name":"张三",    // 替换模板文件中变量 为普通文本
+     *                     "headPortrait":  // 替换模板文件中变量 为图片
+     *                     {
+     *                     "src": "http://img2.baidu.com/image",  // 图片地址,兼容本地磁盘和网络地址
+     *                     "w": "110",  // 宽度 px
+     *                     "h": "130"   // 高度 px
+     *                     }
+     *                     }
      * @return PDF文件字节数组
      * @throws IOException file parsing exception
      */
-    public static byte[] wordTemplateGeneratePdf(String templateName, Map<String, Object> params) throws IOException {
+    public static byte[] wordTemplateGeneratePdf(String templateName, Map<String, Object> params) {
         // 读取本地Word模板文件
         ClassPathResource classPathResource = new ClassPathResource(WordUtil.TEMPLATE_FILE_PATH + templateName);
-        InputStream source = classPathResource.getInputStream();
-        XWPFDocument doc = new XWPFDocument(source);
-
+        InputStream source = null;
+        ByteArrayOutputStream outputStream;
+        XWPFDocument doc = null;
+        try {
+            source = classPathResource.getInputStream();
+            doc = new XWPFDocument(source);
+        } catch (IOException e) {
+            log.error("读取|解析模板文件失败, wordTemplateFileName = {}", templateName, e);
+        }
         // 替换变量占位符 ${xxx}格式，如：${name}
         WordUtil.replaceInParagraph(doc, params);
         //替换表格里面的变量
         WordUtil.replaceInTable(doc, params);
 
         // 转换为 PDF文件输出流
-        ByteArrayOutputStream outputStream = pdfConverter(doc);
-
-        byte[] buffer = new byte[1024];
-        int length;
-        while ((length = source.read(buffer)) > 0) {
-            outputStream.write(buffer, 0, length);
-        }
+        outputStream = pdfConverter(doc);
 
         FileBaseUtil.close(outputStream);
         FileBaseUtil.close(source);
@@ -121,7 +126,7 @@ public class WordToPdfUtil {
         try {
             response.setHeader("Content-disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            log.error("不支持的编码 encode = {}", "UTF-8", e);
         }
     }
 
@@ -180,7 +185,7 @@ public class WordToPdfUtil {
     }
 
     /**
-     * word转pdf
+     * word 转 pdf
      * 说明：基于aspose-words-15.8.0-jdk16.jar 实现文件转换PDF文件
      * 示例：wordToPdf("D:\\Projects\\ideaProjects\\quick-template\\quick-config\\src\\main\\resources\\template_file\\test.docx",
      * "D:\\Projects\\ideaProjects\\quick-template\\quick-config\\src\\main\\resources\\template_file\\test.pdf");

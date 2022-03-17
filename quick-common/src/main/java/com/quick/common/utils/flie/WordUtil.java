@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
@@ -26,11 +27,13 @@ import java.util.regex.Pattern;
  */
 public class WordUtil {
 
+    private static final Logger log = LoggerFactory.getLogger(WordUtil.class);
+
     /**
      * 系统模板文件路径 (resources路径开始)
      */
     public static final String TEMPLATE_FILE_PATH = "template_file/";
-    private static final Logger log = LoggerFactory.getLogger(WordUtil.class);
+
     /**
      * 模板文件变量规则 例：${name}
      */
@@ -151,26 +154,29 @@ public class WordUtil {
         double width = MapUtils.getDouble(infoImg, "w");
         double height = MapUtils.getDouble(infoImg, "h");
 
-        Integer documentType = null;
+        Integer documentType;
         if (StringUtils.isBlank(src)) {
-            log.warn("图片是空白的: src = {}", src);
+            log.warn("未找到 {} 图片文件", src);
+            return new StringBuilder(matcher.replaceAll(""));
         } else {
             String suffix = src.substring(src.lastIndexOf("."));
             documentType = MapUtils.getInteger(documentTypeMap, suffix);
         }
         if (documentType == null) {
-            log.warn("不支持的图片: {}. 可选格式 emf|wmf|pict|jpeg|jpg|png|dib|gif|tiff|eps|bmp|wpg", src);
+            log.warn("不支持的图片: imgUrl = {}. 可选格式 emf|wmf|pict|jpeg|jpg|png|dib|gif|tiff|eps|bmp|wpg", src);
             return new StringBuilder(matcher.replaceAll(""));
         }
         InputStream inputStream = null;
         try {
             inputStream = new FileInputStream(src);
             runs.get(0).addPicture(inputStream, documentType, src, Units.toEMU(width), Units.toEMU(height));
-            runs.get(0).addBreak(BreakType.PAGE);
+        } catch (FileNotFoundException e) {
+            log.error("读取临时图片失败：{} 文件不存在", src, e);
         } catch (InvalidFormatException e) {
             e.printStackTrace();
+            log.error("POI无法写入同时图片：{} 图片格式未知", src, e);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("读取临时图片失败：{} 图片无法写入word模板", src, e);
         } finally {
             FileBaseUtil.close(inputStream);
             FileBaseUtil.deleteFile(src);
@@ -207,11 +213,11 @@ public class WordUtil {
                 try {
                     map.put(field.getName(), field.get(object));
                 } catch (IllegalArgumentException | IllegalAccessException e) {
-                    e.printStackTrace();
+                    log.error(e.getMessage(), e);
                 }
             }
         } catch (SecurityException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         }
         return map;
     }
@@ -220,7 +226,7 @@ public class WordUtil {
      * 判断 address 是不是 网络地址，如果是网络地址下载到本地
      *
      * @param address 地址|路径
-     * @return true 是
+     * @return 图片本地地址, 返回 null 失败
      */
     private static String checkUrlIsWebsiteAddress(String address) {
         boolean res = address.startsWith("http");

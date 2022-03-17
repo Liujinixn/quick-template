@@ -1,5 +1,8 @@
 package com.quick.common.utils.flie;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -11,6 +14,8 @@ import java.util.UUID;
  * @author Liujinxin
  */
 public class FileBaseUtil {
+
+    private static final Logger log = LoggerFactory.getLogger(FileBaseUtil.class);
 
     /**
      * 临时目录
@@ -32,7 +37,7 @@ public class FileBaseUtil {
             try {
                 is.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                log.warn("关闭输入流失败", e);
             }
         }
     }
@@ -47,7 +52,7 @@ public class FileBaseUtil {
             try {
                 os.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                log.warn("关闭输出流失败", e);
             }
         }
     }
@@ -81,7 +86,7 @@ public class FileBaseUtil {
     public static boolean delete(String fileName) {
         File file = new File(fileName);
         if (!file.exists()) {
-            System.out.println("删除文件失败：" + fileName + "文件不存在");
+            log.warn("删除文件失败：{} 文件不存在", fileName);
             return false;
         } else {
             if (file.isFile()) {
@@ -121,7 +126,7 @@ public class FileBaseUtil {
         File dirFile = new File(dir);
         // 如果dir对应的文件不存在，或者不是一个目录，则退出
         if (!dirFile.exists() || !dirFile.isDirectory()) {
-            System.out.println("删除目录失败" + dir + "目录不存在！");
+            log.warn("删除目录失败：{} 目录不存在", dir);
             return false;
         }
         boolean flag = true;
@@ -143,18 +148,16 @@ public class FileBaseUtil {
                 }
             }
         }
-
         if (!flag) {
-            System.out.println("删除目录失败");
+            log.warn("删除目录失败", dir);
             return false;
         }
-
         // 删除当前目录
         if (dirFile.delete()) {
-            System.out.println("删除目录" + dir + "成功！");
+            log.info("删除目录成功", dir);
             return true;
         } else {
-            System.out.println("删除目录" + dir + "失败！");
+            log.warn("删除目录失败", dir);
             return false;
         }
     }
@@ -173,7 +176,7 @@ public class FileBaseUtil {
             // 删除空文件夹
             myFilePath.delete();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("删除文件夹失败, folderPath = {}", folderPath, e);
         }
     }
 
@@ -220,7 +223,7 @@ public class FileBaseUtil {
      * @param inStream 输入流
      * @return 字节数组
      */
-    public static byte[] readInputStream(InputStream inStream) throws Exception {
+    public static byte[] readInputStream(InputStream inStream) throws IOException {
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
         //创建一个Buffer字符串
         byte[] buffer = new byte[1024];
@@ -231,10 +234,11 @@ public class FileBaseUtil {
             //用输出流往buffer里写入数据，中间参数代表从哪个位置开始读，len代表读取的长度
             outStream.write(buffer, 0, len);
         }
-        //关闭输入流
-        inStream.close();
         //把outStream里的数据写入内存
-        return outStream.toByteArray();
+        byte[] bytes = outStream.toByteArray();
+        close(inStream);
+        close(outStream);
+        return bytes;
     }
 
     /**
@@ -245,6 +249,8 @@ public class FileBaseUtil {
      */
     public static String downloadWebImages(String urlAddress) {
         String fileName;
+        InputStream inStream = null;
+        FileOutputStream outStream = null;
         try {
             URL url = new URL(urlAddress);
             //打开链接
@@ -254,7 +260,7 @@ public class FileBaseUtil {
             //超时响应时间为5秒
             conn.setConnectTimeout(10 * 1000);
             //通过输入流获取图片数据
-            InputStream inStream = conn.getInputStream();
+            inStream = conn.getInputStream();
             //得到图片的二进制数据，以二进制封装得到数据，具有通用性
             byte[] data = readInputStream(inStream);
 
@@ -264,14 +270,15 @@ public class FileBaseUtil {
             fileName = fileName + ".jpg";
             File imageFile = new File(TEMPORARY_DIRECTORY_PATH + fileName);
             //创建输出流
-            FileOutputStream outStream = new FileOutputStream(imageFile);
+            outStream = new FileOutputStream(imageFile);
             //写入数据
             outStream.write(data);
-            //关闭输出流
-            outStream.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("{} 图片地址，保存到临时文件目录失败", urlAddress, e);
             return null;
+        } finally {
+            close(outStream);
+            close(inStream);
         }
         return TEMPORARY_DIRECTORY_PATH + fileName;
     }
