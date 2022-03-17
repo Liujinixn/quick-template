@@ -1,5 +1,6 @@
 package com.quick.common.utils.flie;
 
+import com.alibaba.fastjson.JSON;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -129,9 +130,10 @@ public class WordUtil {
             }
             while ((matcher = matcher(runText.toString())).find()) {
                 Object val = params.get(matcher.group(1));
-                if (objToMap(val).get("table") != null) {
+                Map<String, Object> imgAttr = objToMap(val);
+                if (imgAttr != null) {
                     // 替换目标为 图片
-                    runText = substitutionVariablePicture((Map<String, Object>) val, matcher, runs);
+                    runText = substitutionVariablePicture(imgAttr, matcher, runs);
                     continue;
                 }
                 // 替换目标为 文本
@@ -199,27 +201,20 @@ public class WordUtil {
      * 使用java.lang.reflect进行转换
      *
      * @param object 目标对象
-     * @return map 转换Map结果，如果是Map结构的话会包含 table 参数
+     * @return map 转换Map， null 说明数据无法转成对象
      */
     private static Map<String, Object> objToMap(Object object) {
-        Map<String, Object> map = new HashMap<String, Object>();
         if (object == null) {
-            return map;
+            return null;
         }
+        Map<String, Object> parmas = null;
         try {
-            Field[] declaredFields = object.getClass().getDeclaredFields();
-            for (Field field : declaredFields) {
-                field.setAccessible(true);
-                try {
-                    map.put(field.getName(), field.get(object));
-                } catch (IllegalArgumentException | IllegalAccessException e) {
-                    log.error(e.getMessage(), e);
-                }
-            }
-        } catch (SecurityException e) {
-            log.error(e.getMessage(), e);
+            String jsonString = JSON.toJSONString(object);
+            parmas = JSON.parseObject(jsonString, Map.class);
+        } catch (Exception e) {
+            // 数据不是对象，无法转换成Map，object 可能是字符串等数据类型
         }
-        return map;
+        return parmas;
     }
 
     /**

@@ -8,13 +8,22 @@ import java.util.Map;
 public interface UserMapper {
 
     /**
-     * 根据用户名查询用户详细信息（shiro使用）
+     * 根据用户名查询用户详细信息（含角色权限） shiro使用
      *
      * @param username 用户名
      * @param status   状态
      * @return user
      */
     User findUserAllInfoInfoByUsername(String username, Integer status);
+
+    /**
+     * 根据用户名查询用户详细信息（含角色权限）
+     *
+     * @param userId 用户ID
+     * @param status   状态
+     * @return user
+     */
+    User findUserAllInfoInfoByUserId(String userId, Integer status);
 
     /**
      * 根据用户名查询用户的基本信息（shiro使用）

@@ -57,38 +57,5 @@ public class TestController {
         EasyExcel.write(response.getOutputStream(), User.class).sheet("模板").doWrite(userList);
     }
 
-    @RequestMapping(value = "/exportUserInfo", method = RequestMethod.GET)
-    @ApiOperation(value = "导出用户信息Word")
-    public void exportUserInfoWord(String username, HttpServletResponse response) throws Exception {
-        User userInfo = userService.findUserAllInfoInfoByUsername(username);
-
-        WordToPdfUtil.setResponseInfo(response, "用户信息.pdf");
-        HashMap<String, Object> objectHashMap = new HashMap<>();
-        objectHashMap.put("name", userInfo.getUsername());
-        objectHashMap.put("userId", userInfo.getUserId());
-        objectHashMap.put("phone", userInfo.getPhone());
-        objectHashMap.put("email", userInfo.getEmail());
-        objectHashMap.put("sex", userInfo.getSex().equals(1) ? "男" : "女");
-        objectHashMap.put("age", userInfo.getAge());
-        objectHashMap.put("status", userInfo.getStatus().equals(1) ? "有效" : "删除");
-
-        List<String> roleNames = userInfo.getRoles().stream().map(o -> o.getName()).collect(Collectors.toList());
-        String roleName = "";
-        for (String role : roleNames) {
-            roleName += role + "、";
-        }
-        objectHashMap.put("roleName", roleName);
-        Map<String, Object> imgInfo = new HashMap<>();
-        imgInfo.put("src", userInfo.getHeadPortrait());
-        imgInfo.put("w", 110);
-        imgInfo.put("h", 130);
-        objectHashMap.put("headPortrait", imgInfo);
-
-        WordTemplateVariable wordToPdfTemplateParams = WordTemplateVariable.createTemplateParams("userInfo.docx");
-        wordToPdfTemplateParams.setTextParams(objectHashMap);
-
-        byte[] bytes = WordToPdfUtil.wordTemplateGeneratePdf(wordToPdfTemplateParams);
-        response.getOutputStream().write(bytes);
-    }
 
 }

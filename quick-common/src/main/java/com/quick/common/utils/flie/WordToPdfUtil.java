@@ -53,14 +53,9 @@ public class WordToPdfUtil {
         String templateName = templateParams.getTemplateName();
         // 数据处理
         Map<String, Object> params = templateParams.getTextParams();
-        List<ImagesAttr> imageParams = templateParams.getImageParams();
+        Map<String, ImagesAttr> imageParams = templateParams.getImageParams();
         if (!CollectionUtils.isEmpty(imageParams)) {
-            String jsonString = JSON.toJSONString(imageParams);
-            List<Map<String, Object>> imgInfoList = JSON.parseObject(jsonString, new TypeReference<List<Map<String, Object>>>() {
-            });
-            for (Map<String, Object> info : imgInfoList) {
-                params.putAll(info);
-            }
+            params.putAll(imageParams);
         }
         return wordTemplateGeneratePdf(templateName, params);
     }

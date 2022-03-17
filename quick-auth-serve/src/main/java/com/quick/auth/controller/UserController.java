@@ -8,6 +8,9 @@ import com.quick.auth.service.UserService;
 import com.quick.auth.shiro.ShiroCoreParameters;
 import com.quick.auth.shiro.realm.UserRealm;
 import com.quick.auth.utils.ShiroUtil;
+import com.quick.common.utils.flie.WordToPdfUtil;
+import com.quick.common.utils.flie.dto.ImagesAttr;
+import com.quick.common.utils.flie.dto.WordTemplateVariable;
 import com.quick.common.vo.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -18,9 +21,11 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/user")
@@ -253,6 +258,35 @@ public class UserController {
         userRealm.removeCachedAuthenticationInfo(userIds);
         /*SecurityUtils.getSubject().logout();*/
         return Result.ok("修改密码成功");
+    }
+
+    /**
+     * 导出用户基本信息 Pdf
+     *
+     * @param userId 用户ID
+     */
+    @GetMapping("/exportUserBasicInfoPdf")
+    @ApiOperation(value = "导出用户基本信息 Pdf", produces = "application/octet-stream")
+    @ApiImplicitParam(name = "userId", value = "用户ID", required = true, dataType = "string", paramType = "query")
+    public void exportUserBasicInfoPdf(String userId, HttpServletResponse response) throws Exception {
+        WordToPdfUtil.setResponseInfo(response, "用户信息.pdf");
+        User userInfo = userService.findUserAllInfoInfoByUserId(userId);
+
+        WordTemplateVariable wordToPdfTemplateParams = WordTemplateVariable.createTemplateParams("userInfo.docx");
+        wordToPdfTemplateParams.putTextParams("name", userInfo.getUsername());
+        wordToPdfTemplateParams.putTextParams("userId", userInfo.getUserId());
+        wordToPdfTemplateParams.putTextParams("phone", userInfo.getPhone());
+        wordToPdfTemplateParams.putTextParams("email", userInfo.getEmail());
+        wordToPdfTemplateParams.putTextParams("sex", userInfo.getSex().equals(1) ? "男" : "女");
+        wordToPdfTemplateParams.putTextParams("age", userInfo.getAge());
+        wordToPdfTemplateParams.putTextParams("status", userInfo.getStatus().equals(1) ? "有效" : "删除");
+        wordToPdfTemplateParams.putTextParams("roleName", userInfo.getRoles().stream().map(o->o.getName()).collect(Collectors.joining("、")));
+
+        ImagesAttr imagesAttr = new ImagesAttr(userInfo.getHeadPortrait(), 110, 130);
+        wordToPdfTemplateParams.putImageParams("headPortrait", imagesAttr);
+
+        byte[] bytes = WordToPdfUtil.wordTemplateGeneratePdf(wordToPdfTemplateParams);
+        response.getOutputStream().write(bytes);
     }
 
 }

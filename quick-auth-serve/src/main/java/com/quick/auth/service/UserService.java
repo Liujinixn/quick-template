@@ -16,12 +16,20 @@ public interface UserService {
     User findUserSimpleInfoByUsername(String username);
 
     /**
-     * 根据用户名查询用户详细信息
+     * 根据用户名查询用户详细信息（含角色权限）
      *
      * @param username 用户名
      * @return User对象
      */
     User findUserAllInfoInfoByUsername(String username);
+
+    /**
+     * 根据用户Id查询用户详细信息（含角色权限）
+     *
+     * @param userId 用户ID
+     * @return User对象
+     */
+    User findUserAllInfoInfoByUserId(String userId);
 
     /**
      * 更新最后登录时间

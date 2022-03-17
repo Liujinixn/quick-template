@@ -98,6 +98,45 @@
         WHERE u.username=#{username} AND u.status = #{status}
     </select>
 
+    <select id="findUserAllInfoInfoByUserId" resultMap="AllInfo">
+        SELECT
+            u.id AS uId,
+            u.user_id,
+            u.username,
+            u.password,
+            u.salt,
+            u.email,
+            u.phone,
+            u.sex,
+            u.age,
+            u.status,
+            u.create_time,
+            u.update_time,
+            u.last_login_time,
+            u.head_portrait,
+
+            r.id AS rId,
+            r.role_id,
+            r.name AS roleName,
+
+            p.id AS pId,
+            p.permission_id,
+            p.name AS permissionName,
+            p.url,
+            p.perms,
+            p.parent_id,
+            p.type,
+            p.icon,
+            p.order_num
+        FROM
+            <include refid="user"/> u
+        LEFT JOIN <include refid="user_role"/> ur ON u.user_id = ur.user_id
+        LEFT JOIN <include refid="role"/> r ON ur.role_id = r.role_id
+        LEFT JOIN <include refid="role_permission"/> rp ON rp.role_id = r.role_id
+        LEFT JOIN <include refid="permission"/> p ON p.permission_id = rp.permission_id
+        WHERE u.user_id=#{userId} AND u.status = #{status}
+    </select>
+
     <select id="findUserSimpleInfoByUsername" resultType="com.quick.auth.entity.User">
         SELECT
         <include refid="Base_Column_List"/>

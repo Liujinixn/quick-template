@@ -51,6 +51,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findUserAllInfoInfoByUserId(String userId) {
+        return userMapper.findUserAllInfoInfoByUserId(userId, CoreConst.STATUS_VALID);
+    }
+
+    @Override
     public void updateLastLoginTimeByUserId(String userId, String loginIpAddress) {
         userMapper.updateLastLoginTime(userId, loginIpAddress);
     }

@@ -1,8 +1,6 @@
 package com.quick.common.utils.flie.dto;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,7 +23,7 @@ public class WordTemplateVariable {
     /**
      * 图片变量替换
      */
-    private List<ImagesAttr> imageParams = new ArrayList<>(4);
+    private Map<String, ImagesAttr> imageParams = new HashMap<>(4);
 
     private WordTemplateVariable() {
     }
@@ -34,7 +32,7 @@ public class WordTemplateVariable {
         this.templateName = templateName;
     }
 
-    private WordTemplateVariable(String templateName, Map<String, Object> textParams, List<ImagesAttr> imageParams) {
+    public WordTemplateVariable(String templateName, Map<String, Object> textParams, Map<String, ImagesAttr> imageParams) {
         this.templateName = templateName;
         this.textParams = textParams;
         this.imageParams = imageParams;
@@ -60,7 +58,7 @@ public class WordTemplateVariable {
      * @param key   变量
      * @param value 值
      */
-    public void putTextParams(String key, String value) {
+    public void putTextParams(String key, Object value) {
         this.textParams.put(key, value);
     }
 
@@ -69,8 +67,8 @@ public class WordTemplateVariable {
      *
      * @param imagesAttr 图片属性
      */
-    public void putImageParams(ImagesAttr imagesAttr) {
-        this.imageParams.add(imagesAttr);
+    public void putImageParams(String key, ImagesAttr imagesAttr) {
+        this.imageParams.put(key, imagesAttr);
     }
 
     public Map<String, Object> getTextParams() {
@@ -81,11 +79,11 @@ public class WordTemplateVariable {
         this.textParams = textParams;
     }
 
-    public List<ImagesAttr> getImageParams() {
+    public Map<String, ImagesAttr> getImageParams() {
         return imageParams;
     }
 
-    public void setImageParams(List<ImagesAttr> imageParams) {
+    public void setImageParams(Map<String, ImagesAttr> imageParams) {
         this.imageParams = imageParams;
     }
 
