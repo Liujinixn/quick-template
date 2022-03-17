@@ -6,7 +6,7 @@ import com.aspose.words.Document;
 import com.aspose.words.License;
 import com.aspose.words.SaveFormat;
 import com.quick.common.utils.flie.dto.ImagesAttr;
-import com.quick.common.utils.flie.dto.WordToPdfTemplateParams;
+import com.quick.common.utils.flie.dto.WordTemplateVariable;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.CollectionUtils;
@@ -38,6 +38,29 @@ public class WordToPdfUtil {
     private static final String PDF_FILE_FORMAT_SUFFIX_NAME = ".pdf";
 
     /**
+     *根据指定的word模板文件，生成PDF文件
+     * @param templateParams Word模板参数替换对象
+     * @return PDF文件字节数组
+     * @throws IOException file parsing exception
+     */
+    public static byte[] wordTemplateGeneratePdf(WordTemplateVariable templateParams) throws IOException {
+        // 获取模板文件 路径|文件名称
+        String templateName = templateParams.getTemplateName();
+        // 数据处理
+        Map<String, Object> params = templateParams.getTextParams();
+        List<ImagesAttr> imageParams = templateParams.getImageParams();
+        if (!CollectionUtils.isEmpty(imageParams)) {
+            String jsonString = JSON.toJSONString(imageParams);
+            List<Map<String, Object>> imgInfoList = JSON.parseObject(jsonString, new TypeReference<List<Map<String, Object>>>() {
+            });
+            for (Map<String, Object> info : imgInfoList) {
+                params.putAll(info);
+            }
+        }
+        return wordTemplateGeneratePdf(templateName, params);
+    }
+
+    /**
      * 根据指定的word模板文件，生成PDF文件
      * <p>
      * 示例：
@@ -49,6 +72,7 @@ public class WordToPdfUtil {
      * response.getOutputStream().write(bytes);
      * WordToPdfUtil.setResponseInfo(response,"打印.pdf");
      *
+     * @param templateName 模板路径|名称    resources.template_file 目录为根目录
      * @param params       模板中的变量替换列表  {
      *                                          "name":"张三",    // 替换模板文件中变量 为普通文本
      *                                          "headPortrait":  // 替换模板文件中变量 为图片
@@ -61,20 +85,7 @@ public class WordToPdfUtil {
      * @return PDF文件字节数组
      * @throws IOException file parsing exception
      */
-    public static byte[] wordTemplateGeneratePdf(WordToPdfTemplateParams templateParams) throws IOException {
-        // 获取模板文件 路径|文件名称
-        String templateName = templateParams.getTemplateName();
-        // 数据处理
-        Map<String, Object> params = templateParams.getTextParams();
-        List<ImagesAttr> imageParams = templateParams.getImageParams();
-        if(!CollectionUtils.isEmpty(imageParams)){
-            String jsonString = JSON.toJSONString(imageParams);
-            List<Map<String, Object>> imgInfoList = JSON.parseObject(jsonString,new TypeReference<List<Map<String, Object>>>(){});
-            for(Map<String, Object> info : imgInfoList){
-                params.putAll(info);
-            }
-        }
-
+    public static byte[] wordTemplateGeneratePdf(String templateName, Map<String, Object> params) throws IOException {
         // 读取本地Word模板文件
         ClassPathResource classPathResource = new ClassPathResource(WordUtil.TEMPLATE_FILE_PATH + templateName);
         InputStream source = classPathResource.getInputStream();

@@ -23,7 +23,7 @@
     <!--输出到debug-->
     <appender name="debug" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${log.path}/${application.name}/logback-debug-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>${log.path}/logback-debug-%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>3</maxHistory>
         </rollingPolicy>
         <append>true</append>
@@ -41,7 +41,7 @@
     <!--输出到info-->
     <appender name="info" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${log.path}/${application.name}/logback-info-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>${log.path}/logback-info-%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>3</maxHistory>
         </rollingPolicy>
         <append>true</append>
@@ -59,7 +59,7 @@
     <!--输出到error-->
     <appender name="error" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${log.path}/${application.name}/logback-error-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>${log.path}/logback-error-%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>5</maxHistory>
         </rollingPolicy>
         <append>true</append>
@@ -77,7 +77,7 @@
     <!--输出到warn-->
     <appender name="warn" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${log.path}/${application.name}/logback-warn-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>${log.path}/logback-warn-%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>3</maxHistory>
         </rollingPolicy>
         <append>true</append>
@@ -104,7 +104,7 @@
         <rollingPolicy
                 class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!--日志文件输出的文件名 -->
-            <FileNamePattern>${log.path}/${application.name}/logback-%d{yyyy-MM-dd}.html</FileNamePattern>
+            <FileNamePattern>${log.path}/logback-%d{yyyy-MM-dd}.html</FileNamePattern>
             <!--日志文件保留天数 -->
             <MaxHistory>3</MaxHistory>
         </rollingPolicy>
@@ -124,7 +124,7 @@
     <!--用户统计-->
     <appender name="dataApp" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${log.path}/${application.name}/logback-data-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>${log.path}/logback-data-%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>3</maxHistory>
         </rollingPolicy>
         <append>true</append>

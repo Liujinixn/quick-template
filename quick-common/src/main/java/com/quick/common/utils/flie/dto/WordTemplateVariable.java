@@ -10,7 +10,7 @@ import java.util.Map;
  *
  * @author Liujinxin
  */
-public class WordToPdfTemplateParams {
+public class WordTemplateVariable {
 
     /**
      * 模板路径|文件名称 resources.template_file 目录为根目录
@@ -27,14 +27,14 @@ public class WordToPdfTemplateParams {
      */
     private List<ImagesAttr> imageParams = new ArrayList<>(4);
 
-    private WordToPdfTemplateParams() {
+    private WordTemplateVariable() {
     }
 
-    private WordToPdfTemplateParams(String templateName) {
+    private WordTemplateVariable(String templateName) {
         this.templateName = templateName;
     }
 
-    private WordToPdfTemplateParams(String templateName, Map<String, Object> textParams, List<ImagesAttr> imageParams) {
+    private WordTemplateVariable(String templateName, Map<String, Object> textParams, List<ImagesAttr> imageParams) {
         this.templateName = templateName;
         this.textParams = textParams;
         this.imageParams = imageParams;
@@ -43,15 +43,15 @@ public class WordToPdfTemplateParams {
     /**
      * 创建模板参数对象
      */
-    public static WordToPdfTemplateParams createTemplateParams() {
-        return new WordToPdfTemplateParams();
+    public static WordTemplateVariable createTemplateParams() {
+        return new WordTemplateVariable();
     }
 
     /**
      * 创建模板参数对象
      */
-    public static WordToPdfTemplateParams createTemplateParams(String templateName) {
-        return new WordToPdfTemplateParams(templateName);
+    public static WordTemplateVariable createTemplateParams(String templateName) {
+        return new WordTemplateVariable(templateName);
     }
 
     /**

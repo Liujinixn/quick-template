@@ -3,8 +3,8 @@ package com.quick.base.controller;
 import com.alibaba.excel.EasyExcel;
 import com.quick.auth.entity.User;
 import com.quick.auth.service.UserService;
-import com.quick.common.utils.flie.dto.WordToPdfTemplateParams;
 import com.quick.common.utils.flie.WordToPdfUtil;
+import com.quick.common.utils.flie.dto.WordTemplateVariable;
 import com.quick.common.vo.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -80,14 +80,12 @@ public class TestController {
         objectHashMap.put("roleName", roleName);
         Map<String, Object> imgInfo = new HashMap<>();
         imgInfo.put("src", userInfo.getHeadPortrait());
-        imgInfo.put("src", "");
         imgInfo.put("w", 110);
         imgInfo.put("h", 130);
         objectHashMap.put("headPortrait", imgInfo);
 
-        WordToPdfTemplateParams wordToPdfTemplateParams = WordToPdfTemplateParams.createTemplateParams("userInfo.docx");
+        WordTemplateVariable wordToPdfTemplateParams = WordTemplateVariable.createTemplateParams("userInfo.docx");
         wordToPdfTemplateParams.setTextParams(objectHashMap);
-
 
         byte[] bytes = WordToPdfUtil.wordTemplateGeneratePdf(wordToPdfTemplateParams);
         response.getOutputStream().write(bytes);
