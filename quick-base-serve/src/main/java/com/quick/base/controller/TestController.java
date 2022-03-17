@@ -3,8 +3,6 @@ package com.quick.base.controller;
 import com.alibaba.excel.EasyExcel;
 import com.quick.auth.entity.User;
 import com.quick.auth.service.UserService;
-import com.quick.common.utils.flie.WordToPdfUtil;
-import com.quick.common.utils.flie.dto.WordTemplateVariable;
 import com.quick.common.vo.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -17,8 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.net.URLEncoder;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -36,7 +35,7 @@ public class TestController {
     }
 
     @RequestMapping(value = "/fileExp", method = RequestMethod.GET)
-    @ApiOperation(value = "wenjian")
+    @ApiOperation(value = "wenjian", produces = "application/octet-stream")
     public void fileExp(HttpServletResponse response) throws Exception {
         List<User> userList = new ArrayList<>();
         for (int i = 0; i < 500000; i++) {
