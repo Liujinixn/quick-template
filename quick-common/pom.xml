@@ -51,6 +51,11 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
         </dependency>
+        <!-- 引入中文字体（即jar中引入常用的字体），解决部分系统中没有中文字体等情况如aspose-words实现word转pdf的时候出现中文乱码-->
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itext-asian</artifactId>
+        </dependency>
         <!--hutool工具类-->
         <dependency>
             <groupId>cn.hutool</groupId>

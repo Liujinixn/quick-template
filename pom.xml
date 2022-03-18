@@ -33,6 +33,7 @@
         <hibernate-validator>5.2.4.Final</hibernate-validator>
         <guava.version>20.0</guava.version>
         <easyexcel.version>3.0.5</easyexcel.version>
+        <itext-asian.version>5.2.0</itext-asian.version>
         <hutool-all.version>5.7.22</hutool-all.version>
         <common.version>2.6</common.version>
         <assertj-core.version>1.6.1</assertj-core.version>
@@ -164,6 +165,12 @@
                 <groupId>com.alibaba</groupId>
                 <artifactId>easyexcel</artifactId>
                 <version>${easyexcel.version}</version>
+            </dependency>
+            <!-- 引入中文字体（即jar中引入常用的字体），解决部分系统中没有中文字体等情况如aspose-words实现word转pdf的时候出现中文乱码-->
+            <dependency>
+                <groupId>com.itextpdf</groupId>
+                <artifactId>itext-asian</artifactId>
+                <version>${itext-asian.version}</version>
             </dependency>
             <!--hutool工具类-->
             <dependency>
