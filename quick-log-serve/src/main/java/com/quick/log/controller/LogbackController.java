@@ -2,12 +2,13 @@ package com.quick.log.controller;
 
 import com.quick.common.utils.ip.IpUtil;
 import com.quick.common.vo.Result;
+import com.quick.log.config.LogBackCoreParameters;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -27,14 +27,8 @@ public class LogbackController {
 
     private final int CURRENT_LIMIT_TIME = 10000;
 
-    @Value("${log.file.path}")
-    private String logFilePath;
-
-    @Value("${log.file.enable}")
-    private Boolean enable;
-
-    @Value("${log.file.access_key}")
-    private List<String> logAccessKeyList;
+    @Autowired
+    LogBackCoreParameters logBackCoreParameters;
 
     /**
      * 查询本地日志信息
@@ -57,7 +51,7 @@ public class LogbackController {
                           String accessKey,
                           HttpServletRequest request) {
         // 检查该接口是否禁用
-        if(!enable){
+        if (!logBackCoreParameters.isEnable()) {
             return "interface is disabled.";
         }
 
@@ -81,12 +75,12 @@ public class LogbackController {
         session.setAttribute(ipAddress, System.currentTimeMillis());
         session.setMaxInactiveInterval(2000);
         // 简易验证密钥
-        if (!logAccessKeyList.contains(accessKey)) {
+        if (!logBackCoreParameters.getLogAccessKeyList().contains(accessKey)) {
             log.info("错误的密钥，access_key:{}", accessKey);
             return "access_key not exists.";
         }
 
-        File file = new File(logFilePath + "/" + fileName);
+        File file = new File(logBackCoreParameters.getPath() + "/" + fileName);
         if (!file.exists()) {
             // 查询的日志文件不存在
             return Result.build("服务日志文件不存在: fileName=" + file.getName());

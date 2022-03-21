@@ -39,6 +39,7 @@ public class WordUtil {
      * 系统模板文件路径 (resources路径开始)
      */
     public static final String TEMPLATE_FILE_PATH = "template_file/";
+
     /**
      * 模板文件变量规则 例：${name}
      */
