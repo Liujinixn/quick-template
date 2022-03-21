@@ -26,8 +26,13 @@ import java.util.List;
 public class LogbackController {
 
     private final int CURRENT_LIMIT_TIME = 10000;
+
     @Value("${log.file.path}")
     private String logFilePath;
+
+    @Value("${log.file.enable}")
+    private Boolean enable;
+
     @Value("${log.file.access_key}")
     private List<String> logAccessKeyList;
 
@@ -51,6 +56,11 @@ public class LogbackController {
                           String level,
                           String accessKey,
                           HttpServletRequest request) {
+        // 检查该接口是否禁用
+        if(!enable){
+            return "interface is disabled.";
+        }
+
         String fileName = "html".equalsIgnoreCase(type) ?
                 ("logback-" + dateTime + "." + type) : ("logback-" + level + "-" + dateTime + "." + ("txt".equalsIgnoreCase(type) ? "log" : type));
 
