@@ -18,7 +18,7 @@ spring:
         url: jdbc:mysql://47.102.144.221:3306/zb-shiro?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=Asia/Shanghai
         username: root
         validationQuery: SELECT 1 FROM DUAL
-      # base 数据源
+    # base 数据源
     base:
       druid:
         baseMapperLocations: classpath:mybatis/mapper/base/*.xml
