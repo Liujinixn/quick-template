@@ -21,7 +21,6 @@ public class FileBaseUtil {
      * 临时目录
      */
     public static final String TEMPORARY_DIRECTORY_PATH = "/tmp/";
-
     /**
      * windows标识
      */

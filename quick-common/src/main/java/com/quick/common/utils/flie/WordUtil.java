@@ -1,11 +1,17 @@
 package com.quick.common.utils.flie;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.usermodel.*;
+import org.apache.xmlbeans.XmlCursor;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTc;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTcPr;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.STJc;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.STVerticalJc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,7 +19,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -34,7 +39,6 @@ public class WordUtil {
      * 系统模板文件路径 (resources路径开始)
      */
     public static final String TEMPLATE_FILE_PATH = "template_file/";
-
     /**
      * 模板文件变量规则 例：${name}
      */
@@ -71,7 +75,7 @@ public class WordUtil {
         XWPFParagraph paragraph;
         while (iterator.hasNext()) {
             paragraph = iterator.next();
-            replaceParam(paragraph, params);
+            replaceParam(paragraph, params, doc);
         }
     }
 
@@ -95,7 +99,7 @@ public class WordUtil {
                 for (XWPFTableCell cell : cells) {
                     paras = cell.getParagraphs();
                     for (XWPFParagraph para : paras) {
-                        replaceParam(para, params);
+                        replaceParam(para, params, doc);
                     }
                 }
             }
@@ -108,7 +112,7 @@ public class WordUtil {
      * @param paragraph 要替换的段落
      * @param params    参数
      */
-    private static void replaceParam(XWPFParagraph paragraph, Map<String, Object> params) {
+    private static void replaceParam(XWPFParagraph paragraph, Map<String, Object> params, XWPFDocument doc) {
         List<XWPFRun> runs;
         Matcher matcher;
         StringBuilder runText = new StringBuilder();
@@ -130,16 +134,74 @@ public class WordUtil {
             }
             while ((matcher = matcher(runText.toString())).find()) {
                 Object val = params.get(matcher.group(1));
-                Map<String, Object> imgAttr = objToMap(val);
-                if (imgAttr != null) {
-                    // 替换目标为 图片
-                    runText = substitutionVariablePicture(imgAttr, matcher, runs);
-                    continue;
+                boolean res;
+                switch (getObjectType(val)) {
+                    case "TableAttr":
+                        // 替换变量-> 自定义表格
+                        res = true;
+                        Map<String, Object> tableAttr = objToMap(val);
+                        substitutionVariableTable(tableAttr, paragraph, runs, doc);
+                        runText = new StringBuilder(matcher.replaceAll(""));
+                        break;
+                    case "ImagesAttr":
+                        // 替换变量-> 图片
+                        res = true;
+                        Map<String, Object> imgAttr = objToMap(val);
+                        substitutionVariablePicture(imgAttr, runs);
+                        runText = new StringBuilder(matcher.replaceAll(""));
+                        break;
+                    default:
+                        // 替换变量-> 文本
+                        res = true;
+                        runText = new StringBuilder(matcher.replaceAll(String.valueOf(val)));
                 }
-                // 替换目标为 文本
-                runText = new StringBuilder(matcher.replaceAll(String.valueOf(val)));
+                if (!res) {
+                    // 变量在模板中不存在
+                    runText = new StringBuilder(matcher.replaceAll(""));
+                }
+
             }
             runs.get(0).setText(runText.toString(), 0);
+        }
+    }
+
+    /**
+     * 替换目标变量为表格
+     *
+     * @param tableAttr 表格信息
+     * @param runs      通用属性的文本区域
+     * @return 将 matcher 对象中的 变量 替换为 空后的结果，使用该参数 继续后续的变量替换
+     */
+    private static void substitutionVariableTable(Map<String, Object> tableAttr, XWPFParagraph paragraph, List<XWPFRun> runs, XWPFDocument doc) {
+
+        XmlCursor cursor = paragraph.getCTP().newCursor();
+        // 在指定游标位置插入表格
+        XWPFTable table = doc.insertNewTbl(cursor);
+        table.setWidthType(TableWidthType.PCT);
+
+        List<String> headerRow = (List) tableAttr.get("headRowNameList");
+        List<JSONArray> bodyRow = (List<JSONArray>) tableAttr.get("rowList");
+
+        boolean isFirstColumn = true;
+        for (int i = 0; i < headerRow.size(); i++) {
+            if (isFirstColumn) {
+                isFirstColumn = false;
+                XWPFTableCell cell = table.getRow(0).getCell(i);
+                cell.setText(headerRow.get(i));
+                setCellStyle(cell);
+                continue;
+            }
+            XWPFTableCell cell = table.getRow(0).createCell();
+            cell.setText(headerRow.get(i));
+            setCellStyle(cell);
+        }
+
+        for (int i = 0; i < bodyRow.size(); i++) {
+            XWPFTableRow row = table.createRow();
+            JSONArray cells = bodyRow.get(i);
+            for (int j = 0; j < cells.size(); j++) {
+                row.getCell(j).setText(String.valueOf(cells.get(j)));
+            }
         }
     }
 
@@ -147,11 +209,10 @@ public class WordUtil {
      * 替换目标变量为图片
      *
      * @param infoImg 图片属性信息
-     * @param matcher 执行匹配操作的引擎
      * @param runs    通用属性的文本区域
      * @return 将 matcher 对象中的 变量 替换为 空后的结果，使用该参数 继续后续的变量替换
      */
-    private static StringBuilder substitutionVariablePicture(Map<String, Object> infoImg, Matcher matcher, List<XWPFRun> runs) {
+    private static void substitutionVariablePicture(Map<String, Object> infoImg, List<XWPFRun> runs) {
         String src = checkUrlIsWebsiteAddress(MapUtils.getString(infoImg, "src"));
         double width = MapUtils.getDouble(infoImg, "w");
         double height = MapUtils.getDouble(infoImg, "h");
@@ -159,14 +220,13 @@ public class WordUtil {
         Integer documentType;
         if (StringUtils.isBlank(src)) {
             log.warn("未找到 {} 图片文件", src);
-            return new StringBuilder(matcher.replaceAll(""));
-        } else {
-            String suffix = src.substring(src.lastIndexOf("."));
-            documentType = MapUtils.getInteger(documentTypeMap, suffix);
+            return;
         }
+        String suffix = src.substring(src.lastIndexOf("."));
+        documentType = MapUtils.getInteger(documentTypeMap, suffix);
         if (documentType == null) {
             log.warn("不支持的图片: imgUrl = {}. 可选格式 emf|wmf|pict|jpeg|jpg|png|dib|gif|tiff|eps|bmp|wpg", src);
-            return new StringBuilder(matcher.replaceAll(""));
+            return;
         }
         InputStream inputStream = null;
         try {
@@ -183,7 +243,6 @@ public class WordUtil {
             FileBaseUtil.close(inputStream);
             FileBaseUtil.deleteFile(src);
         }
-        return new StringBuilder(matcher.replaceAll(""));
     }
 
     /**
@@ -198,10 +257,24 @@ public class WordUtil {
     }
 
     /**
+     * 数据转 List<Map<String, Object>>列表
+     *
+     * @param object 目标对象
+     * @return List<Map < String, Object>>对象，null则说明数据无法转成列表
+     */
+    private static Map<String, Object> objToMapList(Object object) {
+        if (object == null) {
+            return null;
+        }
+
+        return null;
+    }
+
+    /**
      * 使用java.lang.reflect进行转换
      *
      * @param object 目标对象
-     * @return map 转换Map， null 说明数据无法转成对象
+     * @return Map对象，null则说明数据无法转成集合
      */
     private static Map<String, Object> objToMap(Object object) {
         if (object == null) {
@@ -229,5 +302,32 @@ public class WordUtil {
             return address;
         }
         return FileBaseUtil.downloadWebImages(address);
+    }
+
+    /**
+     * 获取Object对象原型对象
+     *
+     * @param val 目标判定对象
+     * @return 类名
+     */
+    private static String getObjectType(Object val) {
+        if (val == null) {
+            return "";
+        }
+        String objTypeName = val.getClass().getName();
+        String typeName = objTypeName.substring(objTypeName.lastIndexOf(".") + 1);
+        return typeName;
+    }
+
+    /**
+     * 设置表格单元格内容水平居中
+     *
+     * @param cell 单元格
+     */
+    private static void setCellStyle(XWPFTableCell cell) {
+        CTTc cttc = cell.getCTTc();
+        CTTcPr ctPr = cttc.addNewTcPr();
+        ctPr.addNewVAlign().setVal(STVerticalJc.CENTER);
+        cttc.getPList().get(0).addNewPPr().addNewJc().setVal(STJc.CENTER);
     }
 }

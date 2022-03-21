@@ -44,6 +44,7 @@
             <result column="rId" property="id"/>
             <result column="role_id" property="roleId"/>
             <result column="roleName" property="name"/>
+            <result column="status" property="status"/>
             <collection property="permissions" ofType="com.quick.auth.entity.Permission" javaType="java.util.List">
                 <result column="pId" property="id"/>
                 <result column="permission_id" property="permissionId"/>
@@ -79,6 +80,7 @@
             r.id AS rId,
             r.role_id,
             r.name AS roleName,
+            r.status,
 
             p.id AS pId,
             p.permission_id,
@@ -118,6 +120,7 @@
             r.id AS rId,
             r.role_id,
             r.name AS roleName,
+            r.status,
 
             p.id AS pId,
             p.permission_id,

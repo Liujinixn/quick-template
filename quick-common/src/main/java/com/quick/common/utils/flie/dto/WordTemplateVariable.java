@@ -16,14 +16,23 @@ public class WordTemplateVariable {
     private String templateName;
 
     /**
-     * 文本变量替换
+     * 变量 -> 段落文本
+     * 可替换表格|段落中的变量
      */
     private Map<String, Object> textParams = new HashMap<>(4);
 
     /**
-     * 图片变量替换
+     * 变量 -> 图片
+     * 可替换表格|段落中的变量，图片可支持url在线图片地址或本地图片地址
      */
     private Map<String, ImagesAttr> imageParams = new HashMap<>(4);
+
+    /**
+     * 变量 -> 自定义表格
+     * 将指定变量替换为 自定义内容的表格
+     */
+    private Map<String, TableAttr> tableParams = new HashMap<>(2);
+
 
     private WordTemplateVariable() {
     }
@@ -32,17 +41,11 @@ public class WordTemplateVariable {
         this.templateName = templateName;
     }
 
-    public WordTemplateVariable(String templateName, Map<String, Object> textParams, Map<String, ImagesAttr> imageParams) {
+    public WordTemplateVariable(String templateName, Map<String, Object> textParams, Map<String, ImagesAttr> imageParams, Map<String, TableAttr> tableParams) {
         this.templateName = templateName;
         this.textParams = textParams;
         this.imageParams = imageParams;
-    }
-
-    /**
-     * 创建模板参数对象
-     */
-    public static WordTemplateVariable createTemplateParams() {
-        return new WordTemplateVariable();
+        this.tableParams = tableParams;
     }
 
     /**
@@ -71,6 +74,15 @@ public class WordTemplateVariable {
         this.imageParams.put(key, imagesAttr);
     }
 
+    /**
+     * 追加 自定义表格变量替换信息
+     *
+     * @param tableAttr 自定义表格内容
+     */
+    public void putTableParams(String key, TableAttr tableAttr) {
+        this.tableParams.put(key, tableAttr);
+    }
+
     public Map<String, Object> getTextParams() {
         return textParams;
     }
@@ -93,5 +105,13 @@ public class WordTemplateVariable {
 
     public void setTemplateName(String templateName) {
         this.templateName = templateName;
+    }
+
+    public Map<String, TableAttr> getTableParams() {
+        return tableParams;
+    }
+
+    public void setTableParams(Map<String, TableAttr> tableParams) {
+        this.tableParams = tableParams;
     }
 }

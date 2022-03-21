@@ -3,13 +3,16 @@ package com.quick.auth.controller;
 import com.github.pagehelper.PageInfo;
 import com.quick.auth.dto.ChangePasswordDTO;
 import com.quick.auth.dto.UserOperateDTO;
+import com.quick.auth.entity.Role;
 import com.quick.auth.entity.User;
 import com.quick.auth.service.UserService;
 import com.quick.auth.shiro.ShiroCoreParameters;
 import com.quick.auth.shiro.realm.UserRealm;
 import com.quick.auth.utils.ShiroUtil;
+import com.quick.common.utils.constant.CoreConst;
 import com.quick.common.utils.flie.WordToPdfUtil;
 import com.quick.common.utils.flie.dto.ImagesAttr;
+import com.quick.common.utils.flie.dto.TableAttr;
 import com.quick.common.utils.flie.dto.WordTemplateVariable;
 import com.quick.common.vo.Result;
 import io.swagger.annotations.Api;
@@ -25,6 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RestController
@@ -272,6 +276,7 @@ public class UserController {
         WordToPdfUtil.setResponseInfo(response, "用户信息.pdf");
         User userInfo = userService.findUserAllInfoInfoByUserId(userId);
 
+        // 替换文本
         WordTemplateVariable wordToPdfTemplateParams = WordTemplateVariable.createTemplateParams("userInfo.docx");
         wordToPdfTemplateParams.putTextParams("name", userInfo.getUsername());
         wordToPdfTemplateParams.putTextParams("userId", userInfo.getUserId());
@@ -280,10 +285,22 @@ public class UserController {
         wordToPdfTemplateParams.putTextParams("sex", userInfo.getSex().equals(1) ? "男" : "女");
         wordToPdfTemplateParams.putTextParams("age", userInfo.getAge());
         wordToPdfTemplateParams.putTextParams("status", userInfo.getStatus().equals(1) ? "有效" : "删除");
-        wordToPdfTemplateParams.putTextParams("roleName", userInfo.getRoles().stream().map(o->o.getName()).collect(Collectors.joining("、")));
+        wordToPdfTemplateParams.putTextParams("roleName", userInfo.getRoles().stream().map(o -> o.getName()).collect(Collectors.joining("、")));
 
+        // 替换图片
         ImagesAttr imagesAttr = new ImagesAttr(userInfo.getHeadPortrait(), 110, 130);
         wordToPdfTemplateParams.putImageParams("headPortrait", imagesAttr);
+
+        // 替换自定义表格
+        TableAttr tableAttr = new TableAttr("角色ID", "角色名称", "角色描述", "状态");
+        for (Role role : userInfo.getRoles()) {
+            tableAttr.addRow(
+                    role.getRoleId(),
+                    role.getName(),
+                    role.getDescription() == null ? "" : role.getDescription(),
+                    Objects.equals(CoreConst.STATUS_VALID, role.getStatus()) ? "有效" : "无效");
+        }
+        wordToPdfTemplateParams.putTableParams("table", tableAttr);
 
         byte[] bytes = WordToPdfUtil.wordTemplateGeneratePdf(wordToPdfTemplateParams);
         response.getOutputStream().write(bytes);

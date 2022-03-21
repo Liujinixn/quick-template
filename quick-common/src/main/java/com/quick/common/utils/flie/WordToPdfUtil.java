@@ -1,11 +1,10 @@
 package com.quick.common.utils.flie;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
 import com.aspose.words.Document;
 import com.aspose.words.License;
 import com.aspose.words.SaveFormat;
 import com.quick.common.utils.flie.dto.ImagesAttr;
+import com.quick.common.utils.flie.dto.TableAttr;
 import com.quick.common.utils.flie.dto.WordTemplateVariable;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.slf4j.Logger;
@@ -18,7 +17,7 @@ import java.io.*;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -52,11 +51,23 @@ public class WordToPdfUtil {
         // 获取模板文件 路径|文件名称
         String templateName = templateParams.getTemplateName();
         // 数据处理
-        Map<String, Object> params = templateParams.getTextParams();
+        Map<String, Object> params = new HashMap<>();
+
+        Map<String, Object> textParams = templateParams.getTextParams();
+        if (!CollectionUtils.isEmpty(textParams)) {
+            params.putAll(textParams);
+        }
+
         Map<String, ImagesAttr> imageParams = templateParams.getImageParams();
         if (!CollectionUtils.isEmpty(imageParams)) {
             params.putAll(imageParams);
         }
+
+        Map<String, TableAttr> tableParams = templateParams.getTableParams();
+        if (!CollectionUtils.isEmpty(tableParams)) {
+            params.putAll(tableParams);
+        }
+
         return wordTemplateGeneratePdf(templateName, params);
     }
 
@@ -73,14 +84,18 @@ public class WordToPdfUtil {
      * WordToPdfUtil.setResponseInfo(response,"打印.pdf");
      *
      * @param templateName 模板路径|名称    resources.template_file 目录为根目录
-     * @param params       模板中的变量替换列表  {
-     *                     "name":"张三",    // 替换模板文件中变量 为普通文本
-     *                     "headPortrait":  // 替换模板文件中变量 为图片
+     * @param params       模板中的变量替换列表
      *                     {
-     *                     "src": "http://img2.baidu.com/image",  // 图片地址,兼容本地磁盘和网络地址
-     *                     "w": "110",  // 宽度 px
-     *                     "h": "130"   // 高度 px
-     *                     }
+     *                          "name":"张三",                 // 替换模板文件中变量 为普通文本
+     *                          "headPortrait":  {            // 替换模板文件中变量 为图片
+     *                              "src": "http://img2.baidu.com/image",  // 图片地址,兼容本地磁盘和网络地址
+     *                              "w": 110,                 // 宽度 px
+     *                              "h": 130                  // 高度 px
+     *                          },
+     *                          "headPortrait":  {                                       // 替换模板文件中变量 为表格
+     *                              "rowList": [["列1","列2","列3"],["lisi","29","男"]],  // 图片地址,兼容本地磁盘和网络地址
+     *                              "rowHeightList": [30,30,30]                          // 每行行高
+     *                          }
      *                     }
      * @return PDF文件字节数组
      * @throws IOException file parsing exception
