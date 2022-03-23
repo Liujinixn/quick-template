@@ -3,19 +3,19 @@
 <mapper namespace="com.quick.auth.mapper.RolePermissionMapper">
 
     <sql id="permission">
-        `permission`
+        `sys_permission`
     </sql>
     <sql id="role_permission">
-        `role_permission`
+        `sys_role_permission`
     </sql>
     <sql id="role">
-        `role`
+        `sys_role`
     </sql>
     <sql id="user_role">
-        `user_role`
+        `sys_user_role`
     </sql>
     <sql id="user">
-        `user`
+        `sys_user`
     </sql>
 
     <insert id="batchInstall">
