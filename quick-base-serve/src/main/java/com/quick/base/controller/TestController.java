@@ -1,6 +1,7 @@
 package com.quick.base.controller;
 
 import com.quick.auth.service.UserService;
+import com.quick.common.utils.redis.RedisClient;
 import com.quick.common.vo.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -18,6 +19,9 @@ public class TestController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    RedisClient redisClient;
 
     @GetMapping("/page")
     @ApiOperation(value = "测试接口")
