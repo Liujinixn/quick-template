@@ -269,13 +269,13 @@ public class UserController {
      *
      * @param userId 用户ID
      */
-    @GetMapping("/exportUserBasicInfoPdf")
+    @GetMapping("/export/info/pdf")
     @ApiOperation(value = "导出用户基本信息 Pdf", produces = "application/octet-stream")
     @ApiImplicitParam(name = "userId", value = "用户ID", required = true, dataType = "string", paramType = "query")
     public void exportUserBasicInfoPdf(String userId, HttpServletResponse response) throws Exception {
-        WordToPdfUtil.setResponseInfo(response, "用户信息.pdf");
         User userInfo = userService.findUserAllInfoInfoByUserId(userId);
 
+        WordToPdfUtil.setResponseInfo(response, "用户信息" + userInfo.getUsername() + ".pdf");
         // 替换文本
         WordTemplateVariable wordToPdfTemplateParams = WordTemplateVariable.createTemplateParams("userInfo.docx");
         wordToPdfTemplateParams.putTextParams("name", userInfo.getUsername());

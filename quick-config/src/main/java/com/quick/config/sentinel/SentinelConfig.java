@@ -32,6 +32,9 @@ class SentinelConfig {
     @Autowired
     WebApplicationContext context;
 
+    /**
+     * 配置sentinel阈值类型QPS的单机阈值（即1秒，用户最多访问次数）
+     */
     @Value("${sentinel.flowGrade.qps.count:15}")
     private double sentinelFlowGradeQpsCount;
 
