@@ -6,7 +6,7 @@ import com.quick.auth.dto.UserOperateDTO;
 import com.quick.auth.entity.Role;
 import com.quick.auth.entity.User;
 import com.quick.auth.service.UserService;
-import com.quick.auth.shiro.ShiroCoreParameters;
+import com.quick.auth.config.params.ShiroCoreParameters;
 import com.quick.auth.shiro.realm.UserRealm;
 import com.quick.auth.utils.ShiroUtil;
 import com.quick.common.utils.constant.CoreConst;
@@ -32,7 +32,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("${request.prefix.auth_server}/user")
 @Api(tags = "用户模块")
 public class UserController {
 

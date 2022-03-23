@@ -1,10 +1,13 @@
-package com.quick.auth.shiro;
+package com.quick.auth.config.params;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * shiro 初始化核心参数
@@ -66,6 +69,11 @@ public class ShiroCoreParameters {
      * shiroRedis参数
      */
     private ShiroRedis shiroRedis = new ShiroRedis();
+
+    /**
+     * 设置指定路径，需要认证和鉴权
+     */
+    private List<String> excludeAuthPathList = new ArrayList<>();
 
     @Data
     @AllArgsConstructor

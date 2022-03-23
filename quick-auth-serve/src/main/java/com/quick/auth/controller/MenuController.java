@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/system")
-@Api(tags = "系统模块")
-public class SystemController {
+@RequestMapping("${request.prefix.auth_server}/menu")
+@Api(tags = "菜单模块")
+public class MenuController {
 
     @Autowired
     PermissionService permissionService;
@@ -24,7 +24,7 @@ public class SystemController {
     /**
      * 获取当前登录用户的菜单
      */
-    @GetMapping("/menu")
+    @GetMapping("/list")
     @ApiOperation(value = "获取菜单列表")
     public Result<List<MenuVo>> findMenus() {
         return Result.ok(permissionService.findAllMenuInfoLevel(CoreConst.TOP_MENU_ID));

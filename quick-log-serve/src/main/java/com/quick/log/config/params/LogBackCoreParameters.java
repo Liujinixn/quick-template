@@ -1,4 +1,4 @@
-package com.quick.log.config;
+package com.quick.log.config.params;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

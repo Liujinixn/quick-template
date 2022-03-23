@@ -1,6 +1,8 @@
 package com.quick.auth.config.mvc;
 
 import com.quick.auth.config.filter.AuthErrorResponseInterceptor;
+import com.quick.auth.config.params.RequestPrefixAuthParams;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -17,6 +19,9 @@ import java.util.List;
 @Configuration
 public class MvcAppConfig implements WebMvcConfigurer {
 
+    @Autowired
+    RequestPrefixAuthParams requestPrefixAuthParams;
+
     /**
      * 注入拦截器到bean
      */
@@ -28,9 +33,9 @@ public class MvcAppConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         List<String> list = new ArrayList<>();
-        list.add("/tourist/noLogin");
-        list.add("/tourist/noAuth");
-        list.add("/tourist/kickout");
+        list.add(requestPrefixAuthParams.getAuthServer() + "/tourist/noLogin");
+        list.add(requestPrefixAuthParams.getAuthServer() + "/tourist/noAuth");
+        list.add(requestPrefixAuthParams.getAuthServer() + "/tourist/kickout");
         //addInterceptor(添加自定义的拦截器)   addPathPatterns(要拦截的路径) excludePathPatterns(放心的路径)
         registry.addInterceptor(authErrorResponseInterceptor()).addPathPatterns(list);
     }

@@ -2,7 +2,7 @@
 log:
   file:
     # 是否允许通过API接口访问logback服务html日志文件（不安全的操作） 即接口是否对外开放：/logback/{type}/{dateTime}
-    enable: false
+    enable: true
     # 日志文件保存路径
     path: ../log/${spring.application.name}
     # 通过API接口查询日志文件密钥，多个参数使用逗号隔开 （get请求，携带参数 access_key=${access_key} 即可）

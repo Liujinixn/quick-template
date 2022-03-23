@@ -21,7 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @RestController
-@RequestMapping("/role")
+@RequestMapping("${request.prefix.auth_server}/role")
 @Api(tags = "角色模块")
 public class RoleController {
 

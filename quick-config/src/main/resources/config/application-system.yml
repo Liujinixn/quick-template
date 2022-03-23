@@ -10,3 +10,10 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+
+# 设置子模块请求前缀
+request:
+  prefix:
+    auth_server: /auth-server-api
+    log_server: /log-server-api
+    base_server: /base-server-api

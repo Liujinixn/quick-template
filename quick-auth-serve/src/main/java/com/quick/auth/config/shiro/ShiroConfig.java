@@ -1,7 +1,8 @@
 package com.quick.auth.config.shiro;
 
+import com.quick.auth.config.params.RequestPrefixAuthParams;
+import com.quick.auth.config.params.ShiroCoreParameters;
 import com.quick.auth.shiro.CustomSessionManager;
-import com.quick.auth.shiro.ShiroCoreParameters;
 import com.quick.auth.shiro.ShiroService;
 import com.quick.auth.shiro.filter.KickoutSessionControlFilter;
 import com.quick.auth.shiro.realm.UserRealm;
@@ -15,6 +16,7 @@ import org.crazycake.shiro.RedisCacheManager;
 import org.crazycake.shiro.RedisManager;
 import org.crazycake.shiro.RedisSessionDAO;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -51,7 +53,8 @@ public class ShiroConfig {
     @Bean
     public ShiroFilterFactoryBean getShiroFilterFactoryBean(@Qualifier("securityManager") DefaultWebSecurityManager defaultWebSecurityManager,
                                                             @Qualifier("shiroService") ShiroService shiroService,
-                                                            @Qualifier("shiroCoreParameters") ShiroCoreParameters shiroCoreParameters) {
+                                                            @Qualifier("shiroCoreParameters") ShiroCoreParameters shiroCoreParameters,
+                                                            @Qualifier("requestPrefixAuthParams") RequestPrefixAuthParams requestPrefixAuthParams) {
         ShiroFilterFactoryBean bean = new ShiroFilterFactoryBean();
         //设置安全管理器
         bean.setSecurityManager(defaultWebSecurityManager);
@@ -66,9 +69,9 @@ public class ShiroConfig {
         bean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 
         // 没有登录重定向地址
-        bean.setLoginUrl("/tourist/noLogin");
+        bean.setLoginUrl(requestPrefixAuthParams.getAuthServer() + "/tourist/noLogin");
         //没有权限重定向地址
-        bean.setUnauthorizedUrl("/tourist/noAuth");
+        bean.setUnauthorizedUrl(requestPrefixAuthParams.getAuthServer() + "/tourist/noAuth");
         return bean;
     }
 
@@ -210,8 +213,13 @@ public class ShiroConfig {
         // 设置缓存在线人数的key前缀
         kickoutSessionControlFilter.setOnlineUser(shiroCoreParameters.getShiroRedis().getPrefixOnline());
         //被踢出后重定向到的地址；
-        kickoutSessionControlFilter.setKickoutUrl("/tourist/kickout");
+        kickoutSessionControlFilter.setKickoutUrl(getRequestPrefixAuthParams().getAuthServer() + "/tourist/kickout");
         return kickoutSessionControlFilter;
+    }
+
+    @Bean
+    RequestPrefixAuthParams getRequestPrefixAuthParams(){
+        return new RequestPrefixAuthParams();
     }
 
 }

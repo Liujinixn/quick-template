@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/permission")
+@RequestMapping("${request.prefix.auth_server}/permission")
 @Api(tags = "权限模块")
 public class PermissionController {
 

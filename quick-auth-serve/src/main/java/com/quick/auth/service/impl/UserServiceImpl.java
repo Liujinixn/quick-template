@@ -8,7 +8,7 @@ import com.quick.auth.entity.UserRole;
 import com.quick.auth.mapper.UserMapper;
 import com.quick.auth.mapper.UserRoleMapper;
 import com.quick.auth.service.UserService;
-import com.quick.auth.shiro.ShiroCoreParameters;
+import com.quick.auth.config.params.ShiroCoreParameters;
 import com.quick.auth.shiro.filter.KickoutSessionControlFilter;
 import com.quick.auth.shiro.realm.UserRealm;
 import com.quick.auth.utils.ShiroUtil;

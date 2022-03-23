@@ -1,7 +1,9 @@
 package com.quick.auth.config.filter;
 
 import com.alibaba.fastjson.JSONObject;
+import com.quick.auth.config.params.RequestPrefixAuthParams;
 import com.quick.common.vo.Result;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +21,9 @@ import java.io.PrintWriter;
  */
 public class AuthErrorResponseInterceptor implements HandlerInterceptor {
 
+    @Autowired
+    RequestPrefixAuthParams requestPrefixAuthParams;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String url = request.getRequestURI();
@@ -27,6 +32,7 @@ public class AuthErrorResponseInterceptor implements HandlerInterceptor {
         response.setContentType("application/json; charset=utf-8");
 
         Result result = null;
+        url = url.replace(requestPrefixAuthParams.getAuthServer(), "");
         switch (url) {
             case "/tourist/noLogin":
                 result = Result.build("登录凭证失效");

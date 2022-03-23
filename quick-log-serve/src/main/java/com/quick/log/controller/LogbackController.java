@@ -2,7 +2,7 @@ package com.quick.log.controller;
 
 import com.quick.common.utils.ip.IpUtil;
 import com.quick.common.vo.Result;
-import com.quick.log.config.LogBackCoreParameters;
+import com.quick.log.config.params.LogBackCoreParameters;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -21,8 +21,8 @@ import java.nio.charset.StandardCharsets;
 
 @Slf4j
 @RestController
-@Api(tags = "日志模块")
-@RequestMapping("/logback")
+@Api(tags = "Logback API")
+@RequestMapping("${request.prefix.log_server}/logback")
 public class LogbackController {
 
     private final int CURRENT_LIMIT_TIME = 10000;

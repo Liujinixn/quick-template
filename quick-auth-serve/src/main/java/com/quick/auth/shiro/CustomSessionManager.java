@@ -1,6 +1,7 @@
 package com.quick.auth.shiro;
 
 import com.alibaba.druid.util.StringUtils;
+import com.quick.auth.config.params.ShiroCoreParameters;
 import org.apache.shiro.web.servlet.ShiroHttpServletRequest;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.apache.shiro.web.util.WebUtils;
