@@ -6,4 +6,4 @@ log:
     # 日志文件保存路径
     path: ../log/${spring.application.name}
     # 通过API接口查询日志文件密钥，多个参数使用逗号隔开 （get请求，携带参数 access_key=${access_key} 即可）
-    access_key: 123
+    access_key: F9F09728BBC81DA9
