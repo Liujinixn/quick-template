@@ -72,6 +72,21 @@ public class WordToPdfUtil {
     }
 
     /**
+     * 设置响应头，响应内容为pdf文件
+     *
+     * @param response 响应头
+     * @param fileName 下载的文件名称
+     */
+    public static void setResponseInfo(HttpServletResponse response, String fileName) {
+        response.setContentType("application/pdf");
+        try {
+            response.setHeader("Content-disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            log.error("不支持的编码 encode = {}", "UTF-8", e);
+        }
+    }
+
+    /**
      * 根据指定的word模板文件，生成PDF文件
      * <p>
      * 示例：
@@ -100,7 +115,7 @@ public class WordToPdfUtil {
      * @return PDF文件字节数组
      * @throws IOException file parsing exception
      */
-    public static byte[] wordTemplateGeneratePdf(String templateName, Map<String, Object> params) {
+    private static byte[] wordTemplateGeneratePdf(String templateName, Map<String, Object> params) {
         // 读取本地Word模板文件
         ClassPathResource classPathResource = new ClassPathResource(WordUtil.TEMPLATE_FILE_PATH + templateName);
         InputStream source = null;
@@ -123,21 +138,6 @@ public class WordToPdfUtil {
         FileBaseUtil.close(outputStream);
         FileBaseUtil.close(source);
         return outputStream.toByteArray();
-    }
-
-    /**
-     * 设置响应头，响应内容为pdf文件
-     *
-     * @param response 响应头
-     * @param fileName 下载的文件名称
-     */
-    public static void setResponseInfo(HttpServletResponse response, String fileName) {
-        response.setContentType("application/pdf");
-        try {
-            response.setHeader("Content-disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            log.error("不支持的编码 encode = {}", "UTF-8", e);
-        }
     }
 
     /**
