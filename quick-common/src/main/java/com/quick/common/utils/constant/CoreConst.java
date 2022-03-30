@@ -6,6 +6,7 @@ package com.quick.common.utils.constant;
  * @author Liujinxin
  */
 public class CoreConst {
+    
     /**
      * 成功状态码
      */
