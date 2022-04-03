@@ -1,11 +1,11 @@
 # sentinel配置（系统流控规则）
 sentinel:
   # 是否启动流控
-  enable: false
+  enable: true
   flowGrade:
     qps:
       # 配置sentinel阈值类型QPS的单机阈值（即1秒，用户最多访问次数）
-      count: 12
+      count: 8
 
 spring:
   cloud:
