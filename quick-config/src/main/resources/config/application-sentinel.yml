@@ -5,11 +5,11 @@ sentinel:
   flowGrade:
     qps:
       # 配置sentinel阈值类型QPS的单机阈值（即1秒，用户最多访问次数）
-      count: 1
+      count: 12
 
 spring:
   cloud:
     sentinel:
       transport:
-        # Sentinel服务端地址+端口信息
+        # Sentinel服务地址（可视化控制服务端）
         dashboard: 127.0.0.1:8091

@@ -43,7 +43,9 @@
         <springfox-swagger-ui.version>2.9.2</springfox-swagger-ui.version>
         <knife4j-spring-boot-starter.version>2.0.2</knife4j-spring-boot-starter.version>
         <springfox-bean-validators.version>2.9.2</springfox-bean-validators.version>
-        <spring-cloud-starter-alibaba-sentinel.version>0.9.0.RELEASE</spring-cloud-starter-alibaba-sentinel.version>
+        <!--无需访问外部 sentinel 服务-->
+        <spring-cloud-starter-alibaba-sentinel.version>2.1.0.RELEASE</spring-cloud-starter-alibaba-sentinel.version>
+        <spring-cloud-alibaba-sentinel-gateway.version>2.1.0.RELEASE</spring-cloud-alibaba-sentinel-gateway.version>
     </properties>
 
     <dependencies>
@@ -191,9 +193,14 @@
             </dependency>
             <!--sentinel 流控防护-->
             <dependency>
-                <groupId>org.springframework.cloud</groupId>
+                <groupId>com.alibaba.cloud</groupId>
                 <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
                 <version>${spring-cloud-starter-alibaba-sentinel.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-sentinel-gateway</artifactId>
+                <version>${spring-cloud-alibaba-sentinel-gateway.version}</version>
             </dependency>
             <!--swagger2 依赖-->
             <dependency>
