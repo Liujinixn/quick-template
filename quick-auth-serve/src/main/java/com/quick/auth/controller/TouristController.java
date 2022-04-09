@@ -1,7 +1,7 @@
 package com.quick.auth.controller;
 
-import com.quick.auth.service.UserService;
 import com.quick.auth.config.params.ShiroCoreParameters;
+import com.quick.auth.service.UserService;
 import com.quick.auth.utils.ShiroUtil;
 import com.quick.common.utils.ip.IpUtil;
 import com.quick.common.vo.Result;
