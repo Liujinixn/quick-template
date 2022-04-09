@@ -1,7 +1,9 @@
 
 <br>
 
-**项目地址： [https://gitee.com/liujinxin_ark/quick-template?_from=gitee_search](https://gitee.com/liujinxin_ark/quick-template?_from=gitee_search)**
+**请前往发行版下载（稳定版）： [https://gitee.com/liujinxin_ark/quick-template/releases](https://gitee.com/liujinxin_ark/quick-template/releases)**
+
+`master分支处于开发阶段，请colne对应分支的稳定版本。`
 
 
 ## 介绍
@@ -54,7 +56,7 @@ level参数： 如果type参数为txt的话，该值生效。即访问的日志�
 <hr>
 
 ## quick-common 工程
-quick-auth-serve 为常用的工具服务，包含提供redisClient、File操作、Word转PDF等工具类。
+quick-auth-serve 为常用的工具服务，包含提供redisClient、File操作、Word转PDF、手动Validator验证工具（系统同时还配置全局异常处理方式）等工具类。
 
 <br>
 <hr>
