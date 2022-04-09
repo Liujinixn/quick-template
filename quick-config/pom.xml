@@ -12,6 +12,11 @@
     <version>0.0.1-SNAPSHOT</version>
 
     <dependencies>
+        <dependency>
+            <groupId>quick.common</groupId>
+            <artifactId>quick-common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
         <!--springboot web启动器-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -95,7 +100,6 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-bean-validators</artifactId>
         </dependency>
-
     </dependencies>
 
 </project>
