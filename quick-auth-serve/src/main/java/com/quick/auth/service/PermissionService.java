@@ -31,6 +31,14 @@ public interface PermissionService {
     List<MenuVo> findAllMenuInfoLevel(Integer parentId);
 
     /**
+     * 工具权限url地址查询权限简单信息
+     *
+     * @param url url地址, 参数不能为空
+     * @return 权限对象
+     */
+    Permission findPermissionSimpleInfoByUrl(String url);
+
+    /**
      * 添加权限
      *
      * @param permission 权限对象

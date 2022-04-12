@@ -184,7 +184,7 @@ public class IpUtil {
                         .getNetworkInterfaces();
                 while (e1.hasMoreElements()) {
                     NetworkInterface ni = (NetworkInterface) e1.nextElement();
-                    if (!ni.getName().equals("eth0")) {
+                    if (!"eth0".equals(ni.getName())) {
                         continue;
                     } else {
                         Enumeration<?> e2 = ni.getInetAddresses();

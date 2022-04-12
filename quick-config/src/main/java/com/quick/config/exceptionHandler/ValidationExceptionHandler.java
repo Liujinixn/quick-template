@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * 全局 validation入参效验异常
+ * 系统 validation入参效验异常
+ *
+ * @author Liujinxin
  */
 @ControllerAdvice
 @ResponseBody
@@ -21,7 +23,7 @@ public class ValidationExceptionHandler {
 
     private static final Logger log = LoggerFactory.getLogger(ValidationExceptionHandler.class);
 
-    private static final String logExceptionFormat = "Capture Exception By ValidationExceptionHandler: Code: %s Detail: %s";
+    private static final String LOG_EXCEPTION_FORMAT = "Capture Exception By ValidationExceptionHandler: Code: %s Detail: %s";
 
     /**
      * 数据效验异常 处理器
@@ -56,7 +58,7 @@ public class ValidationExceptionHandler {
      */
     private <T extends Throwable> void log(Integer status, T exception) {
         exception.printStackTrace();
-        log.error(String.format(logExceptionFormat, status, exception.getMessage()));
+        log.error(String.format(LOG_EXCEPTION_FORMAT, status, exception.getMessage()));
     }
 
 }

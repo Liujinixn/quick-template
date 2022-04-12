@@ -10,7 +10,9 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.spec.InvalidParameterSpecException;
 
@@ -81,5 +83,37 @@ public class TestController {
         return Result.ok(findDto);
     }
 
+    /**
+     * 测试json格式入参-日志记录表
+     */
+    @PostMapping("/testJsonParams")
+    @ApiOperation(value = "测试接口-json格式入参-日志记录表")
+    public Result testJsonParams(@RequestBody FindDto findDto){
+        return Result.ok(findDto);
+    }
+
+    /**
+     * 测试普通格式入参-日志记录表
+     */
+    @PostMapping("/testParams")
+    @ApiOperation(value = "测试接口-普通格式入参-日志记录表")
+    public Result testParams(FindDto findDto){
+        return Result.ok(findDto);
+    }
+
+    /**
+     * 测试post无参数-日志记录表
+     */
+    @PostMapping("/testNoParams")
+    @ApiOperation(value = "测试接口-post无参数-日志记录表")
+    public Result testNoParams(){
+        return Result.ok(true);
+    }
+
+    @PostMapping("/uploadFile")
+    @ApiOperation(value = "测试接口-文件上传-日志记录表")
+    public Result uploadFile(MultipartFile[] files, HttpServletRequest req) {
+        return Result.ok(true);
+    }
 
 }

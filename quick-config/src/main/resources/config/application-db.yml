@@ -15,7 +15,7 @@ spring:
         testOnReturn: false
         testWhileIdle: true
         timeBetweenEvictionRunsMillis: 60000
-        url: jdbc:mysql://47.102.144.221:3306/zb-shiro?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=GMT%2B8
+        url: jdbc:mysql://47.102.144.221:3306/quick-auth?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=GMT%2B8
         username: root
         validationQuery: SELECT 1 FROM DUAL
     # base 数据源（注意数据库的时区设置 sql: set global time_zone='+8:00'; flush privileges; 即设置数据库时区+8小时）
@@ -33,7 +33,25 @@ spring:
         testOnReturn: false
         testWhileIdle: true
         timeBetweenEvictionRunsMillis: 60000
-        url: jdbc:mysql://47.102.144.221:3306/temp?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=GMT%2B8
+        url: jdbc:mysql://47.102.144.221:3306/quick-base?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=GMT%2B8
+        username: root
+        validationQuery: SELECT 1 FROM DUAL
+    # log 数据源（注意数据库的时区设置 sql: set global time_zone='+8:00'; flush privileges; 即设置数据库时区+8小时）
+    log:
+      druid:
+        logMapperLocations: classpath:mybatis/mapper/log/*.xml
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        filters: stat,wall,slf4j
+        initialSize: 5
+        maxActive: 20
+        maxWait: 60000
+        minIdle: 10
+        password: ark123
+        testOnBorrow: false
+        testOnReturn: false
+        testWhileIdle: true
+        timeBetweenEvictionRunsMillis: 60000
+        url: jdbc:mysql://47.102.144.221:3306/quick-log?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=GMT%2B8
         username: root
         validationQuery: SELECT 1 FROM DUAL
     # druid监控

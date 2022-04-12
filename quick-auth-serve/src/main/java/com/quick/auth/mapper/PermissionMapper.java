@@ -77,4 +77,13 @@ public interface PermissionMapper {
      * @return int 数量
      */
     int findPermissionsWhetherExistByPermissionNameOrPermissionId(String name, String permissionId, Integer status);
+
+    /**
+     * 工具url 查询权限信息
+     *
+     * @param url    url地址
+     * @param status 状态
+     * @return 权限信息
+     */
+    Permission findPermissionSimpleInfoByUrl(String url, Integer status);
 }

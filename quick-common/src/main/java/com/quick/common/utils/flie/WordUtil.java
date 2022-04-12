@@ -48,21 +48,21 @@ public class WordUtil {
     /**
      * 文件类型枚举
      */
-    private static final Map<String, Integer> documentTypeMap = new HashMap<>();
+    private static final Map<String, Integer> DOCUMENT_TYPE_MAP = new HashMap<>();
 
     static {
-        documentTypeMap.put(".emf", XWPFDocument.PICTURE_TYPE_EMF);
-        documentTypeMap.put(".wmf", XWPFDocument.PICTURE_TYPE_WMF);
-        documentTypeMap.put(".pict", XWPFDocument.PICTURE_TYPE_PICT);
-        documentTypeMap.put(".jpeg", XWPFDocument.PICTURE_TYPE_JPEG);
-        documentTypeMap.put(".jpg", XWPFDocument.PICTURE_TYPE_JPEG);
-        documentTypeMap.put(".png", XWPFDocument.PICTURE_TYPE_PNG);
-        documentTypeMap.put(".dib", XWPFDocument.PICTURE_TYPE_DIB);
-        documentTypeMap.put(".gif", XWPFDocument.PICTURE_TYPE_GIF);
-        documentTypeMap.put(".tiff", XWPFDocument.PICTURE_TYPE_TIFF);
-        documentTypeMap.put(".eps", XWPFDocument.PICTURE_TYPE_EPS);
-        documentTypeMap.put(".bmp", XWPFDocument.PICTURE_TYPE_BMP);
-        documentTypeMap.put(".wpg", XWPFDocument.PICTURE_TYPE_WPG);
+        DOCUMENT_TYPE_MAP.put(".emf", XWPFDocument.PICTURE_TYPE_EMF);
+        DOCUMENT_TYPE_MAP.put(".wmf", XWPFDocument.PICTURE_TYPE_WMF);
+        DOCUMENT_TYPE_MAP.put(".pict", XWPFDocument.PICTURE_TYPE_PICT);
+        DOCUMENT_TYPE_MAP.put(".jpeg", XWPFDocument.PICTURE_TYPE_JPEG);
+        DOCUMENT_TYPE_MAP.put(".jpg", XWPFDocument.PICTURE_TYPE_JPEG);
+        DOCUMENT_TYPE_MAP.put(".png", XWPFDocument.PICTURE_TYPE_PNG);
+        DOCUMENT_TYPE_MAP.put(".dib", XWPFDocument.PICTURE_TYPE_DIB);
+        DOCUMENT_TYPE_MAP.put(".gif", XWPFDocument.PICTURE_TYPE_GIF);
+        DOCUMENT_TYPE_MAP.put(".tiff", XWPFDocument.PICTURE_TYPE_TIFF);
+        DOCUMENT_TYPE_MAP.put(".eps", XWPFDocument.PICTURE_TYPE_EPS);
+        DOCUMENT_TYPE_MAP.put(".bmp", XWPFDocument.PICTURE_TYPE_BMP);
+        DOCUMENT_TYPE_MAP.put(".wpg", XWPFDocument.PICTURE_TYPE_WPG);
     }
 
     /**
@@ -224,7 +224,7 @@ public class WordUtil {
             return;
         }
         String suffix = src.substring(src.lastIndexOf("."));
-        documentType = MapUtils.getInteger(documentTypeMap, suffix);
+        documentType = MapUtils.getInteger(DOCUMENT_TYPE_MAP, suffix);
         if (documentType == null) {
             log.warn("不支持的图片: imgUrl = {}. 可选格式 emf|wmf|pict|jpeg|jpg|png|dib|gif|tiff|eps|bmp|wpg", src);
             return;

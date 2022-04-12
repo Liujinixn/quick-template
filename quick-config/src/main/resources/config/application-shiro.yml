@@ -19,6 +19,7 @@ shiro:
   # 设置指定的请求地址，无需进入认证和鉴权
   excludeAuthPathList:
     - ${request.prefix.log_server}/logback/**
+    - ${request.prefix.base_server}/**
   # shiro-redis相关参数配置
   shiro-redis:
     host: ${spring.redis.host}:${spring.redis.port}

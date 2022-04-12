@@ -40,7 +40,7 @@ import java.util.*;
  */
 public class BeanValidatorUtil {
 
-    private static final ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+    private static final ValidatorFactory VALIDATOR_FACTORY = Validation.buildDefaultValidatorFactory();
 
     /**
      * 验证对象
@@ -48,7 +48,7 @@ public class BeanValidatorUtil {
      * @param t 目标对象
      */
     public static <T> Map<String, String> validate(T t, Class... groups) {
-        Validator validator = validatorFactory.getValidator();
+        Validator validator = VALIDATOR_FACTORY.getValidator();
         Set validateResult = validator.validate(t, groups);
         // 如果为空
         if (validateResult.isEmpty()) {

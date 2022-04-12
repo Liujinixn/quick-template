@@ -6,6 +6,7 @@ import com.quick.auth.entity.Permission;
 import com.quick.auth.service.PermissionService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedHashMap;
@@ -62,6 +63,7 @@ public class ShiroService {
         filterChainDefinitionMap.put("/js/**", "anon");
         filterChainDefinitionMap.put("/css/**", "anon");
 
+        // 排除指定的认证授权接口
         for (String path : shiroCoreParameters.getExcludeAuthPathList()) {
             filterChainDefinitionMap.put(path, "anon");
         }
@@ -73,6 +75,7 @@ public class ShiroService {
                 filterChainDefinitionMap.put(permission.getUrl(), perm + ",kickout");
             }
         }
+
         filterChainDefinitionMap.put("/**", "user" + ",kickout");
         return filterChainDefinitionMap;
     }

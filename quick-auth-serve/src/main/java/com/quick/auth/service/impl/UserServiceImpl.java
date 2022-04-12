@@ -122,6 +122,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getLoginUserAllInfo() {
         String loginUserId = ShiroUtil.getLoginUserId();
+        if(null == loginUserId){
+            return null;
+        }
         User userInfo = userMapper.findUserAndRoleByUserId(loginUserId, CoreConst.STATUS_VALID);
 
         // 获取用户在线情况

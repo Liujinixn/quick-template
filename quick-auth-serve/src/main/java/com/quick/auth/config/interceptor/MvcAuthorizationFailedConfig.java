@@ -1,6 +1,6 @@
-package com.quick.auth.config.mvc;
+package com.quick.auth.config.interceptor;
 
-import com.quick.auth.config.filter.AuthErrorResponseInterceptor;
+import com.quick.auth.config.interceptor.handle.AuthErrorResponseInterceptor;
 import com.quick.auth.config.params.RequestPrefixAuthParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -12,12 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 自定义Mvc拦截器规则配置
+ * 自定义Mvc拦截器规则配置-争对权限认证失败的访问
  *
  * @author Liujinxin
  */
 @Configuration
-public class MvcAppConfig implements WebMvcConfigurer {
+public class MvcAuthorizationFailedConfig implements WebMvcConfigurer {
 
     @Autowired
     RequestPrefixAuthParams requestPrefixAuthParams;

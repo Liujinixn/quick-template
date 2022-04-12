@@ -7,6 +7,7 @@ import com.quick.auth.utils.ShiroUtil;
 import com.quick.auth.vo.MenuVo;
 import com.quick.common.utils.constant.CoreConst;
 import com.quick.common.utils.uuid.UUIDUtil;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +34,14 @@ public class PermissionServiceImpl implements PermissionService {
         // 获取当前登录用户的ID
         String loginUserId = ShiroUtil.getLoginUserId();
         return permissionMapper.findAllMenuInfoLevel(loginUserId, parentId, CoreConst.STATUS_VALID);
+    }
+
+    @Override
+    public Permission findPermissionSimpleInfoByUrl(String url) {
+        if(StringUtils.isBlank(url)){
+            return null;
+        }
+        return permissionMapper.findPermissionSimpleInfoByUrl(url,CoreConst.STATUS_VALID);
     }
 
     @Override

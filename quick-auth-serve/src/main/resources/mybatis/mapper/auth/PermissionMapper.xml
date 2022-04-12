@@ -240,4 +240,11 @@
         </if>
     </select>
 
+    <select id="findPermissionSimpleInfoByUrl" resultType="com.quick.auth.entity.Permission">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM <include refid="permission"/>
+        WHERE status = #{status} AND url = #{url}
+    </select>
+
 </mapper>
