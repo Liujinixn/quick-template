@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50736
 File Encoding         : 65001
 
-Date: 2022-04-13 00:17:28
+Date: 2022-04-13 23:19:38
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -26,13 +26,13 @@ CREATE TABLE `sys_operate_log` (
   `description` varchar(100) DEFAULT NULL COMMENT '请求描述',
   `request_type` varchar(10) DEFAULT NULL COMMENT '请求类型',
   `request_content_type` varchar(255) DEFAULT NULL COMMENT '内容类型（描述入参类型）',
-  `request_params` varchar(500) DEFAULT NULL COMMENT '入参内容（params入参 和 json入参，全部转json格式记录）',
+  `request_params` text COMMENT '入参内容（params入参 和 json入参，全部转json格式记录）',
   `response_content_type` varchar(400) DEFAULT NULL COMMENT '响应内容类型',
-  `response_params` text COMMENT '出参内容',
+  `response_params` mediumtext COMMENT '出参内容',
   `client_ip` varchar(20) DEFAULT NULL COMMENT '客户端IP（访问IP）',
   `user_agent` varchar(255) DEFAULT NULL COMMENT '用户代理',
   `consuming_time` int(20) unsigned DEFAULT NULL COMMENT '耗时 单位ms',
   `operating_account` varchar(50) DEFAULT NULL COMMENT '操作人名称',
   `create_time` datetime DEFAULT NULL COMMENT '操作时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=141 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=241 DEFAULT CHARSET=utf8;

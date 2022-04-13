@@ -7,6 +7,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
+/**
+ * 查询操作日志入参DTO
+ *
+ * @author Liujinxin
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

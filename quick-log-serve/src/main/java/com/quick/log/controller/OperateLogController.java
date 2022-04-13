@@ -17,9 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-/**
- * 日志管理
- */
 @Slf4j
 @RestController
 @Api(tags = "日志管理")

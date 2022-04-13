@@ -39,13 +39,15 @@ import java.util.Set;
 @Component
 public class ServerLogInterceptorHandler implements HandlerInterceptor {
 
-    public static final String REQUEST_START_TIME = "request_start_time";
+    private static final Logger log = LoggerFactory.getLogger(ServerLogInterceptorHandler.class);
 
     public static final String REQUEST_PARAMS = "request_params";
 
     public static final String RESPONSE_RESULT = "response_result";
 
-    private static final Logger log = LoggerFactory.getLogger(ServerLogInterceptorHandler.class);
+    private static final String REQUEST_START_TIME = "request_start_time";
+
+    private static final String APPLICATION_JSON = "application/json";
 
     @Autowired
     PermissionService permissionService;
@@ -67,7 +69,7 @@ public class ServerLogInterceptorHandler implements HandlerInterceptor {
         log.info(">> 执行请求前拦截操作");
         log.info("Request请求前，当前系统时间记录Attribute[{}]中", REQUEST_START_TIME);
         request.setAttribute(REQUEST_START_TIME, System.currentTimeMillis());
-        log.info("Request请求前，Json入参记录Attribute[REQUEST_PARAMS]中", REQUEST_PARAMS);
+        log.info("Request请求前，Json入参记录Attribute[{}]中", REQUEST_PARAMS);
         request.setAttribute(REQUEST_PARAMS, parseJsonParams(request));
         return true;
     }
@@ -103,7 +105,7 @@ public class ServerLogInterceptorHandler implements HandlerInterceptor {
         operateLog.setOperatingAccount(userInfo.getUsername());
         // response 出参
         operateLog.setResponseContentType(response.getContentType());
-        if ("application/json".equals(response.getContentType())) {
+        if (APPLICATION_JSON.equals(response.getContentType())) {
             operateLog.setResponseParams((String) request.getAttribute(RESPONSE_RESULT));
         } else {
             operateLog.setResponseParams("body could not be parsed, don't show.");
@@ -132,7 +134,7 @@ public class ServerLogInterceptorHandler implements HandlerInterceptor {
         String resultParams;
         String contentType = null == request.getContentType() ? "" : request.getContentType();
         switch (contentType) {
-            case "application/json":
+            case APPLICATION_JSON:
                 resultParams = null == request.getAttribute(REQUEST_PARAMS) ? "{}" : String.valueOf(request.getAttribute(REQUEST_PARAMS));
                 break;
             default:
@@ -160,7 +162,7 @@ public class ServerLogInterceptorHandler implements HandlerInterceptor {
         if (StringUtils.isBlank(request.getContentType())) {
             return null;
         }
-        if (!"application/json".equals(request.getContentType())) {
+        if (!APPLICATION_JSON.equals(request.getContentType())) {
             return null;
         }
         JSONObject parameterMap = JSON.parseObject(new RequestWrapper(request).getBody());

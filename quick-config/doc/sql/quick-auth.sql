@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50736
 File Encoding         : 65001
 
-Date: 2022-04-13 00:17:17
+Date: 2022-04-13 22:37:49
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -41,7 +41,7 @@ CREATE TABLE `sys_permission` (
 -- ----------------------------
 INSERT INTO `sys_permission` VALUES ('1', '1', '工作台', '工作台', '/workbench', 'workbench', '0', '1', '1', 'fa fa-home', '1', '2017-09-27 21:22:02', '2018-02-27 10:53:14');
 INSERT INTO `sys_permission` VALUES ('2', '2', '系统管理', '系统管理', null, null, '0', '0', '2', 'fa fa-th-list', '1', '2017-07-13 15:04:42', '2018-02-27 10:53:14');
-INSERT INTO `sys_permission` VALUES ('3', '201', '用户管理', '用户管理', '/auth-server-api/users', 'users', '2', '1', '1', 'fa fa-circle-o', '1', '2017-07-13 15:05:47', '2021-01-26 00:09:58');
+INSERT INTO `sys_permission` VALUES ('3', '201', '用户管理', '用户管理', null, null, '2', '1', '1', 'fa fa-circle-o', '1', '2017-07-13 15:05:47', '2021-01-26 00:09:58');
 INSERT INTO `sys_permission` VALUES ('4', '20101', '列表查询', '用户列表查询', '/auth-server-api/user/list', 'user:list', '3', '2', '0', null, '1', '2017-07-13 15:09:24', '2017-10-09 05:38:29');
 INSERT INTO `sys_permission` VALUES ('5', '20102', '新增', '新增用户', '/auth-server-api/user/add', 'user:add', '3', '2', '0', null, '1', '2017-07-13 15:06:50', '2018-02-28 17:58:46');
 INSERT INTO `sys_permission` VALUES ('6', '20103', '编辑', '编辑用户', '/auth-server-api/user/edit', 'user:edit', '3', '2', '0', null, '1', '2017-07-13 15:08:03', '2018-02-27 10:53:14');
@@ -51,22 +51,20 @@ INSERT INTO `sys_permission` VALUES ('9', '20106', '分配角色', '分配角色
 INSERT INTO `sys_permission` VALUES ('10', '20107', '踢出用户', '踢出用户', '/auth-server-api/user/online/kickout', 'user:onlineKickout', '3', '2', '0', null, '1', '2018-07-18 21:41:54', '2018-07-19 12:48:25');
 INSERT INTO `sys_permission` VALUES ('11', '20108', '批量踢出', '批量踢出', '/auth-server-api/user/online/batch/kickout', 'user:onlineBatchKickout', '3', '2', '0', null, '1', '2018-07-19 12:49:30', '2018-07-19 12:49:30');
 INSERT INTO `sys_permission` VALUES ('12', '20109', '导出用户信息', '导出指定用户信息', '/auth-server-api/user/export/info/pdf', 'userExportInfoPdf', '3', '2', '0', null, '1', '2018-07-19 12:49:30', '2018-07-19 12:49:30');
-INSERT INTO `sys_permission` VALUES ('13', '202', '角色管理', '角色管理', '/auth-server-api/roles', 'roles', '2', '1', '2', 'fa fa-circle-o', '1', '2017-07-17 14:39:09', '2018-02-27 10:53:14');
-INSERT INTO `sys_permission` VALUES ('14', '20201', '列表查询', '角色列表查询', '/auth-server-api/role/list', 'role:list', '10', '2', '0', null, '1', '2017-10-10 15:31:36', '2018-02-27 10:53:14');
-INSERT INTO `sys_permission` VALUES ('15', '20202', '新增', '新增角色', '/auth-server-api/role/add', 'role:add', '10', '2', '0', null, '1', '2017-07-17 14:39:46', '2018-02-27 10:53:14');
-INSERT INTO `sys_permission` VALUES ('16', '20203', '编辑', '编辑角色', '/auth-server-api/role/edit', 'role:edit', '10', '2', '0', null, '1', '2017-07-17 14:40:15', '2018-02-27 10:53:14');
-INSERT INTO `sys_permission` VALUES ('17', '20204', '删除', '删除角色', '/auth-server-api/role/delete', 'role:delete', '10', '2', '0', null, '1', '2017-07-17 14:40:57', '2018-02-27 10:53:14');
-INSERT INTO `sys_permission` VALUES ('18', '20205', '批量删除', '批量删除角色', '/auth-server-api/role/batch/delete', 'role:batchDelete', '10', '2', '0', null, '1', '2018-07-10 22:20:43', '2018-07-10 22:20:43');
-INSERT INTO `sys_permission` VALUES ('19', '20206', '分配权限', '分配权限', '/auth-server-api/role/assign/permission', 'role:assignPerms', '10', '2', '0', null, '1', '2017-09-26 07:33:05', '2018-02-27 10:53:14');
-INSERT INTO `sys_permission` VALUES ('20', '203', '资源管理', '资源管理', '/auth-server-api/permissions', 'permissions', '2', '1', '3', 'fa fa-circle-o', '1', '2017-09-26 07:33:51', '2018-02-27 10:53:14');
-INSERT INTO `sys_permission` VALUES ('21', '20301', '列表查询', '资源列表', '/auth-server-api/permission/list', 'permission:list', '17', '2', '0', null, '1', '2018-07-12 16:25:28', '2018-07-12 16:25:33');
-INSERT INTO `sys_permission` VALUES ('22', '20302', '新增', '新增资源', '/auth-server-api/permission/add', 'permission:add', '17', '2', '0', null, '1', '2017-09-26 08:06:58', '2018-02-27 10:53:14');
-INSERT INTO `sys_permission` VALUES ('23', '20303', '编辑', '编辑资源', '/auth-server-api/permission/edit', 'permission:edit', '17', '2', '0', null, '1', '2017-09-27 21:29:04', '2018-02-27 10:53:14');
-INSERT INTO `sys_permission` VALUES ('24', '20304', '删除', '删除资源', '/auth-server-api/permission/delete', 'permission:delete', '17', '2', '0', null, '1', '2017-09-27 21:29:50', '2018-02-27 10:53:14');
-INSERT INTO `sys_permission` VALUES ('25', '3', '运维管理', '运维管理', null, null, '0', '0', '4', 'fa fa-th-list', '1', '2018-07-06 15:19:26', '2018-07-06 15:19:26');
-INSERT INTO `sys_permission` VALUES ('26', '301', '数据监控', '数据监控', '/auth-server-api/database/monitoring', 'database', '22', '1', '0', 'fa fa-circle-o', '1', '2018-07-06 15:19:55', '2018-09-12 13:14:48');
-INSERT INTO `sys_permission` VALUES ('27', '4', '系统工具', '系统工具', null, null, '0', '0', '5', 'fa fa-th-list', '1', '2018-07-06 15:20:38', '2018-07-06 15:20:38');
-INSERT INTO `sys_permission` VALUES ('28', '401', '图标工具', '图标工具', '/auth-server-api/icons', 'icons', '24', '1', '0', 'fa fa-circle-o', '1', '2018-07-06 15:21:00', '2018-07-06 15:21:00');
+INSERT INTO `sys_permission` VALUES ('13', '202', '角色管理', '角色管理', null, null, '2', '1', '2', 'fa fa-circle-o', '1', '2017-07-17 14:39:09', '2018-02-27 10:53:14');
+INSERT INTO `sys_permission` VALUES ('14', '20201', '列表查询', '角色列表查询', '/auth-server-api/role/list', 'role:list', '13', '2', '0', null, '1', '2017-10-10 15:31:36', '2018-02-27 10:53:14');
+INSERT INTO `sys_permission` VALUES ('15', '20202', '新增', '新增角色', '/auth-server-api/role/add', 'role:add', '13', '2', '0', null, '1', '2017-07-17 14:39:46', '2018-02-27 10:53:14');
+INSERT INTO `sys_permission` VALUES ('16', '20203', '编辑', '编辑角色', '/auth-server-api/role/edit', 'role:edit', '13', '2', '0', null, '1', '2017-07-17 14:40:15', '2018-02-27 10:53:14');
+INSERT INTO `sys_permission` VALUES ('17', '20204', '删除', '删除角色', '/auth-server-api/role/delete', 'role:delete', '13', '2', '0', null, '1', '2017-07-17 14:40:57', '2018-02-27 10:53:14');
+INSERT INTO `sys_permission` VALUES ('18', '20205', '批量删除', '批量删除角色', '/auth-server-api/role/batch/delete', 'role:batchDelete', '13', '2', '0', null, '1', '2018-07-10 22:20:43', '2018-07-10 22:20:43');
+INSERT INTO `sys_permission` VALUES ('19', '20206', '分配权限', '分配权限', '/auth-server-api/role/assign/permission', 'role:assignPerms', '13', '2', '0', null, '1', '2017-09-26 07:33:05', '2018-02-27 10:53:14');
+INSERT INTO `sys_permission` VALUES ('20', '203', '资源管理', '资源管理', null, null, '2', '1', '3', 'fa fa-circle-o', '1', '2017-09-26 07:33:51', '2018-02-27 10:53:14');
+INSERT INTO `sys_permission` VALUES ('21', '20301', '列表查询', '资源列表', '/auth-server-api/permission/list', 'permission:list', '20', '2', '0', null, '1', '2018-07-12 16:25:28', '2018-07-12 16:25:33');
+INSERT INTO `sys_permission` VALUES ('22', '20302', '新增', '新增资源', '/auth-server-api/permission/add', 'permission:add', '20', '2', '0', null, '1', '2017-09-26 08:06:58', '2018-02-27 10:53:14');
+INSERT INTO `sys_permission` VALUES ('23', '20303', '编辑', '编辑资源', '/auth-server-api/permission/edit', 'permission:edit', '20', '2', '0', null, '1', '2017-09-27 21:29:04', '2018-02-27 10:53:14');
+INSERT INTO `sys_permission` VALUES ('24', '20304', '删除', '删除资源', '/auth-server-api/permission/delete', 'permission:delete', '20', '2', '0', null, '1', '2017-09-27 21:29:50', '2018-02-27 10:53:14');
+INSERT INTO `sys_permission` VALUES ('25', '204', '日志管理', '日志管理', null, null, '2', '1', '4', 'fa fa-th-list', '1', '2018-07-06 15:19:26', '2018-07-06 15:19:26');
+INSERT INTO `sys_permission` VALUES ('26', '20401', '日志查询', '日志列表查询', '/log-server-api/operateLog/list', 'operateLog:list', '25', '2', '0', null, '1', '2018-07-12 16:25:28', '2018-07-12 16:25:33');
 
 -- ----------------------------
 -- Table structure for sys_role
@@ -86,19 +84,10 @@ CREATE TABLE `sys_role` (
 -- ----------------------------
 -- Records of sys_role
 -- ----------------------------
-INSERT INTO `sys_role` VALUES ('1', '1', '超级管理员', '超级管理员', '1', '2017-06-28 20:30:05', '2017-06-28 20:30:10');
+INSERT INTO `sys_role` VALUES ('1', '1', '系统管理员', '超级管理员', '1', '2017-06-28 20:30:05', '2017-06-28 20:30:10');
 INSERT INTO `sys_role` VALUES ('2', '2', '管理员', '管理员', '1', '2017-06-30 23:35:19', '2017-10-11 09:32:33');
 INSERT INTO `sys_role` VALUES ('3', '3', '普通用户', '普通用户', '1', '2017-06-30 23:35:44', '2018-07-13 11:44:06');
 INSERT INTO `sys_role` VALUES ('4', '4', '数据库管理员', '数据库管理员', '1', '2017-07-12 11:50:22', '2017-10-09 17:38:02');
-INSERT INTO `sys_role` VALUES ('7', '1000001828185165', '测试角色', '描述', '0', '2022-04-10 22:55:41', '2022-04-10 23:15:36');
-INSERT INTO `sys_role` VALUES ('8', '1000001551843825', '测试角色', '描述', '1', '2022-04-11 00:30:51', '2022-04-11 00:30:51');
-INSERT INTO `sys_role` VALUES ('9', '1000001202621618', '测试角色22', '描述', '1', '2022-04-11 00:57:38', '2022-04-11 00:57:38');
-INSERT INTO `sys_role` VALUES ('10', '1000001360579838', '2', '1', '1', '2022-04-11 11:55:39', '2022-04-11 11:55:39');
-INSERT INTO `sys_role` VALUES ('11', '1000000231211048', '角色名称', '描述', '1', '2022-04-11 15:12:49', '2022-04-11 15:12:49');
-INSERT INTO `sys_role` VALUES ('12', '1000001644640387', '角色名称2', '描述', '1', '2022-04-11 16:15:46', '2022-04-11 16:15:46');
-INSERT INTO `sys_role` VALUES ('13', '1000001109396325', 'role_1', 'ms', '1', '2022-04-11 23:48:26', '2022-04-11 23:48:26');
-INSERT INTO `sys_role` VALUES ('14', '1000001881203728', 'role_1', 'ms', '1', '2022-04-11 23:48:26', '2022-04-11 23:48:26');
-INSERT INTO `sys_role` VALUES ('15', '1000000259826024', '测试', '信息', '1', '2022-04-11 23:48:26', '2022-04-11 23:52:25');
 
 -- ----------------------------
 -- Table structure for sys_role_permission
@@ -109,7 +98,7 @@ CREATE TABLE `sys_role_permission` (
   `role_id` varchar(20) NOT NULL COMMENT '角色id',
   `permission_id` varchar(20) NOT NULL COMMENT '权限id',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1111 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1113 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sys_role_permission
@@ -138,10 +127,8 @@ INSERT INTO `sys_role_permission` VALUES ('1101', '1', '20301');
 INSERT INTO `sys_role_permission` VALUES ('1102', '1', '20302');
 INSERT INTO `sys_role_permission` VALUES ('1103', '1', '20303');
 INSERT INTO `sys_role_permission` VALUES ('1104', '1', '20304');
-INSERT INTO `sys_role_permission` VALUES ('1105', '1', '3');
-INSERT INTO `sys_role_permission` VALUES ('1106', '1', '301');
-INSERT INTO `sys_role_permission` VALUES ('1107', '1', '4');
-INSERT INTO `sys_role_permission` VALUES ('1108', '1', '401');
+INSERT INTO `sys_role_permission` VALUES ('1105', '1', '204');
+INSERT INTO `sys_role_permission` VALUES ('1106', '1', '20401');
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -164,12 +151,12 @@ CREATE TABLE `sys_user` (
   `login_ip_address` varchar(50) DEFAULT NULL COMMENT '最后登录的设备IP',
   `head_portrait` varchar(255) DEFAULT NULL COMMENT '用户头像',
   PRIMARY KEY (`id`,`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES ('1', '1', 'admin', '43442676c74ae59f219c2d87fd6bad52', null, '523179414@qq.com', '187888899991', '1', '27', '1', '2018-05-23 21:22:06', '2022-03-16 08:01:13', '2022-04-12 21:51:29', '127.0.0.1', 'https://img1.baidu.com/it/u=2381799888,2910666530&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500');
+INSERT INTO `sys_user` VALUES ('1', '1', 'admin', '43442676c74ae59f219c2d87fd6bad52', null, '523179414@qq.com', '187888899991', '1', '27', '1', '2018-05-23 21:22:06', '2022-03-16 08:01:13', '2022-04-13 14:31:15', '127.0.0.1', 'https://img1.baidu.com/it/u=2381799888,2910666530&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500');
 
 -- ----------------------------
 -- Table structure for sys_user_role

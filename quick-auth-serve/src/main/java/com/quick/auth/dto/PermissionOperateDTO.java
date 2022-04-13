@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 新增权限
+ * 新增权限DTO
  *
  * @author Liujinxin
  */

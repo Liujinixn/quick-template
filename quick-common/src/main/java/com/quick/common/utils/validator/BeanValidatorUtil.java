@@ -14,8 +14,10 @@ import java.util.*;
 
 /**
  * 对象属性检查
- * 注解	适用的数据类型	说明
  *
+ * @author Liujinxin
+ * <p>
+ * 注解	适用的数据类型	说明
  * @AssertFalse Boolean, boolean	验证注解的元素值是false
  * @AssertTrue Boolean, boolean	验证注解的元素值是true
  * @DecimalMax（value=x） BigDecimal，BigInteger，String，byte，short，int，long和原始类型的相应包装。HV额外支持：Number和CharSequence的任何子类型。	验证注解的元素值小于等于@ DecimalMax指定的value值

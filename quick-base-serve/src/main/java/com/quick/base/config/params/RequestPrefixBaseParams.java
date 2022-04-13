@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 
 /**
  * request请求前缀路径
+ *
+ * @author Liujinxin
  */
 @Data
 @AllArgsConstructor

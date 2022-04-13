@@ -6,6 +6,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Range;
 
+/**
+ * 分页查询入参DTO
+ *
+ * @author Liujinxin
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
