@@ -136,7 +136,7 @@ public class ServerLogInterceptorHandler implements HandlerInterceptor {
                 resultParams = null == request.getAttribute(REQUEST_PARAMS) ? "{}" : String.valueOf(request.getAttribute(REQUEST_PARAMS));
                 break;
             default:
-                Map<String, Object> reqMap = new HashMap<>();
+                Map<String, Object> reqMap = new HashMap<>(6);
                 Set<Map.Entry<String, String[]>> entry = request.getParameterMap().entrySet();
                 Iterator<Map.Entry<String, String[]>> it = entry.iterator();
                 while (it.hasNext()) {

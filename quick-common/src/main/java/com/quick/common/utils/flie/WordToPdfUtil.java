@@ -51,7 +51,7 @@ public class WordToPdfUtil {
         // 获取模板文件 路径|文件名称
         String templateName = templateParams.getTemplateName();
         // 数据处理
-        Map<String, Object> params = new HashMap<>();
+        Map<String, Object> params = new HashMap<>(8);
 
         Map<String, Object> textParams = templateParams.getTextParams();
         if (!CollectionUtils.isEmpty(textParams)) {
@@ -101,16 +101,16 @@ public class WordToPdfUtil {
      * @param templateName 模板路径|名称    resources.template_file 目录为根目录
      * @param params       模板中的变量替换列表
      *                     {
-     *                          "name":"张三",                 // 替换模板文件中变量 为普通文本
-     *                          "headPortrait":  {            // 替换模板文件中变量 为图片
-     *                              "src": "http://img2.baidu.com/image",  // 图片地址,兼容本地磁盘和网络地址
-     *                              "w": 110,                 // 宽度 px
-     *                              "h": 130                  // 高度 px
-     *                          },
-     *                          "headPortrait":  {                                       // 替换模板文件中变量 为表格
-     *                              "rowList": [["列1","列2","列3"],["lisi","29","男"]],  // 图片地址,兼容本地磁盘和网络地址
-     *                              "rowHeightList": [30,30,30]                          // 每行行高
-     *                          }
+     *                     "name":"张三",                 // 替换模板文件中变量 为普通文本
+     *                     "headPortrait":  {            // 替换模板文件中变量 为图片
+     *                     "src": "http://img2.baidu.com/image",  // 图片地址,兼容本地磁盘和网络地址
+     *                     "w": 110,                 // 宽度 px
+     *                     "h": 130                  // 高度 px
+     *                     },
+     *                     "headPortrait":  {                                       // 替换模板文件中变量 为表格
+     *                     "rowList": [["列1","列2","列3"],["lisi","29","男"]],  // 图片地址,兼容本地磁盘和网络地址
+     *                     "rowHeightList": [30,30,30]                          // 每行行高
+     *                     }
      *                     }
      * @return PDF文件字节数组
      * @throws IOException file parsing exception
