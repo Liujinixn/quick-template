@@ -1,12 +1,13 @@
 package com.quick.auth.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.quick.auth.config.params.ShiroCoreParameters;
 import com.quick.auth.dto.ChangePasswordDTO;
-import com.quick.auth.dto.UserOperateDTO;
+import com.quick.auth.dto.UserAddOperateDTO;
+import com.quick.auth.dto.UserUpdateOperateDTO;
 import com.quick.auth.entity.Role;
 import com.quick.auth.entity.User;
 import com.quick.auth.service.UserService;
-import com.quick.auth.config.params.ShiroCoreParameters;
 import com.quick.auth.shiro.realm.UserRealm;
 import com.quick.auth.utils.ShiroUtil;
 import com.quick.common.utils.constant.CoreConst;
@@ -25,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -79,8 +81,7 @@ public class UserController {
      */
     @PostMapping("/add")
     @ApiOperation(value = "新增用户信息")
-    @ApiImplicitParam(name = "password", value = "密码", required = true, dataType = "string", paramType = "query")
-    public Result addUser(UserOperateDTO userDTO, String password) {
+    public Result addUser(@RequestBody @Valid UserAddOperateDTO userDTO) {
         // 判断用户是否存在
         if (userService.findUsersWhetherExistByUsernameOrUserId(userDTO.getUsername(), null) > 0) {
             return Result.build("用户名已存在");
@@ -89,8 +90,7 @@ public class UserController {
         BeanUtils.copyProperties(userDTO, user);
         // 获取加密次数
         int hashIterations = shiroCoreParameters.getHashIterations();
-        password = new Md5Hash(password, null, hashIterations).toString();
-        user.setPassword(password);
+        user.setPassword(new Md5Hash(userDTO.getPassword(), null, hashIterations).toString());
         int res = userService.insertUser(user);
         if (res <= 0) {
             return Result.build("添加失败");
@@ -138,20 +138,17 @@ public class UserController {
     /**
      * 编辑用户
      *
-     * @param userId  用户ID
      * @param userDTO 用户操作对象
      */
     @PutMapping("/edit")
     @ApiOperation(value = "编辑用户信息")
-    @ApiImplicitParam(name = "userId", value = "用户ID", required = true, dataType = "string", paramType = "query")
-    public Result editUser(String userId, UserOperateDTO userDTO) {
+    public Result editUser(@RequestBody @Valid UserUpdateOperateDTO userDTO) {
         // 判断用户是否存在
-        if (userService.findUsersWhetherExistByUsernameOrUserId(userDTO.getUsername(), userId) > 0) {
+        if (userService.findUsersWhetherExistByUsernameOrUserId(userDTO.getUsername(), userDTO.getUserId()) > 0) {
             return Result.build("用户名已存在");
         }
         User user = new User();
         BeanUtils.copyProperties(userDTO, user);
-        user.setUserId(userId);
         int res = userService.updateByUserId(user);
         if (res <= 0) {
             return Result.build("编辑用户失败");
@@ -166,7 +163,7 @@ public class UserController {
      * @param userId    用户ID
      * @param roleIdStr 角色ID（多参数使用，隔开）
      */
-    @PostMapping("/assign/role")
+    @GetMapping("/assign/role")
     @ApiOperation(value = "分配用户角色")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userId", value = "用户ID", required = true, dataType = "string", paramType = "query"),
@@ -236,7 +233,7 @@ public class UserController {
      */
     @PostMapping(value = "/changePassword")
     @ApiOperation(value = "附属-修改账户密码")
-    public Result changePassword(ChangePasswordDTO changePasswordDTO) {
+    public Result changePassword(@RequestBody @Valid ChangePasswordDTO changePasswordDTO) {
         if (!changePasswordDTO.getNewPassword().equals(changePasswordDTO.getConfirmNewPassword())) {
             return Result.build("两次密码输入不一致");
         }

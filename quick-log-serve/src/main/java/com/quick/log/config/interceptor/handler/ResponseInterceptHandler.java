@@ -1,4 +1,4 @@
-package com.quick.log.config.interceptor.handle;
+package com.quick.log.config.interceptor.handler;
 
 import com.alibaba.fastjson.JSON;
 import com.quick.common.vo.Result;
@@ -24,9 +24,9 @@ import javax.servlet.http.HttpServletResponse;
  * @author Liujinxin
  */
 @ControllerAdvice
-public class ResponseIntercept implements ResponseBodyAdvice<Object> {
+public class ResponseInterceptHandler implements ResponseBodyAdvice<Object> {
 
-    private static final Logger log = LoggerFactory.getLogger(ResponseIntercept.class);
+    private static final Logger log = LoggerFactory.getLogger(ResponseInterceptHandler.class);
 
     @Override
     public boolean supports(MethodParameter methodParameter, Class<? extends HttpMessageConverter<?>> aClass) {
@@ -50,10 +50,11 @@ public class ResponseIntercept implements ResponseBodyAdvice<Object> {
         if (body instanceof Result) {
             Result result = (Result) body;
             if (result != null) {
-                /** 记录日志等操作，日志记录在 com.quick.log.config.interceptor.dealWith.LogInterceptorDealWith 中处理 **/
-                log.info("Response响应，Json出参信息写入Attribute[{}]中", ServerLogInterceptor.RESPONSE_RESULT);
+                /** 记录日志等操作，
+                 * 日志记录在 com.quick.log.config.interceptor.handler.ServerLogInterceptorHandler#afterCompletion() 中处理 **/
+                log.info("Response响应，Json出参信息写入Attribute[{}]中", ServerLogInterceptorHandler.RESPONSE_RESULT);
                 // 将Json出参信息 - 记录到 request attribute属性中传输到com.quick.log.config.interceptor.dealWith.RequestLogInterceptorDealWith.afterCompletion
-                req.setAttribute(ServerLogInterceptor.RESPONSE_RESULT, JSON.toJSONString(result));
+                req.setAttribute(ServerLogInterceptorHandler.RESPONSE_RESULT, JSON.toJSONString(result));
             }
             /** 这里可以对返回值进行修改二次封装等操作 **/
 

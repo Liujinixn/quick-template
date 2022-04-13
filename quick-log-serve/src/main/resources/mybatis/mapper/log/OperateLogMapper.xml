@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.quick.log.mapper.OperateLogMapper">
 
     <sql id="operateLog">
@@ -7,8 +9,36 @@
     </sql>
 
     <sql id="Base_Column_List">
-        id, operate_log_id, url, description, request_type, request_content_type, client_ip, user_agent, request_params, response_content_type, response_params, consuming_time, operating_account, create_time
+        id, operate_log_id, url, description, request_type, request_content_type, client_ip, user_agent, request_params,
+         response_content_type, response_params, consuming_time, operating_account, create_time
     </sql>
+
+    <select id="findList" resultType="com.quick.log.entity.OperateLog">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM <include refid="operateLog"/>
+        <where>
+            <if test="url != null and url != ''">
+                AND url LIKE concat('%', #{url}, '%')
+            </if>
+            <if test="description != null and description != ''">
+                AND description LIKE concat('%', #{description}, '%')
+            </if>
+            <if test="operatingAccount != null and operatingAccount != ''">
+                AND operating_account LIKE concat('%', #{operatingAccount}, '%')
+            </if>
+            <if test="requestType != null and requestType != ''">
+                AND request_type = #{requestType}
+            </if>
+            <if test="clientIp != null and clientIp != ''">
+                AND client_ip = #{clientIp}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                AND date_format(create_time,'%Y-%m-%d') = #{createTime}
+            </if>
+        </where>
+        ORDER BY create_time DESC
+    </select>
 
     <insert id="insertOperateLog">
         INSERT INTO

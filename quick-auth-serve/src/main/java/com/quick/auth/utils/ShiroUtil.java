@@ -5,6 +5,8 @@ import org.apache.shiro.SecurityUtils;
 
 /**
  * shiro 相关操作
+ *
+ * @author Liujinxin
  */
 public class ShiroUtil {
 

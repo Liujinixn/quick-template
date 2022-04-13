@@ -1,7 +1,8 @@
 package com.quick.auth.controller;
 
 import com.github.pagehelper.PageInfo;
-import com.quick.auth.dto.RoleOperateDTO;
+import com.quick.auth.dto.RoleAddOperateDTO;
+import com.quick.auth.dto.RoleUpdateOperateDTO;
 import com.quick.auth.entity.Role;
 import com.quick.auth.entity.User;
 import com.quick.auth.service.RoleService;
@@ -16,6 +17,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -59,7 +61,7 @@ public class RoleController {
      */
     @PostMapping("/add")
     @ApiOperation(value = "新增角色信息")
-    public Result addRole(RoleOperateDTO roleDTO) {
+    public Result addRole(@RequestBody @Valid RoleAddOperateDTO roleDTO) {
         if (roleService.findRolesWhetherExistByRoleNameOrRoleId(roleDTO.getName(), null) > 0) {
             return Result.build("角色名已存在");
         }
@@ -113,21 +115,16 @@ public class RoleController {
     /**
      * 编辑角色
      *
-     * @param roleId  角色ID
      * @param roleDTO 角色操作对象
      */
     @PutMapping("/edit")
     @ApiOperation(value = "编辑角色信息")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "roleId", value = "角色ID", required = true, dataType = "string", paramType = "query")
-    })
-    public Result editRole(String roleId, RoleOperateDTO roleDTO) {
-        if (roleService.findRolesWhetherExistByRoleNameOrRoleId(roleDTO.getName(), roleId) > 0) {
+    public Result editRole(@RequestBody @Valid RoleUpdateOperateDTO roleDTO) {
+        if (roleService.findRolesWhetherExistByRoleNameOrRoleId(roleDTO.getName(), roleDTO.getRoleId()) > 0) {
             return Result.build("角色名已存在");
         }
         Role role = new Role();
         BeanUtils.copyProperties(roleDTO, role);
-        role.setRoleId(roleId);
         if (roleService.updateByRoleId(role) <= 0) {
             return Result.build("编辑角色失败");
         }
@@ -140,7 +137,7 @@ public class RoleController {
      * @param roleId          角色ID
      * @param permissionIdStr 权限ID（多参数使用，隔开）
      */
-    @PostMapping("/assign/permission")
+    @GetMapping("/assign/permission")
     @ApiOperation(value = "分配角色权限")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "roleId", value = "角色ID", required = true, dataType = "string", paramType = "query"),

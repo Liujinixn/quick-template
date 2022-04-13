@@ -3,7 +3,7 @@ package com.quick.log.config.interceptor;
 import com.quick.auth.entity.Permission;
 import com.quick.auth.service.PermissionService;
 import com.quick.enumerate.PermissionTypeEnum;
-import com.quick.log.config.interceptor.handle.ServerLogInterceptor;
+import com.quick.log.config.interceptor.handler.ServerLogInterceptorHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -24,7 +24,7 @@ public class MvcLogConfig implements WebMvcConfigurer {
     PermissionService permissionService;
 
     @Autowired
-    ServerLogInterceptor serverLogInterceptor;
+    ServerLogInterceptorHandler serverLogInterceptorHandler;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -34,12 +34,8 @@ public class MvcLogConfig implements WebMvcConfigurer {
                 .filter(o -> o.getType().equals(PermissionTypeEnum.BUTTON.getCode()))
                 .map(o -> o.getUrl())
                 .collect(Collectors.toList());
-        urlList.add("/base-server-api/test/testJsonParams");
-        urlList.add("/base-server-api/test/testParams");
-        urlList.add("/base-server-api/test/uploadFile");
-        urlList.add("/base-server-api/test/testNoParams");
         // addInterceptor(添加自定义的拦截器)   addPathPatterns(要拦截的路径) excludePathPatterns(放行的路径)
-        registry.addInterceptor(serverLogInterceptor).addPathPatterns(urlList);
+        registry.addInterceptor(serverLogInterceptorHandler).addPathPatterns(urlList);
     }
 
 }

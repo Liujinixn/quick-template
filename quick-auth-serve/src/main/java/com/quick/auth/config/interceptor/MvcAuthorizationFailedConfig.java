@@ -1,6 +1,6 @@
 package com.quick.auth.config.interceptor;
 
-import com.quick.auth.config.interceptor.handle.AuthErrorResponseInterceptor;
+import com.quick.auth.config.interceptor.handler.AuthErrorResponseInterceptor;
 import com.quick.auth.config.params.RequestPrefixAuthParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

@@ -20,7 +20,7 @@ public interface UserMapper {
      * 根据用户名查询用户详细信息（含角色权限）
      *
      * @param userId 用户ID
-     * @param status   状态
+     * @param status 状态
      * @return user
      */
     User findUserAllInfoInfoByUserId(String userId, Integer status);
@@ -37,7 +37,8 @@ public interface UserMapper {
     /**
      * 根据用户ID查询用户（获取基本信息不含角色身份）
      *
-     * @param userId 用户id
+     * @param userId 用户ID
+     * @param status 数据状态
      * @return user 用户信息
      */
     User findUserByUserId(String userId, Integer status);
@@ -54,7 +55,7 @@ public interface UserMapper {
     /**
      * 更新最后登录时间（shiro登录后使用）
      *
-     * @param userId 用户ID
+     * @param userId         用户ID
      * @param loginIpAddress 登录IP
      */
     void updateLastLoginTime(String userId, String loginIpAddress);

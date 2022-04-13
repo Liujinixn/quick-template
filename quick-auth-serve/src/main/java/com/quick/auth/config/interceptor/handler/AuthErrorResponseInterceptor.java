@@ -1,4 +1,4 @@
-package com.quick.auth.config.interceptor.handle;
+package com.quick.auth.config.interceptor.handler;
 
 import com.alibaba.fastjson.JSONObject;
 import com.quick.auth.config.params.RequestPrefixAuthParams;

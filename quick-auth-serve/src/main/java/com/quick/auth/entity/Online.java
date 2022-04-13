@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 /**
  * 在线情况
+ *
+ * @author Liujinxin
  */
 @Data
 @NoArgsConstructor

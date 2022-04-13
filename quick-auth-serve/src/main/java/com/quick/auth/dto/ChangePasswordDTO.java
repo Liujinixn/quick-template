@@ -5,6 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * 更改密码DTO
+ *
+ * @author Liujinxin
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

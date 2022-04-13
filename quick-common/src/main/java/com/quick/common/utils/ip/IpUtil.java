@@ -8,7 +8,7 @@ import java.net.*;
 import java.util.Enumeration;
 
 /**
- * IP操作工具累
+ * IP操作工具类
  *
  * @author Liujinxin
  * @Description: 获取IP的方法

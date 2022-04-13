@@ -1,4 +1,4 @@
-package com.quick.config.exceptionHandler;
+package com.quick.config.interceptor.handler;
 
 import com.quick.common.utils.constant.CoreConst;
 import com.quick.common.vo.Result;

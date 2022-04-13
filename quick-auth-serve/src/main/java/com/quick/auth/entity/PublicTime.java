@@ -7,6 +7,11 @@ import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
+/**
+ * 公共参数
+ *
+ * @author Liujinxin
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,7 +23,7 @@ public class PublicTime {
     @ApiModelProperty(value = "修改时间")
     private Date updateTime;
 
-    public void setCreateTimeAndUpdateTime(Date createTime, Date updateTime){
+    public void setCreateTimeAndUpdateTime(Date createTime, Date updateTime) {
         this.createTime = createTime;
         this.updateTime = updateTime;
     }

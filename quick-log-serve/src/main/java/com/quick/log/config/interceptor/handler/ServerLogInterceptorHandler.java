@@ -1,4 +1,4 @@
-package com.quick.log.config.interceptor.handle;
+package com.quick.log.config.interceptor.handler;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -37,7 +37,7 @@ import java.util.Set;
  * @author Liujinxin
  */
 @Component
-public class ServerLogInterceptor implements HandlerInterceptor {
+public class ServerLogInterceptorHandler implements HandlerInterceptor {
 
     public static final String REQUEST_START_TIME = "request_start_time";
 
@@ -45,7 +45,7 @@ public class ServerLogInterceptor implements HandlerInterceptor {
 
     public static final String RESPONSE_RESULT = "response_result";
 
-    private static final Logger log = LoggerFactory.getLogger(ServerLogInterceptor.class);
+    private static final Logger log = LoggerFactory.getLogger(ServerLogInterceptorHandler.class);
 
     @Autowired
     PermissionService permissionService;
@@ -120,7 +120,7 @@ public class ServerLogInterceptor implements HandlerInterceptor {
                         "响应参数: {}\n耗时：{}ms",
                 operateLog.getUrl(), operateLog.getRequestType(), operateLog.getRequestParams(),
                 operateLog.getDescription(), operateLog.getClientIp(), operateLog.getResponseContentType(),
-                operateLog.getRequestParams(), operateLog.getConsumingTime());
+                operateLog.getResponseParams(), operateLog.getConsumingTime());
     }
 
     /**

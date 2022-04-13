@@ -19,7 +19,7 @@ import java.util.*;
  * @AssertFalse Boolean, boolean	验证注解的元素值是false
  * @AssertTrue Boolean, boolean	验证注解的元素值是true
  * @DecimalMax（value=x） BigDecimal，BigInteger，String，byte，short，int，long和原始类型的相应包装。HV额外支持：Number和CharSequence的任何子类型。	验证注解的元素值小于等于@ DecimalMax指定的value值
- * @DecimalMin（value=x） BigDecimal，BigInteger，String，byte，short，int，long和原始类型的相应包装。HV额外支持：Number和CharSequence的任何子类型。	验证注解的元素值小于等于@ DecimalMin指定的value值
+ * @DecimalMin（value=x） BigDecimal，BigInteger，String，byte，short，int，long和原始类型的相应包装。HV额外支持：Number和CharSequence的任何子类型。	验证注解的元素值大于等于@ DecimalMin指定的value值
  * @Digits(integer=整数位数, fraction=小数位数)	BigDecimal，BigInteger，String，byte，short，int，long和原始类型的相应包装。HV额外支持：Number和CharSequence的任何子类型。	验证注解的元素值的整数位数和小数位数上限
  * @Future java.util.Date，java.util.Calendar; 如果类路径上有Joda Time日期/时间API ，则由HV附加支持：ReadablePartial和ReadableInstant的任何实现。
  * 验证注解的元素值（日期类型）比当前时间晚

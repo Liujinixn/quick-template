@@ -8,11 +8,14 @@ import java.net.URL;
 
 /**
  * 线上文件相关操作工具类
+ *
+ * @author Liujinxin
  */
 public class InternetFileUtil {
 
     /**
      * 获取在线文件的 输入流对象
+     *
      * @param url 图片地址
      * @return 输入流
      */
@@ -36,8 +39,7 @@ public class InternetFileUtil {
     /**
      * 根据地址获得数据的字节流
      *
-     * @param strUrl
-     *            网络连接地址
+     * @param strUrl 网络连接地址
      * @return
      */
     public static byte[] getImageFromNetByUrl(String strUrl) {
@@ -46,8 +48,10 @@ public class InternetFileUtil {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setConnectTimeout(5 * 1000);
-            InputStream inStream = conn.getInputStream();// 通过输入流获取图片数据
-            byte[] btImg = readInputStream(inStream);// 得到图片的二进制数据
+            // 通过输入流获取图片数据
+            InputStream inStream = conn.getInputStream();
+            // 得到图片的二进制数据
+            byte[] btImg = readInputStream(inStream);
             return btImg;
         } catch (Exception e) {
             e.printStackTrace();
@@ -58,8 +62,7 @@ public class InternetFileUtil {
     /**
      * 从输入流中获取数据
      *
-     * @param inStream
-     *            输入流
+     * @param inStream 输入流
      * @return
      * @throws Exception
      */
