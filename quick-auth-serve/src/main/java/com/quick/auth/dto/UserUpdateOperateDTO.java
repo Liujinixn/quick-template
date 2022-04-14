@@ -9,6 +9,8 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * 用户编辑操作DTO
  *
@@ -56,6 +58,7 @@ public class UserUpdateOperateDTO {
      * 性别：1男 2女
      */
     @ApiModelProperty(value = "性别（1:男  2：女）", example = "1", required = true)
+    @NotNull(message = "性别 不可以为空")
     @Range(min = 1, max = 2, message = "性别 可选值【1:男  2：女】")
     private Integer sex;
 
@@ -63,6 +66,7 @@ public class UserUpdateOperateDTO {
      * 年龄
      */
     @ApiModelProperty(value = "年龄", example = "18", required = true)
+    @NotNull(message = "年龄 不可以为空")
     @Range(min = 1, max = 100, message = "年龄 可选值【1~100】")
     private Integer age;
 
@@ -70,7 +74,7 @@ public class UserUpdateOperateDTO {
      * 头像
      */
     @ApiModelProperty(value = "头像", example = "", required = false)
-    @Length(max = 255, message = "手机号 最大长度为{max}")
+    @Length(max = 255, message = "头像 最大长度为{max}")
     private String headPortrait;
 
 }

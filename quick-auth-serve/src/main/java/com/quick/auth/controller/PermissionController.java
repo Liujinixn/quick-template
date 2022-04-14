@@ -1,10 +1,11 @@
 package com.quick.auth.controller;
 
-import com.quick.auth.dto.PermissionOperateDTO;
+import com.quick.auth.dto.PermissionAddOperateDTO;
+import com.quick.auth.dto.PermissionUpdateOperateDTO;
 import com.quick.auth.entity.Permission;
 import com.quick.auth.service.PermissionService;
-import com.quick.common.vo.Result;
 import com.quick.common.utils.constant.CoreConst;
+import com.quick.common.vo.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -13,6 +14,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -37,12 +39,11 @@ public class PermissionController {
     /**
      * 添加权限
      *
-     * @param permissionDTO 添加权限对象
-     * @return
+     * @param permissionDTO 添加权限参数对象
      */
     @PostMapping("/add")
     @ApiOperation("新增权限信息")
-    public Result permissionAdd(PermissionOperateDTO permissionDTO) {
+    public Result permissionAdd(@RequestBody @Valid PermissionAddOperateDTO permissionDTO) {
         if (permissionService.findPermissionsWhetherExistByPermissionNameOrPermissionId(permissionDTO.getName(), null) > 0) {
             return Result.build("权限名称已存在");
         }
@@ -58,21 +59,16 @@ public class PermissionController {
     /**
      * 编辑权限
      *
-     * @param permissionId  权限ID（ 根据权限ID来修改数据）
-     * @param permissionDTO 修改的权限数据
+     * @param permissionDTO 修改权限参数对象
      */
     @PutMapping("/edit")
     @ApiOperation("编辑权限信息")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "permissionId", value = "权限ID", required = true, dataType = "string", paramType = "query")
-    })
-    public Result permissionUpdate(String permissionId, PermissionOperateDTO permissionDTO) {
-        if (permissionService.findPermissionsWhetherExistByPermissionNameOrPermissionId(permissionDTO.getName(), permissionId) > 0) {
+    public Result permissionUpdate(@RequestBody @Valid PermissionUpdateOperateDTO permissionDTO) {
+        if (permissionService.findPermissionsWhetherExistByPermissionNameOrPermissionId(permissionDTO.getName(), permissionDTO.getPermissionId()) > 0) {
             return Result.build("权限名称已存在");
         }
         Permission permission = new Permission();
         BeanUtils.copyProperties(permissionDTO, permission);
-        permission.setPermissionId(permissionId);
         int res = permissionService.updatePermission(permission);
         if (res <= 0) {
             return Result.build("修改失败");
