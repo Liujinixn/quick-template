@@ -1,7 +1,7 @@
 # 日志服务配置
 log:
   # 是否开启服务日志记录 (true:将需要鉴权的接口进行操作记录到日志表)
-  enable: false
+  enable: true
   # 是否允许通过API接口访问logback服务html日志文件（不安全的操作） 即接口是否对外开放：/logback/{type}/{dateTime}
   accessLogFileEnable: true
   # enable为true时，系统会将鉴权的接口进行日志记录外，同时可以配置特定的接口也进行日志记录
