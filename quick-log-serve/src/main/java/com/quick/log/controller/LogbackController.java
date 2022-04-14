@@ -51,7 +51,7 @@ public class LogbackController {
                           String accessKey,
                           HttpServletRequest request) {
         // 检查该接口是否禁用
-        if (!logBackCoreParameters.isEnable()) {
+        if (!logBackCoreParameters.isAccessLogFileEnable()) {
             return "interface is disabled.";
         }
 
@@ -77,7 +77,7 @@ public class LogbackController {
         // 简易验证密钥
         if (!logBackCoreParameters.getLogAccessKeyList().contains(accessKey)) {
             log.info("错误的密钥，access_key:{}", accessKey);
-            return "access_key not exists.";
+            return "accessKey not exists.";
         }
 
         File file = new File(logBackCoreParameters.getPath() + "/" + fileName);

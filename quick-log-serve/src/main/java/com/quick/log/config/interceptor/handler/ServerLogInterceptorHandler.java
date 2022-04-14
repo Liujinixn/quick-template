@@ -2,13 +2,14 @@ package com.quick.log.config.interceptor.handler;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.quick.auth.config.params.ShiroCoreParameters;
 import com.quick.auth.entity.Permission;
 import com.quick.auth.entity.User;
 import com.quick.auth.service.PermissionService;
 import com.quick.auth.service.UserService;
 import com.quick.common.utils.ip.IpUtil;
 import com.quick.common.utils.redis.RedisClient;
+import com.quick.log.config.params.LogBackCoreParameters;
+import com.quick.log.config.params.internal.RecordSpecificPathInfo;
 import com.quick.log.entity.OperateLog;
 import com.quick.log.service.OperateLogService;
 import org.apache.commons.lang.StringUtils;
@@ -50,19 +51,19 @@ public class ServerLogInterceptorHandler implements HandlerInterceptor {
     private static final String APPLICATION_JSON = "application/json";
 
     @Autowired
-    PermissionService permissionService;
-
-    @Autowired
     UserService userService;
-
-    @Autowired
-    ShiroCoreParameters shiroCoreParameters;
 
     @Autowired
     RedisClient redisClient;
 
     @Autowired
+    PermissionService permissionService;
+
+    @Autowired
     OperateLogService operateLogService;
+
+    @Autowired
+    LogBackCoreParameters logBackCoreParameters;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -78,14 +79,12 @@ public class ServerLogInterceptorHandler implements HandlerInterceptor {
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception exception)
             throws Exception {
         log.info(">> 执行请求后拦截操作");
-        Permission permissionInfo = permissionService.findPermissionSimpleInfoByUrl(request.getRequestURI());
-        if (null == permissionInfo) {
-            permissionInfo = new Permission();
-        }
+        Permission permissionInfo = getPermission(request);
         User userInfo = userService.getLoginUserAllInfo();
         if (null == userInfo) {
             userInfo = new User();
         }
+
         // request 入参
         OperateLog operateLog = new OperateLog();
         operateLog.setUrl(request.getServletPath());
@@ -126,6 +125,29 @@ public class ServerLogInterceptorHandler implements HandlerInterceptor {
     }
 
     /**
+     * 获取权限信息
+     *
+     * @param request HttpServlet请求
+     * @return 权限信息，如果没有符合的信息，则会返回 new Permission();
+     */
+    private Permission getPermission(HttpServletRequest request) {
+        Permission permissionInfo = null;
+        for (RecordSpecificPathInfo pathInfo : logBackCoreParameters.getRecordSpecificPathList()) {
+            if (!pathInfo.getPath().equals(request.getRequestURI())) {
+                continue;
+            }
+            permissionInfo = new Permission();
+            permissionInfo.setUrl(pathInfo.getPath());
+            permissionInfo.setDescription(pathInfo.getDescription());
+            return permissionInfo;
+        }
+        if (null == permissionInfo) {
+            permissionInfo = permissionService.findPermissionSimpleInfoByUrl(request.getRequestURI());
+        }
+        return null == permissionInfo ? new Permission() : permissionInfo;
+    }
+
+    /**
      * 解析请求参数（不区分post还是get请求）
      *
      * @param request HttpServletRequest信息
@@ -156,7 +178,6 @@ public class ServerLogInterceptorHandler implements HandlerInterceptor {
      * 解析请求头中的 json 入参参数
      *
      * @param request HttpServletRequest 请求头
-     * @return
      */
     private String parseJsonParams(HttpServletRequest request) {
         if (StringUtils.isBlank(request.getContentType())) {
@@ -170,7 +191,7 @@ public class ServerLogInterceptorHandler implements HandlerInterceptor {
     }
 
     /**
-     * request 包装器
+     * Request 包装器对象
      */
     private class RequestWrapper extends HttpServletRequestWrapper {
 
@@ -189,9 +210,6 @@ public class ServerLogInterceptorHandler implements HandlerInterceptor {
 
         /**
          * 获取请求Body
-         *
-         * @param request
-         * @return
          */
         public String getBodyString(final ServletRequest request) {
             StringBuilder sb = new StringBuilder();
@@ -227,9 +245,6 @@ public class ServerLogInterceptorHandler implements HandlerInterceptor {
 
         /**
          * Description: 复制输入流</br>
-         *
-         * @param inputStream
-         * @return</br>
          */
         public InputStream cloneInputStream(ServletInputStream inputStream) {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -280,6 +295,5 @@ public class ServerLogInterceptorHandler implements HandlerInterceptor {
             };
         }
     }
-
 
 }

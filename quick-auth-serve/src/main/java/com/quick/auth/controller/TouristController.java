@@ -1,13 +1,12 @@
 package com.quick.auth.controller;
 
 import com.quick.auth.config.params.ShiroCoreParameters;
+import com.quick.auth.dto.SystemLoginDTO;
 import com.quick.auth.service.UserService;
 import com.quick.auth.utils.ShiroUtil;
 import com.quick.common.utils.ip.IpUtil;
 import com.quick.common.vo.Result;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -16,12 +15,10 @@ import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,21 +36,14 @@ public class TouristController {
 
     /**
      * 登录
-     *
-     * @param username 账号
-     * @param password 密码
      */
     @PostMapping("/login")
     @ApiOperation(value = "登录效验")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "username", value = "用户名", required = true, dataType = "string", paramType = "query"),
-            @ApiImplicitParam(name = "password", value = "密码", required = true, dataType = "string", paramType = "query")
-    })
-    public Result login(String username, String password, HttpServletRequest request) {
+    public Result login(@RequestBody @Valid SystemLoginDTO systemLoginDTO, HttpServletRequest request) {
         // System.out.println(new Md5Hash(password, null, 2).toString());
         Subject subject = SecurityUtils.getSubject();
-        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(username, password);
-        Map<String, Object> info = new HashMap<>(2);
+        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(systemLoginDTO.getUsername(), systemLoginDTO.getPassword());
+        Map<String, Object> info = new HashMap<>(3);
         try {
             subject.login(usernamePasswordToken);
             info.put(shiroCoreParameters.getTokenKey(), shiroCoreParameters.getTokenValuePrefix() + subject.getSession().getId());
