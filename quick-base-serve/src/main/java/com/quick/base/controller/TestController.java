@@ -112,7 +112,7 @@ public class TestController {
 
     @PostMapping("/uploadFile")
     @ApiOperation(value = "测试接口-文件上传-日志记录表")
-    public Result uploadFile(MultipartFile[] files, HttpServletRequest req) {
+    public Result uploadFile(MultipartFile file, HttpServletRequest req) {
         return Result.ok(true);
     }
 
