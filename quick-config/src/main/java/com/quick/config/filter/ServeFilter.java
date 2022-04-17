@@ -1,6 +1,7 @@
 package com.quick.config.filter;
 
 import com.quick.config.filter.wrapper.RequestWrapper;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,10 +15,9 @@ import java.io.IOException;
  *
  * @author Liujinxin
  */
+@Slf4j
 @WebFilter(filterName = "ServeFilter", urlPatterns = {"/*"})
 public class ServeFilter implements Filter {
-
-    private static final Logger log = LoggerFactory.getLogger(ServeFilter.class);
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

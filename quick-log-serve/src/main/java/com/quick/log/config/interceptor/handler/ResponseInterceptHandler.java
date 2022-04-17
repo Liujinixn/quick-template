@@ -2,6 +2,7 @@ package com.quick.log.config.interceptor.handler;
 
 import com.alibaba.fastjson.JSON;
 import com.quick.common.vo.Result;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.MethodParameter;
@@ -23,10 +24,9 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Liujinxin
  */
+@Slf4j
 @ControllerAdvice
 public class ResponseInterceptHandler implements ResponseBodyAdvice<Object> {
-
-    private static final Logger log = LoggerFactory.getLogger(ResponseInterceptHandler.class);
 
     @Override
     public boolean supports(MethodParameter methodParameter, Class<? extends HttpMessageConverter<?>> aClass) {

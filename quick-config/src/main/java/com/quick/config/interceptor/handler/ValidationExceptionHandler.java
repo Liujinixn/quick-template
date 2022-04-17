@@ -3,6 +3,7 @@ package com.quick.config.interceptor.handler;
 
 import com.quick.common.utils.constant.CoreConst;
 import com.quick.common.vo.Result;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.BindException;
@@ -17,11 +18,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
  *
  * @author Liujinxin
  */
+@Slf4j
 @ControllerAdvice
 @ResponseBody
 public class ValidationExceptionHandler {
-
-    private static final Logger log = LoggerFactory.getLogger(ValidationExceptionHandler.class);
 
     private static final String LOG_EXCEPTION_FORMAT = "Capture Exception By ValidationExceptionHandler: Code: %s Detail: %s";
 

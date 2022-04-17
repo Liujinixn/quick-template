@@ -12,6 +12,7 @@ import com.quick.log.config.params.LogBackCoreParameters;
 import com.quick.log.config.params.internal.RecordSpecificPathInfo;
 import com.quick.log.entity.OperateLog;
 import com.quick.log.service.OperateLogService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,10 +38,9 @@ import java.util.Set;
  *
  * @author Liujinxin
  */
+@Slf4j
 @Component
 public class ServerLogInterceptorHandler implements HandlerInterceptor {
-
-    private static final Logger log = LoggerFactory.getLogger(ServerLogInterceptorHandler.class);
 
     public static final String REQUEST_PARAMS = "request_params";
 
