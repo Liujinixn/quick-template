@@ -22,7 +22,6 @@ import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
-
 @RestController
 @RequestMapping("${request.prefix.auth_server}/tourist")
 @Api(tags = "认证模块")

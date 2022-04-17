@@ -16,7 +16,6 @@ import org.crazycake.shiro.RedisCacheManager;
 import org.crazycake.shiro.RedisManager;
 import org.crazycake.shiro.RedisSessionDAO;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,6 +33,21 @@ import java.util.Map;
 @Configuration
 @SuppressWarnings("all")
 public class ShiroConfig {
+
+    /**
+     * 安全对象  DefaultWebSecurityManager
+     */
+    @Bean(name = "securityManager")
+    public DefaultWebSecurityManager getDefaultWebSecurityManager(@Qualifier("userRealm") UserRealm userRealm,
+                                                                  @Qualifier("shiroCoreParameters") ShiroCoreParameters shiroCoreParameters) {
+        DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
+        //关联UserRealm
+        securityManager.setRealm(userRealm);
+        // 安全管理器中 设置 sessionManager
+        securityManager.setSessionManager(sessionManager(shiroCoreParameters));
+        securityManager.setCacheManager(cacheManager(shiroCoreParameters));
+        return securityManager;
+    }
 
     /**
      * ShrioFilterFactoryBean 过滤bean
@@ -74,21 +88,6 @@ public class ShiroConfig {
         //没有权限重定向地址
         bean.setUnauthorizedUrl(requestPrefixAuthParams.getAuthServer() + "/tourist/noAuth");
         return bean;
-    }
-
-    /**
-     * 安全对象  DefaultWebSecurityManager
-     */
-    @Bean(name = "securityManager")
-    public DefaultWebSecurityManager getDefaultWebSecurityManager(@Qualifier("userRealm") UserRealm userRealm,
-                                                                  @Qualifier("shiroCoreParameters") ShiroCoreParameters shiroCoreParameters) {
-        DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-        //关联UserRealm
-        securityManager.setRealm(userRealm);
-        // 安全管理器中 设置 sessionManager
-        securityManager.setSessionManager(sessionManager(shiroCoreParameters));
-        securityManager.setCacheManager(cacheManager(shiroCoreParameters));
-        return securityManager;
     }
 
     /**
@@ -197,7 +196,7 @@ public class ShiroConfig {
     }
 
     /**
-     * 限制同一账号登录同时登录人数控制
+     * 限制同一账号登录同时登录人数控制，自定义过滤规则
      */
     public KickoutSessionControlFilter kickoutSessionControlFilter(ShiroCoreParameters shiroCoreParameters) {
         KickoutSessionControlFilter kickoutSessionControlFilter = new KickoutSessionControlFilter();
@@ -219,7 +218,7 @@ public class ShiroConfig {
     }
 
     @Bean
-    RequestPrefixAuthParams getRequestPrefixAuthParams(){
+    RequestPrefixAuthParams getRequestPrefixAuthParams() {
         return new RequestPrefixAuthParams();
     }
 

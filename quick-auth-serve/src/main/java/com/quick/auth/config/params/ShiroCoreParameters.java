@@ -102,7 +102,7 @@ public class ShiroCoreParameters {
         /**
          * 其它信息缓存前缀
          */
-        private String prefixOther = "system_name:shiro:";
+            private String prefixOther = "system_name:shiro:";
     }
 
 }
