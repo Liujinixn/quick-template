@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.Valid;
 
+@SuppressWarnings({"ALL", "AlibabaClassMustHaveAuthor"})
 @Data
 public class FindDto {
 

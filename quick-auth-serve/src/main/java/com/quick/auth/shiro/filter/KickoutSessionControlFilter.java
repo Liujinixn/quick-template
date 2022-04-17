@@ -60,6 +60,7 @@ public class KickoutSessionControlFilter extends AccessControlFilter {
     }
 
     @Override
+    @SuppressWarnings("all")
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
         System.out.println(kickoutAfter + " " + maxSession);
         Subject subject = getSubject(request, response);

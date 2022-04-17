@@ -32,6 +32,7 @@ import java.util.Map;
  * @author Liujinxin
  */
 @Configuration
+@SuppressWarnings("all")
 public class ShiroConfig {
 
     /**

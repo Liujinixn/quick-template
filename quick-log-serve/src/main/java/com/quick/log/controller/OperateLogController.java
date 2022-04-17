@@ -1,6 +1,7 @@
 package com.quick.log.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.quick.common.utils.time.TimeUtil;
 import com.quick.common.vo.Result;
 import com.quick.log.dto.OperateLogDto;
 import com.quick.log.entity.OperateLog;
@@ -35,7 +36,7 @@ public class OperateLogController {
     @ApiOperation(value = "查询操作日志列表")
     public Result<PageInfo<OperateLog>> findList(@RequestBody @Valid OperateLogDto operateLogDto) {
         if (StringUtils.isNotBlank(operateLogDto.getCreateTime())) {
-            if (!operateLogDto.getCreateTime().matches("^\\d{4}-\\d{2}-\\d{2}$")) {
+            if (!operateLogDto.getCreateTime().matches(TimeUtil.REGULAR_YYYY_MM_DD)) {
                 return Result.build("操作时间 格式必须为yyyy-MM-dd");
             }
         }

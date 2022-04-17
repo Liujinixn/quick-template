@@ -13,6 +13,7 @@ import java.util.Enumeration;
  * @author Liujinxin
  * @Description: 获取IP的方法
  */
+@SuppressWarnings("all")
 public class IpUtil {
     private static final String LOCAL_IP = "127.0.0.1";
 

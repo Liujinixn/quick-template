@@ -7,6 +7,7 @@ import java.util.UUID;
  *
  * @author Liujinxin
  */
+@SuppressWarnings("all")
 public class UUIDUtil {
 
     private static final int SHORT_LENGTH = 8;

@@ -40,7 +40,7 @@ public class TouristController {
     @PostMapping("/login")
     @ApiOperation(value = "登录效验")
     public Result login(@RequestBody @Valid SystemLoginDTO systemLoginDTO, HttpServletRequest request) {
-        // System.out.println(new Md5Hash(password, null, 2).toString());
+        /* System.out.println(new Md5Hash(password, null, 2).toString()); */
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(systemLoginDTO.getUsername(), systemLoginDTO.getPassword());
         Map<String, Object> info = new HashMap<>(3);

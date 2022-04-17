@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 @ControllerAdvice
 @ResponseBody
+@SuppressWarnings("all")
 public class GlobalExceptionHandler {
 
     private static final String LOG_EXCEPTION_FORMAT = "Capture Exception By GlobalExceptionHandler: Code: %s Detail: %s";

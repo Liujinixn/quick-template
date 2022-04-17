@@ -1,6 +1,5 @@
 package com.quick.config.interceptor.handler;
 
-
 import com.quick.common.utils.constant.CoreConst;
 import com.quick.common.vo.Result;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Slf4j
 @ControllerAdvice
 @ResponseBody
+@SuppressWarnings("all")
 public class ValidationExceptionHandler {
 
     private static final String LOG_EXCEPTION_FORMAT = "Capture Exception By ValidationExceptionHandler: Code: %s Detail: %s";
