@@ -115,7 +115,7 @@ public class ServerLogInterceptorHandler implements HandlerInterceptor {
         long interval = endTime - startTime;
         operateLog.setConsumingTime(interval);
         operateLogService.insertOperateLog(operateLog);
-        log.info("Request请求后，此次请求和响应信息记录日志表\n" +
+        log.info("Request请求结束，记录请求和响应信息日志\n" +
                         "接口地址: {}\n请求类型: {}\n接口入参: {}\n" +
                         "接口描述: {}\n客户端IP: {}\n响应内容类型: {}\n" +
                         "响应参数: {}\n耗时：{}ms",
