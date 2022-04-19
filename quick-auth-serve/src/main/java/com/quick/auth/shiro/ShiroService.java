@@ -1,6 +1,5 @@
 package com.quick.auth.shiro;
 
-import com.quick.auth.config.params.RequestPrefixAuthParams;
 import com.quick.auth.config.params.ShiroCoreParameters;
 import com.quick.auth.entity.Permission;
 import com.quick.auth.service.PermissionService;
@@ -26,9 +25,6 @@ public class ShiroService {
     @Autowired
     ShiroCoreParameters shiroCoreParameters;
 
-    @Autowired
-    RequestPrefixAuthParams requestPrefixAuthParams;
-
     /**
      * 初始化权限
      * shiro的内置过滤器:
@@ -45,7 +41,6 @@ public class ShiroService {
             filterChainDefinitionMap.put("/**", "anon");
             return filterChainDefinitionMap;
         }
-        filterChainDefinitionMap.put(requestPrefixAuthParams.getAuthServer() + "/tourist/**", "anon");
         // swagger/druid监控接口 权限开放
         filterChainDefinitionMap.put("*.html", "anon");
         filterChainDefinitionMap.put("/static/**", "anon");

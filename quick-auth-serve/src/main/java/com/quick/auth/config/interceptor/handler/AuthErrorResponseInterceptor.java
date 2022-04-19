@@ -1,14 +1,18 @@
 package com.quick.auth.config.interceptor.handler;
 
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.JSON;
 import com.quick.auth.config.params.RequestPrefixAuthParams;
+import com.quick.auth.config.params.ShiroCoreParameters;
 import com.quick.common.vo.Result;
+import org.apache.commons.collections4.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 该拦截器的作用是为了处理 未登录、权限不足、踢出登录的响应信息 进行返回响应结果
@@ -24,31 +28,24 @@ public class AuthErrorResponseInterceptor implements HandlerInterceptor {
     @Autowired
     RequestPrefixAuthParams requestPrefixAuthParams;
 
+    @Autowired
+    ShiroCoreParameters shiroCoreParameters;
+
+    Map<String, String> pathAndDescMap = new HashMap<>(8);
+
+    @PostConstruct
+    public void init() {
+        pathAndDescMap.put(shiroCoreParameters.getNoLogin(), "登录凭证失效");
+        pathAndDescMap.put(shiroCoreParameters.getNoAuth(), "账户权限不足");
+        pathAndDescMap.put(shiroCoreParameters.getKickOut(), "您已被踢出");
+    }
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String url = request.getRequestURI();
-        url = url.split(";")[0];
+        String path = request.getServletPath();
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json; charset=utf-8");
-
-        Result result = null;
-        url = url.replace(requestPrefixAuthParams.getAuthServer(), "");
-        switch (url) {
-            case "/tourist/noLogin":
-                result = Result.build("登录凭证失效");
-                break;
-            case "/tourist/noAuth":
-                result = Result.build("账户权限不足");
-                break;
-            case "/tourist/kickout":
-                result = Result.build("您已被踢出");
-                break;
-            default:
-                return false;
-        }
-        JSONObject jsonObject = (JSONObject) JSONObject.toJSON(result);
-        PrintWriter out = response.getWriter();
-        out.append(jsonObject.toJSONString());
+        response.getWriter().append(JSON.toJSONString(Result.build(MapUtils.getString(pathAndDescMap, path))));
         return false;
     }
 }

@@ -1,7 +1,6 @@
 package com.quick.auth.config.interceptor;
 
 import com.quick.auth.config.interceptor.handler.AuthErrorResponseInterceptor;
-import com.quick.auth.config.params.RequestPrefixAuthParams;
 import com.quick.auth.config.params.ShiroCoreParameters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -19,9 +18,6 @@ import java.util.List;
  */
 @Configuration
 public class MvcAuthorizationFailedConfig implements WebMvcConfigurer {
-
-    @Autowired
-    RequestPrefixAuthParams requestPrefixAuthParams;
 
     @Autowired
     ShiroCoreParameters shiroCoreParameters;
