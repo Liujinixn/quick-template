@@ -202,7 +202,6 @@ public class ShiroConfig {
      * 限制同一账号登录同时登录人数控制，自定义过滤规则
      */
     @Bean
-    @DependsOn("shiroCoreParameters")
     public KickoutSessionControlFilter kickoutSessionControlFilter() {
         ShiroCoreParameters shiroCoreParameters = getShiroCoreParameters();
         KickoutSessionControlFilter kickoutSessionControlFilter = new KickoutSessionControlFilter();
