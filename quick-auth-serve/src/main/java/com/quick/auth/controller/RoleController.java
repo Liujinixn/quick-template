@@ -1,5 +1,6 @@
 package com.quick.auth.controller;
 
+import cn.hutool.extra.spring.SpringUtil;
 import com.github.pagehelper.PageInfo;
 import com.quick.auth.dto.RoleAddOperateDTO;
 import com.quick.auth.dto.RoleUpdateOperateDTO;
@@ -29,9 +30,6 @@ public class RoleController {
 
     @Autowired
     RoleService roleService;
-
-    @Autowired
-    UserRealm userRealm;
 
     /**
      * 获取角色列表数据
@@ -159,6 +157,7 @@ public class RoleController {
             for (User user : userList) {
                 userIds.add(user.getUserId());
             }
+            UserRealm userRealm = SpringUtil.getBean("userRealm", UserRealm.class);
             userRealm.clearAuthorizationByUserId(userIds);
         }
         return Result.ok("分配权限成功");

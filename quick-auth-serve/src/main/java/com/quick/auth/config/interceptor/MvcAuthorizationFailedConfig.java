@@ -2,6 +2,7 @@ package com.quick.auth.config.interceptor;
 
 import com.quick.auth.config.interceptor.handler.AuthErrorResponseInterceptor;
 import com.quick.auth.config.params.RequestPrefixAuthParams;
+import com.quick.auth.config.params.ShiroCoreParameters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +23,9 @@ public class MvcAuthorizationFailedConfig implements WebMvcConfigurer {
     @Autowired
     RequestPrefixAuthParams requestPrefixAuthParams;
 
+    @Autowired
+    ShiroCoreParameters shiroCoreParameters;
+
     /**
      * 注入拦截器到bean
      */
@@ -33,9 +37,9 @@ public class MvcAuthorizationFailedConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         List<String> list = new ArrayList<>();
-        list.add(requestPrefixAuthParams.getAuthServer() + "/tourist/noLogin");
-        list.add(requestPrefixAuthParams.getAuthServer() + "/tourist/noAuth");
-        list.add(requestPrefixAuthParams.getAuthServer() + "/tourist/kickout");
+        list.add(shiroCoreParameters.getNoLogin());
+        list.add(shiroCoreParameters.getNoAuth());
+        list.add(shiroCoreParameters.getKickOut());
         //addInterceptor(添加自定义的拦截器)   addPathPatterns(要拦截的路径) excludePathPatterns(放心的路径)
         registry.addInterceptor(authErrorResponseInterceptor()).addPathPatterns(list);
     }

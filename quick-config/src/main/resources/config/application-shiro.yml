@@ -16,6 +16,13 @@ shiro:
   token_key: "Authorization"
   # 令牌值前缀
   token_value_prefix: "Bearer "
+  # 未登录 重定向地址
+  no_login: ${request.prefix.auth_server}/tourist/noLogin
+  # 没有权限 重定向地址
+  no_auth: ${request.prefix.auth_server}/tourist/noAuth
+  # 踢出 重定向地址
+  kick_out: ${request.prefix.auth_server}/tourist/kickout
+
   # 设置指定的请求地址，无需进入认证和鉴权
   excludeAuthPathList:
     - ${request.prefix.log_server}/logback/**

@@ -1,6 +1,6 @@
 package com.quick.auth.config.shiro;
 
-import com.quick.auth.config.params.RequestPrefixAuthParams;
+import cn.hutool.extra.spring.SpringUtil;
 import com.quick.auth.config.params.ShiroCoreParameters;
 import com.quick.auth.shiro.CustomSessionManager;
 import com.quick.auth.shiro.ShiroService;
@@ -38,14 +38,13 @@ public class ShiroConfig {
      * 安全对象  DefaultWebSecurityManager
      */
     @Bean(name = "securityManager")
-    public DefaultWebSecurityManager getDefaultWebSecurityManager(@Qualifier("userRealm") UserRealm userRealm,
-                                                                  @Qualifier("shiroCoreParameters") ShiroCoreParameters shiroCoreParameters) {
+    public DefaultWebSecurityManager getDefaultWebSecurityManager(@Qualifier("userRealm") UserRealm userRealm) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-        //关联UserRealm
+        // 关联UserRealm
         securityManager.setRealm(userRealm);
         // 安全管理器中 设置 sessionManager
-        securityManager.setSessionManager(sessionManager(shiroCoreParameters));
-        securityManager.setCacheManager(cacheManager(shiroCoreParameters));
+        securityManager.setSessionManager(sessionManager());
+        securityManager.setCacheManager(cacheManager());
         return securityManager;
     }
 
@@ -67,26 +66,24 @@ public class ShiroConfig {
      */
     @Bean
     public ShiroFilterFactoryBean getShiroFilterFactoryBean(@Qualifier("securityManager") DefaultWebSecurityManager defaultWebSecurityManager,
-                                                            @Qualifier("shiroService") ShiroService shiroService,
-                                                            @Qualifier("shiroCoreParameters") ShiroCoreParameters shiroCoreParameters,
-                                                            @Qualifier("requestPrefixAuthParams") RequestPrefixAuthParams requestPrefixAuthParams) {
+                                                            @Qualifier("shiroService") ShiroService shiroService) {
         ShiroFilterFactoryBean bean = new ShiroFilterFactoryBean();
         //设置安全管理器
         bean.setSecurityManager(defaultWebSecurityManager);
-
         //自定义拦截器
         Map<String, Filter> filtersMap = new LinkedHashMap<String, Filter>();
         //限制同一帐号同时在线的个数。
-        filtersMap.put("kickout", kickoutSessionControlFilter(shiroCoreParameters));
+        filtersMap.put("kickout", kickoutSessionControlFilter());
         bean.setFilters(filtersMap);
 
         Map<String, String> filterChainDefinitionMap = shiroService.loadFilterChainDefinitions();
         bean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 
+        ShiroCoreParameters shiroCoreParameters = getShiroCoreParameters();
         // 没有登录重定向地址
-        bean.setLoginUrl(requestPrefixAuthParams.getAuthServer() + "/tourist/noLogin");
+        bean.setLoginUrl(shiroCoreParameters.getNoLogin());
         //没有权限重定向地址
-        bean.setUnauthorizedUrl(requestPrefixAuthParams.getAuthServer() + "/tourist/noAuth");
+        bean.setUnauthorizedUrl(shiroCoreParameters.getNoAuth());
         return bean;
     }
 
@@ -104,7 +101,8 @@ public class ShiroConfig {
      * MD5加密
      */
     @Bean
-    public HashedCredentialsMatcher hashedCredentialsMatcher(@Qualifier("shiroCoreParameters") ShiroCoreParameters shiroCoreParameters) {
+    public HashedCredentialsMatcher hashedCredentialsMatcher() {
+        ShiroCoreParameters shiroCoreParameters = getShiroCoreParameters();
         HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
         hashedCredentialsMatcher.setHashAlgorithmName(shiroCoreParameters.getHashAlgorithmName());
         hashedCredentialsMatcher.setHashIterations(shiroCoreParameters.getHashIterations());
@@ -115,9 +113,10 @@ public class ShiroConfig {
      * 会话管理器
      */
     @Bean
-    public DefaultWebSessionManager sessionManager(ShiroCoreParameters shiroCoreParameters) {
+    public DefaultWebSessionManager sessionManager() {
         CustomSessionManager sessionManager = new CustomSessionManager();
-        sessionManager.setSessionDAO(redisSessionDAO(shiroCoreParameters));
+        ShiroCoreParameters shiroCoreParameters = getShiroCoreParameters();
+        sessionManager.setSessionDAO(redisSessionDAO());
         // 禁用cookie 如果禁用会影响其他地方使用cookie如Durid监控
         // sessionManager.setSessionIdCookieEnabled(false);
         // 禁用url重写 url;jsessionid=id
@@ -128,8 +127,9 @@ public class ShiroConfig {
     /**
      * 配置redisManager
      */
-    public RedisManager getRedisManager(ShiroCoreParameters shiroCoreParameters) {
+    public RedisManager getRedisManager() {
         RedisManager redisManager = new RedisManager();
+        ShiroCoreParameters shiroCoreParameters = getShiroCoreParameters();
         redisManager.setHost(shiroCoreParameters.getShiroRedis().getHost());
         redisManager.setPassword(shiroCoreParameters.getShiroRedis().getPassword());
         redisManager.setDatabase(shiroCoreParameters.getShiroRedis().getDatabase());
@@ -140,9 +140,10 @@ public class ShiroConfig {
      * 配置具体cache实现类
      */
     @Bean
-    public RedisCacheManager cacheManager(ShiroCoreParameters shiroCoreParameters) {
+    public RedisCacheManager cacheManager() {
+        ShiroCoreParameters shiroCoreParameters = getShiroCoreParameters();
         RedisCacheManager redisCacheManager = new RedisCacheManager();
-        redisCacheManager.setRedisManager(getRedisManager(shiroCoreParameters));
+        redisCacheManager.setRedisManager(getRedisManager());
         //设置redis过期时间，单位是秒
         redisCacheManager.setExpire(shiroCoreParameters.getTokenExpirationTime());
         //设置权限信息缓存的名称前缀
@@ -154,9 +155,10 @@ public class ShiroConfig {
      * 自定义session持久化
      */
     @Bean
-    public RedisSessionDAO redisSessionDAO(ShiroCoreParameters shiroCoreParameters) {
+    public RedisSessionDAO redisSessionDAO() {
+        ShiroCoreParameters shiroCoreParameters = getShiroCoreParameters();
         RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
-        redisSessionDAO.setRedisManager(getRedisManager(shiroCoreParameters));
+        redisSessionDAO.setRedisManager(getRedisManager());
         redisSessionDAO.setExpire(shiroCoreParameters.getTokenExpirationTime());
         //设置session缓存的名称前缀
         redisSessionDAO.setKeyPrefix(shiroCoreParameters.getShiroRedis().getPrefixUserAuth());
@@ -175,7 +177,8 @@ public class ShiroConfig {
      * 加入注解的使用，不加入这个AOP注解不生效(shiro的注解 例如 @RequiresGuest , 但是 一般使用配置文件的方式)
      */
     @Bean
-    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(@Qualifier("securityManager") DefaultWebSecurityManager defaultWebSecurityManager) {
+    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor() {
+        DefaultWebSecurityManager defaultWebSecurityManager = new DefaultWebSecurityManager();
         AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new
                 AuthorizationAttributeSourceAdvisor();
         authorizationAttributeSourceAdvisor.setSecurityManager(defaultWebSecurityManager);
@@ -198,28 +201,30 @@ public class ShiroConfig {
     /**
      * 限制同一账号登录同时登录人数控制，自定义过滤规则
      */
-    public KickoutSessionControlFilter kickoutSessionControlFilter(ShiroCoreParameters shiroCoreParameters) {
+    @Bean
+    @DependsOn("shiroCoreParameters")
+    public KickoutSessionControlFilter kickoutSessionControlFilter() {
+        ShiroCoreParameters shiroCoreParameters = getShiroCoreParameters();
         KickoutSessionControlFilter kickoutSessionControlFilter = new KickoutSessionControlFilter();
-        //使用cacheManager获取相应的cache来缓存用户登录的会话；用于保存用户—会话之间的关系的；
-        //这里我们还是用之前shiro使用的redisManager()实现的cacheManager()缓存管理
-        //也可以重新另写一个，重新配置缓存时间之类的自定义缓存属性
-        kickoutSessionControlFilter.setCacheManager(cacheManager(shiroCoreParameters));
-        //用于根据会话ID，获取会话进行踢出操作的；
-        kickoutSessionControlFilter.setSessionManager(sessionManager(shiroCoreParameters));
-        //是否踢出后来登录的，默认是false；即后者登录的用户踢出前者登录的用户；踢出顺序。
+        // 使用cacheManager获取相应的cache来缓存用户登录的会话；用于保存用户—会话之间的关系的；
+        // 这里我们还是用之前shiro使用的redisManager()实现的cacheManager()缓存管理
+        // 也可以重新另写一个，重新配置缓存时间之类的自定义缓存属性
+        kickoutSessionControlFilter.setCacheManager(cacheManager());
+        // 用于根据会话ID，获取会话进行踢出操作的；
+        kickoutSessionControlFilter.setSessionManager(sessionManager());
+        // 是否踢出后来登录的，默认是false；即后者登录的用户踢出前者登录的用户；踢出顺序。
         kickoutSessionControlFilter.setKickoutAfter(shiroCoreParameters.getKickoutAfter());
-        //同一个用户最大的会话数，默认5；比如5的意思是同一个用户允许最多同时五个人登录；
+        // 同一个用户最大的会话数，默认5；比如5的意思是同一个用户允许最多同时五个人登录；
         kickoutSessionControlFilter.setMaxSession(shiroCoreParameters.getMaxSession());
         // 设置缓存在线人数的key前缀
         kickoutSessionControlFilter.setOnlineUser(shiroCoreParameters.getShiroRedis().getPrefixOnline());
-        //被踢出后重定向到的地址；
-        kickoutSessionControlFilter.setKickoutUrl(getRequestPrefixAuthParams().getAuthServer() + "/tourist/kickout");
+        // 被踢出后重定向到的地址
+        kickoutSessionControlFilter.setKickoutUrl(shiroCoreParameters.getKickOut());
         return kickoutSessionControlFilter;
     }
 
-    @Bean
-    RequestPrefixAuthParams getRequestPrefixAuthParams() {
-        return new RequestPrefixAuthParams();
+    private ShiroCoreParameters getShiroCoreParameters() {
+        return SpringUtil.getBean("shiroCoreParameters", ShiroCoreParameters.class);
     }
 
 }

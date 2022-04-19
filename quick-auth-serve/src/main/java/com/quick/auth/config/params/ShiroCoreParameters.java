@@ -66,6 +66,21 @@ public class ShiroCoreParameters {
     private String tokenValuePrefix = "";
 
     /**
+     * 未登录 重定向地址
+     */
+    private String noLogin = "/tourist/noLogin";
+
+    /**
+     * 没有权限 重定向地址
+     */
+    private String noAuth = "/tourist/noAuth";
+
+    /**
+     * 踢出 重定向地址
+     */
+    private String kickOut = "/tourist/kickout";
+
+    /**
      * shiroRedis参数
      */
     private ShiroRedis shiroRedis = new ShiroRedis();
@@ -102,7 +117,7 @@ public class ShiroCoreParameters {
         /**
          * 其它信息缓存前缀
          */
-            private String prefixOther = "system_name:shiro:";
+        private String prefixOther = "system_name:shiro:";
     }
 
 }

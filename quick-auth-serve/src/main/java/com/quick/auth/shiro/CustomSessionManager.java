@@ -1,11 +1,11 @@
 package com.quick.auth.shiro;
 
+import cn.hutool.extra.spring.SpringUtil;
 import com.alibaba.druid.util.StringUtils;
 import com.quick.auth.config.params.ShiroCoreParameters;
 import org.apache.shiro.web.servlet.ShiroHttpServletRequest;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.apache.shiro.web.util.WebUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -18,9 +18,6 @@ import java.io.Serializable;
  */
 public class CustomSessionManager extends DefaultWebSessionManager {
 
-    @Autowired
-    ShiroCoreParameters shiroCoreParameters;
-
     /**
      * 头信息中具有sessionid
      * 请求头：Authorization： sessionid
@@ -28,6 +25,7 @@ public class CustomSessionManager extends DefaultWebSessionManager {
      */
     @Override
     protected Serializable getSessionId(ServletRequest request, ServletResponse response) {
+        ShiroCoreParameters shiroCoreParameters = SpringUtil.getBean("shiroCoreParameters", ShiroCoreParameters.class);
         // 获取请求头Authorization中的数据
         String id = WebUtils.toHttp(request).getHeader(shiroCoreParameters.getTokenKey());
         if (StringUtils.isEmpty(id)) {

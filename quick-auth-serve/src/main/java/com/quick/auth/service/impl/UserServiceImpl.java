@@ -1,14 +1,14 @@
 package com.quick.auth.service.impl;
 
+import cn.hutool.extra.spring.SpringUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.quick.auth.config.shiro.ShiroConfig;
+import com.quick.auth.config.params.ShiroCoreParameters;
 import com.quick.auth.entity.User;
 import com.quick.auth.entity.UserRole;
 import com.quick.auth.mapper.UserMapper;
 import com.quick.auth.mapper.UserRoleMapper;
 import com.quick.auth.service.UserService;
-import com.quick.auth.config.params.ShiroCoreParameters;
 import com.quick.auth.shiro.filter.KickoutSessionControlFilter;
 import com.quick.auth.shiro.realm.UserRealm;
 import com.quick.auth.utils.ShiroUtil;
@@ -37,9 +37,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     ShiroCoreParameters shiroCoreParameters;
 
-    @Autowired
-    ShiroConfig shiroConfig;
-
     @Override
     public User findUserSimpleInfoByUsername(String username) {
         return userMapper.findUserSimpleInfoByUsername(username, CoreConst.STATUS_VALID);
@@ -66,8 +63,9 @@ public class UserServiceImpl implements UserService {
         user.setStatus(CoreConst.STATUS_VALID);
         List<User> users = userMapper.findUsers(user);
 
+        KickoutSessionControlFilter kickoutSessionControlFilter =
+                SpringUtil.getBean("kickoutSessionControlFilter", KickoutSessionControlFilter.class);
         // 设置用户在线情况
-        KickoutSessionControlFilter kickoutSessionControlFilter = shiroConfig.kickoutSessionControlFilter(shiroCoreParameters);
         for (User userInfo : users) {
             String username = userInfo.getUsername();
             LinkedList<Serializable> chcheOnlineUser = kickoutSessionControlFilter.getChcheOnlineUser(username);
@@ -122,13 +120,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getLoginUserAllInfo() {
         String loginUserId = ShiroUtil.getLoginUserId();
-        if(null == loginUserId){
+        if (null == loginUserId) {
             return null;
         }
         User userInfo = userMapper.findUserAndRoleByUserId(loginUserId, CoreConst.STATUS_VALID);
 
         // 获取用户在线情况
-        KickoutSessionControlFilter kickoutSessionControlFilter = shiroConfig.kickoutSessionControlFilter(shiroCoreParameters);
+        KickoutSessionControlFilter kickoutSessionControlFilter =
+                SpringUtil.getBean("kickoutSessionControlFilter", KickoutSessionControlFilter.class);
         LinkedList<Serializable> chcheOnlineUser = kickoutSessionControlFilter.getChcheOnlineUser(userInfo.getUsername());
         if (chcheOnlineUser == null || chcheOnlineUser.size() <= 0) {
             // 不在线
@@ -143,8 +142,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public void kickout(String userIds) {
         String[] userIdArray = userIds.split(",");
-        KickoutSessionControlFilter kickoutSessionControlFilter = shiroConfig.kickoutSessionControlFilter(shiroCoreParameters);
 
+        KickoutSessionControlFilter kickoutSessionControlFilter =
+                SpringUtil.getBean("kickoutSessionControlFilter", KickoutSessionControlFilter.class);
         for (String userIdVal : userIdArray) {
             User user = userMapper.findUserByUserId(userIdVal, CoreConst.STATUS_VALID);
             // 获取在线用户的令牌，并删除认证信息

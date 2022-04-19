@@ -1,5 +1,6 @@
 package com.quick.auth.controller;
 
+import cn.hutool.extra.spring.SpringUtil;
 import com.github.pagehelper.PageInfo;
 import com.quick.auth.config.params.ShiroCoreParameters;
 import com.quick.auth.dto.ChangePasswordDTO;
@@ -40,9 +41,6 @@ public class UserController {
 
     @Autowired
     UserService userService;
-
-    @Autowired
-    UserRealm userRealm;
 
     @Autowired
     ShiroCoreParameters shiroCoreParameters;
@@ -177,6 +175,7 @@ public class UserController {
         }
         List<String> userIds = new ArrayList<>();
         userIds.add(userId);
+        UserRealm userRealm = SpringUtil.getBean("userRealm", UserRealm.class);
         userRealm.clearAuthorizationByUserId(userIds);
         return Result.ok("分配角色成功");
     }
@@ -256,6 +255,7 @@ public class UserController {
         //* 清除登录身份验证信息缓存 *//
         List<String> userIds = new ArrayList<>();
         userIds.add(loginUser.getUserId());
+        UserRealm userRealm = SpringUtil.getBean("userRealm", UserRealm.class);
         userRealm.removeCachedAuthenticationInfo(userIds);
         /*SecurityUtils.getSubject().logout();*/
         return Result.ok("修改密码成功");
