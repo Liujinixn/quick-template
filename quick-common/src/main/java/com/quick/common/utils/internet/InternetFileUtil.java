@@ -1,5 +1,7 @@
 package com.quick.common.utils.internet;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,6 +13,7 @@ import java.net.URL;
  *
  * @author Liujinxin
  */
+@Slf4j
 public class InternetFileUtil {
 
     /**
@@ -30,8 +33,7 @@ public class InternetFileUtil {
                 return inputStream;
             }
         } catch (IOException e) {
-            System.out.println("获取网络文件出现异常，url路径为：" + url);
-            e.printStackTrace();
+            log.warn("获取网络文件出现异常，url路径：{}", url, e);
         }
         return null;
     }
@@ -40,7 +42,7 @@ public class InternetFileUtil {
      * 根据地址获得数据的字节流
      *
      * @param strUrl 网络连接地址
-     * @return
+     * @return 字节数组
      */
     public static byte[] getImageFromNetByUrl(String strUrl) {
         try {
@@ -54,7 +56,7 @@ public class InternetFileUtil {
             byte[] btImg = readInputStream(inStream);
             return btImg;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warn("根据地址获得数据的字节流，url路径：{}", strUrl, e);
         }
         return null;
     }
@@ -63,7 +65,7 @@ public class InternetFileUtil {
      * 从输入流中获取数据
      *
      * @param inStream 输入流
-     * @return
+     * @return 字节数据
      * @throws Exception
      */
     public static byte[] readInputStream(InputStream inStream) throws Exception {
