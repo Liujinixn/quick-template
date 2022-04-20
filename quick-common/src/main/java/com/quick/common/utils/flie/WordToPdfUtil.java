@@ -3,6 +3,7 @@ package com.quick.common.utils.flie;
 import com.aspose.words.Document;
 import com.aspose.words.License;
 import com.aspose.words.SaveFormat;
+import com.quick.common.utils.flie.detail.WordTemplateUtil;
 import com.quick.common.utils.flie.dto.ImagesAttr;
 import com.quick.common.utils.flie.dto.TableAttr;
 import com.quick.common.utils.flie.dto.WordTemplateVariable;
@@ -39,6 +40,18 @@ public class WordToPdfUtil {
      * pdf文件后缀 | 临时文件后缀名
      */
     private static final String PDF_FILE_FORMAT_SUFFIX_NAME = ".pdf";
+
+    /**
+     * Word文档转PDF
+     *
+     * @param doc Word文档对象
+     * @return PDF文件字节数组
+     */
+    public static byte[] wordToPdf(XWPFDocument doc) {
+        ByteArrayOutputStream outputStream = pdfConverter(doc);
+        FileBaseUtil.close(outputStream);
+        return outputStream.toByteArray();
+    }
 
     /**
      * 根据指定的word模板文件，生成PDF文件
@@ -117,7 +130,7 @@ public class WordToPdfUtil {
      */
     private static byte[] wordTemplateGeneratePdf(String templateName, Map<String, Object> params) {
         // 读取本地Word模板文件
-        ClassPathResource classPathResource = new ClassPathResource(WordUtil.TEMPLATE_FILE_PATH + templateName);
+        ClassPathResource classPathResource = new ClassPathResource(WordTemplateUtil.TEMPLATE_FILE_PATH + templateName);
         InputStream source = null;
         ByteArrayOutputStream outputStream;
         XWPFDocument doc = null;
@@ -128,9 +141,9 @@ public class WordToPdfUtil {
             log.error("读取|解析模板文件失败, wordTemplateFileName = {}", templateName, e);
         }
         // 替换变量占位符 ${xxx}格式，如：${name}
-        WordUtil.replaceInParagraph(doc, params);
+        WordTemplateUtil.replaceInParagraph(doc, params);
         //替换表格里面的变量
-        WordUtil.replaceInTable(doc, params);
+        WordTemplateUtil.replaceInTable(doc, params);
 
         // 转换为 PDF文件输出流
         outputStream = pdfConverter(doc);
