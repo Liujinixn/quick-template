@@ -15,6 +15,9 @@ SpringBoot多模块架构，争对企业级开发设计，已集成认证功能�
 
 ## 软件架构
 SpringBoot多模块 + shiro实现权限认证 + redis实现单点登录控制（可控制账户同时在线人数）+ Swagger文档
+
+![架构](https://img-blog.csdnimg.cn/144c196ab27c4eba9e5fcddcfb1d0a73.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAQXJr5pa56Iif,size_20,color_FFFFFF,t_70,g_se,x_16)
+
 ![<img src>](https://img-blog.csdnimg.cn/0a8003279fed4b919a9cd11a11030069.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAQXJr5pa56Iif,size_20,color_FFFFFF,t_70,g_se,x_16)
 
 <br>
