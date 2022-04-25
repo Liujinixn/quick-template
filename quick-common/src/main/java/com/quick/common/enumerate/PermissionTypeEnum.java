@@ -1,9 +1,11 @@
-package com.quick.enumerate;
+package com.quick.common.enumerate;
 
 import lombok.AllArgsConstructor;
 
 /**
  * 权限类型枚举
+ *
+ * @author Liujinxin
  */
 @AllArgsConstructor
 public enum PermissionTypeEnum {
@@ -14,9 +16,9 @@ public enum PermissionTypeEnum {
 
     BUTTON(2, "按钮");
 
-    private Integer code;
+    private final Integer code;
 
-    private String description;
+    private final String description;
 
     public Integer getCode() {
         return code;

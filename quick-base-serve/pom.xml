@@ -19,6 +19,11 @@
             <artifactId>quick-auth-serve</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>quick.file.serve</groupId>
+            <artifactId>quick-file-serve</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 </project>

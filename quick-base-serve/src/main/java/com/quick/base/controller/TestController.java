@@ -5,15 +5,23 @@ import com.quick.base.entity.FindDto;
 import com.quick.common.utils.redis.RedisClient;
 import com.quick.common.utils.validator.BeanValidatorUtil;
 import com.quick.common.vo.Result;
+import com.quick.file.enumerate.FileSuffixTypeEnum;
+import com.quick.file.service.FileStoreService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.security.spec.InvalidParameterSpecException;
 
 @Slf4j
@@ -27,6 +35,9 @@ public class TestController {
 
     @Autowired
     RedisClient redisClient;
+
+    @Autowired
+    FileStoreService ossClientServiceImpl;
 
     /**
      * 测试 日志记录
@@ -88,7 +99,7 @@ public class TestController {
      */
     @PostMapping("/testJsonParams")
     @ApiOperation(value = "测试接口-json格式入参-日志记录表")
-    public Result testJsonParams(@RequestBody FindDto findDto){
+    public Result testJsonParams(@RequestBody FindDto findDto) {
         return Result.ok(findDto);
     }
 
@@ -97,7 +108,7 @@ public class TestController {
      */
     @PostMapping("/testParams")
     @ApiOperation(value = "测试接口-普通格式入参-日志记录表")
-    public Result testParams(FindDto findDto){
+    public Result testParams(FindDto findDto) {
         return Result.ok(findDto);
     }
 
@@ -106,14 +117,55 @@ public class TestController {
      */
     @PostMapping("/testNoParams")
     @ApiOperation(value = "测试接口-post无参数-日志记录表")
-    public Result testNoParams(){
+    public Result testNoParams() {
+        return Result.ok(true);
+    }
+
+    @PostMapping("/uploadFileLog")
+    @ApiOperation(value = "测试接口-文件上传-日志记录表")
+    public Result uploadFileLog(MultipartFile file, HttpServletRequest req) {
         return Result.ok(true);
     }
 
     @PostMapping("/uploadFile")
-    @ApiOperation(value = "测试接口-文件上传-日志记录表")
-    public Result uploadFile(MultipartFile file, HttpServletRequest req) {
-        return Result.ok(true);
+    @ApiOperation(value = "测试接口-上传文件到oss")
+    public String uploadFile(MultipartFile file) throws IOException {
+        byte[] bytes = file.getBytes();
+        String type = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+        FileSuffixTypeEnum typeEnumBySuffix = FileSuffixTypeEnum.getTypeEnumBySuffix(type);
+        String fileName = ossClientServiceImpl.uploadByByte(bytes, typeEnumBySuffix);
+        return fileName;
+    }
+
+    @PostMapping("/getAccessUrl")
+    @ApiOperation(value = "测试接口-临时访问地址oss")
+    public String getAccessUrl(String fileId) throws IOException {
+        String accessUrl = ossClientServiceImpl.getAccessUrl(fileId);
+        return accessUrl;
+    }
+
+    @PostMapping("/getAccessUrlPermanent")
+    @ApiOperation(value = "测试接口-访问地址oss")
+    public String getAccessUrlPermanent(String fileId) throws IOException {
+        String accessUrl = ossClientServiceImpl.getAccessUrlPermanent(fileId);
+        return accessUrl;
+    }
+
+    @GetMapping("/downloadStream")
+    @ApiOperation(value = "测试接口-下载文件oss")
+    public ResponseEntity<byte[]> downloadStream(String fileId) {
+        byte[] bytes = null;
+        HttpHeaders headers = new HttpHeaders();
+        try {
+            headers.setContentDispositionFormData("attachment",
+                    new String(fileId.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1));
+            headers.add("Access-Control-Expose-Headers", "Content-Disposition");
+            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+            bytes = ossClientServiceImpl.downloadStream(fileId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
     }
 
 }

@@ -243,6 +243,7 @@
         <module>quick-auth-serve</module>
         <module>quick-base-serve</module>
         <module>quick-log-serve</module>
+        <module>quick-file-serve</module>
     </modules>
 
 </project>

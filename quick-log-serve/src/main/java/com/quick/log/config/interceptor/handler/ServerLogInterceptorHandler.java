@@ -14,8 +14,7 @@ import com.quick.log.entity.OperateLog;
 import com.quick.log.service.OperateLogService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -70,6 +69,10 @@ public class ServerLogInterceptorHandler implements HandlerInterceptor {
         log.info(">> 执行请求前拦截操作");
         log.info("Request请求前，当前系统时间记录Attribute[{}]中", REQUEST_START_TIME);
         request.setAttribute(REQUEST_START_TIME, System.currentTimeMillis());
+        if (ServletFileUpload.isMultipartContent(request)) {
+            // 上传文件的情况下，无需记录入参到 Attribute 中
+            return true;
+        }
         log.info("Request请求前，Json入参记录Attribute[{}]中", REQUEST_PARAMS);
         request.setAttribute(REQUEST_PARAMS, parseJsonParams(request));
         return true;
@@ -104,11 +107,7 @@ public class ServerLogInterceptorHandler implements HandlerInterceptor {
         operateLog.setOperatingAccount(userInfo.getUsername());
         // response 出参
         operateLog.setResponseContentType(response.getContentType());
-        if (APPLICATION_JSON.equals(response.getContentType())) {
-            operateLog.setResponseParams((String) request.getAttribute(RESPONSE_RESULT));
-        } else {
-            operateLog.setResponseParams("body could not be parsed, don't show.");
-        }
+        operateLog.setResponseParams(String.valueOf(request.getAttribute(RESPONSE_RESULT)));
         // 计算耗时
         long startTime = (long) request.getAttribute(REQUEST_START_TIME);
         long endTime = System.currentTimeMillis();

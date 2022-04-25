@@ -2,7 +2,7 @@ package com.quick.log.config.interceptor;
 
 import com.quick.auth.entity.Permission;
 import com.quick.auth.service.PermissionService;
-import com.quick.enumerate.PermissionTypeEnum;
+import com.quick.common.enumerate.PermissionTypeEnum;
 import com.quick.log.config.interceptor.handler.ServerLogInterceptorHandler;
 import com.quick.log.config.params.LogBackCoreParameters;
 import com.quick.log.config.params.RequestPrefixLogParams;

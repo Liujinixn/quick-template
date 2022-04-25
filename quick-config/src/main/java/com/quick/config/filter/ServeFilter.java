@@ -2,6 +2,7 @@ package com.quick.config.filter;
 
 import com.quick.config.filter.wrapper.RequestWrapper;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -28,6 +29,11 @@ public class ServeFilter implements Filter {
         log.info(">> 执行过滤操作");
         log.info("Request请求头信息包装（解决拦截器读取流后出现失效）");
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
+        if (ServletFileUpload.isMultipartContent(httpServletRequest)) {
+            // 存在上传文件，此时不重写 Requets
+            filterChain.doFilter(httpServletRequest, servletResponse);
+            return;
+        }
         ServletRequest requestWrapper = new RequestWrapper(httpServletRequest);
         filterChain.doFilter(requestWrapper, servletResponse);
     }

@@ -1,0 +1,21 @@
+# 文件上传相关配置
+spring:
+  servlet:
+    multipart:
+      # 单个文件最大大小
+      max-file-size: 100MB
+      # request 携带文件最大大小（一次请求携带文件总大小）
+      max-request-size: 1000MB
+
+# 阿里OSS云存储参数配置
+oss:
+  # endpoint Endpoint以北京为例，其它Region请按实际情况填写。
+  endpoint: oss-cn-beijing.aliyuncs.com
+  # 阿里云账号AccessKey拥有所有API的访问权限，风险很高。强烈建议您创建并使用RAM用户进行API访问或日常运维，请登录RAM控制台创建RAM用户。
+  access_key_id: LTAI5tPh3yDjA8WTwbinGYCD
+  # 访问密钥
+  access_key_secret: S3VXnGOPAHafEfjwOj91gSADocBYhB
+  # bucket
+  bucket: quick-file-serve
+  # 安全访问令牌
+  security_token:

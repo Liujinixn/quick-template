@@ -34,6 +34,11 @@
             <artifactId>quick-base-serve</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>quick.file.serve</groupId>
+            <artifactId>quick-file-serve</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
         <!--springboot web启动器-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

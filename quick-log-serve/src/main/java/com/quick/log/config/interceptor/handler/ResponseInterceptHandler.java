@@ -3,8 +3,6 @@ package com.quick.log.config.interceptor.handler;
 import com.alibaba.fastjson.JSON;
 import com.quick.common.vo.Result;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -28,6 +26,11 @@ import javax.servlet.http.HttpServletResponse;
 @ControllerAdvice
 public class ResponseInterceptHandler implements ResponseBodyAdvice<Object> {
 
+    /**
+     * 响应内容，最大限额容量，响应内存超过该限额，则内容不入库
+     */
+    private final int MAX_BYTE = 1024 * 3;
+
     @Override
     public boolean supports(MethodParameter methodParameter, Class<? extends HttpMessageConverter<?>> aClass) {
         return true;
@@ -46,18 +49,29 @@ public class ResponseInterceptHandler implements ResponseBodyAdvice<Object> {
         HttpServletResponse resp = responseTemp.getServletResponse();
         ServletServerHttpRequest sshr = (ServletServerHttpRequest) serverHttpRequest;
         HttpServletRequest req = sshr.getServletRequest();
-        // 此处的 Result 对象是我自定义的返回值类型,具体根据自己需求修改即可
+
+        // 判定返回为Json数据
         if (body instanceof Result) {
             Result result = (Result) body;
             if (result != null) {
-                /** 记录日志等操作，
-                 * 日志记录在 com.quick.log.config.interceptor.handler.ServerLogInterceptorHandler#afterCompletion() 中处理 **/
                 log.info("Response响应，Json出参信息写入Attribute[{}]中", ServerLogInterceptorHandler.RESPONSE_RESULT);
-                // 将Json出参信息 - 记录到 request attribute属性中传输到com.quick.log.config.interceptor.dealWith.RequestLogInterceptorDealWith.afterCompletion
-                req.setAttribute(ServerLogInterceptorHandler.RESPONSE_RESULT, JSON.toJSONString(result));
+                String jsonString = JSON.toJSONString(result);
+                req.setAttribute(ServerLogInterceptorHandler.RESPONSE_RESULT, jsonString);
             }
-            /** 这里可以对返回值进行修改二次封装等操作 **/
+            return body;
+        }
 
+        String jsonString = JSON.toJSONString(body);
+        // 判定响应内容数据量过大
+        if (jsonString.length() > MAX_BYTE) {
+            req.setAttribute(ServerLogInterceptorHandler.RESPONSE_RESULT, "body could not be parsed, don't show.");
+            return body;
+        }
+
+        // 判定为普通文本
+        if (jsonString.startsWith("\"") && jsonString.endsWith("\"")) {
+            int length = jsonString.length();
+            req.setAttribute(ServerLogInterceptorHandler.RESPONSE_RESULT, jsonString.substring(1, --length));
         }
         return body;
     }
