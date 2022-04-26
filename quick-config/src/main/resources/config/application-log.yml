@@ -6,8 +6,8 @@ log:
   accessLogFileEnable: true
   # enable为true时，系统会将鉴权的接口进行日志记录外，同时可以配置特定的接口也进行日志记录
   recordSpecificPathList:
-  #  - path: ${request.prefix.auth_server}/tourist/login
-  #    description: 系统登录
+    - path: ${request.prefix.auth_server}/tourist/login
+      description: 系统登录
   # 日志文件保存路径
   path: ../log/${spring.application.name}
   # 通过API接口查询日志文件密钥，多个参数使用逗号隔开 （get请求，携带参数 access_key=${access_key} 即可）
