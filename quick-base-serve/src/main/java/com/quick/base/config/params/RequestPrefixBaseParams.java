@@ -15,8 +15,10 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 @NoArgsConstructor
 @Component
-@ConfigurationProperties(prefix = "request.prefix")
+@ConfigurationProperties(prefix = RequestPrefixBaseParams.REQUEST_PREFIX)
 public class RequestPrefixBaseParams {
+
+    public static final String REQUEST_PREFIX = "request.prefix";
 
     /**
      * base服务前缀

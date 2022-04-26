@@ -37,7 +37,7 @@ public class TestController {
     RedisClient redisClient;
 
     @Autowired
-    FileStoreService ossClientServiceImpl;
+    FileStoreService ossClientService;
 
     /**
      * 测试 日志记录
@@ -133,21 +133,21 @@ public class TestController {
         byte[] bytes = file.getBytes();
         String type = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
         FileSuffixTypeEnum typeEnumBySuffix = FileSuffixTypeEnum.getTypeEnumBySuffix(type);
-        String fileName = ossClientServiceImpl.uploadByByte(bytes, typeEnumBySuffix);
+        String fileName = ossClientService.uploadByByte(bytes, typeEnumBySuffix);
         return fileName;
     }
 
     @PostMapping("/getAccessUrl")
     @ApiOperation(value = "测试接口-临时访问地址oss")
     public String getAccessUrl(String fileId) throws IOException {
-        String accessUrl = ossClientServiceImpl.getAccessUrl(fileId);
+        String accessUrl = ossClientService.getAccessUrl(fileId);
         return accessUrl;
     }
 
     @PostMapping("/getAccessUrlPermanent")
     @ApiOperation(value = "测试接口-访问地址oss")
     public String getAccessUrlPermanent(String fileId) throws IOException {
-        String accessUrl = ossClientServiceImpl.getAccessUrlPermanent(fileId);
+        String accessUrl = ossClientService.getAccessUrlPermanent(fileId);
         return accessUrl;
     }
 
@@ -161,7 +161,7 @@ public class TestController {
                     new String(fileId.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1));
             headers.add("Access-Control-Expose-Headers", "Content-Disposition");
             headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-            bytes = ossClientServiceImpl.downloadStream(fileId);
+            bytes = ossClientService.downloadStream(fileId);
         } catch (Exception e) {
             e.printStackTrace();
         }

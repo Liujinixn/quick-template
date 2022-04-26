@@ -15,8 +15,12 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 @NoArgsConstructor
 @Component
-@ConfigurationProperties(prefix = "request.prefix")
+@ConfigurationProperties(
+        prefix = RequestPrefixAuthParams.REQUEST_PREFIX
+)
 public class RequestPrefixAuthParams {
+
+    public static final String REQUEST_PREFIX = "request.prefix";
 
     /**
      * auth服务前缀

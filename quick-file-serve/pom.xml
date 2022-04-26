@@ -9,6 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <!-- 如果以SDK包的方式引入该工程，请配置 OssStorageCoreParameters 注入容器 -->
     <groupId>quick.file.serve</groupId>
     <artifactId>quick-file-serve</artifactId>
     <version>0.0.1-SNAPSHOT</version>

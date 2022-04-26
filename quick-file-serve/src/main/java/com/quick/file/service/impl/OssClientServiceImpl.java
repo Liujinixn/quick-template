@@ -27,7 +27,7 @@ import java.util.Date;
  * @author Liujinxin
  */
 @Slf4j
-@Service
+@Service("ossClientService")
 public class OssClientServiceImpl implements FileStoreService {
 
     @Autowired
@@ -46,7 +46,8 @@ public class OssClientServiceImpl implements FileStoreService {
                 ossStorageCoreParameters.getAccessKeySecret());
         try {
             // 创建PutObjectRequest对象。
-            PutObjectRequest putObjectRequest = new PutObjectRequest(ossStorageCoreParameters.getBucket(), fileName, new ByteArrayInputStream(content));
+            PutObjectRequest putObjectRequest = new PutObjectRequest(
+                    ossStorageCoreParameters.getBucket(), fileName, new ByteArrayInputStream(content));
             // 指定上传文件操作时是否覆盖同名Object。
             // 不指定x-oss-forbid-overwrite时，默认覆盖同名Object。
             // 指定x-oss-forbid-overwrite为false时，表示允许覆盖同名Object。

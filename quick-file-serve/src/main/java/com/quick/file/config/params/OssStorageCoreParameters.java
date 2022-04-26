@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 
 /**
  * OSS 初始化核心参数
+ *
+ * @author Liujinxin
  */
 @Data
 @AllArgsConstructor
