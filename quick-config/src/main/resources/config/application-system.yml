@@ -17,3 +17,13 @@ request:
     auth_server: /auth-server-api
     log_server: /log-server-api
     base_server: /base-server-api
+
+# 系统日志输出控制
+logging:
+  # 关闭 PostProcessorRegistrationDelegate 类下的输出日志
+  level:
+    org:
+      springframework:
+        context:
+          support:
+            PostProcessorRegistrationDelegate: off
