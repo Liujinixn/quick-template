@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /**
- * OSS 初始化核心参数
+ * OSS存储 初始化核心参数
  *
  * @author Liujinxin
  */
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 )
 public class OssStorageCoreParameters {
 
-    public static final String OSS_PARAMETER_PREFIX = "oss";
+    public static final String OSS_PARAMETER_PREFIX = "storage.oss";
 
     /**
      * 访问路径中的 Bucket

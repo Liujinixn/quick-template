@@ -8,18 +8,21 @@ spring:
       max-request-size: 1000MB
 
 # 阿里OSS云存储参数配置
-oss:
-  # 访问路径中的Bucket
-  bucket: quick-file-serve
-  # 外网Endpoint
-  endpoint: oss-cn-beijing.aliyuncs.com
-  # Region ID
-  region_id: cn-beijing
-  # 密钥ID
-  access_key_id: LTAI5tPh3yDjA8WTwbinGYCD
-  # 密钥
-  access_key_secret: S3VXnGOPAHafEfjwOj91gSADocBYhB
-  # 角色名称
-  role_session_name: quick-file-serve
-  # 角色ARN
-  role_arn: acs:ram::1954506457702280:role/quick-file-serve
+storage:
+  oss:
+    # 访问路径中的Bucket
+    bucket: quick-file-serve
+    # 外网Endpoint
+    endpoint: oss-cn-beijing.aliyuncs.com
+    # Region ID
+    region_id: cn-beijing
+    # 密钥ID
+    access_key_id: LTAI5tPh3yDjA8WTwbinGYCD
+    # 密钥
+    access_key_secret: S3VXnGOPAHafEfjwOj91gSADocBYhB
+    # 角色名称
+    role_session_name: quick-file-serve
+    # 角色ARN
+    role_arn: acs:ram::1954506457702280:role/quick-file-serve
+  local:
+    path: /file
