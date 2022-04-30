@@ -7,7 +7,6 @@ import com.quick.auth.entity.User;
 import com.quick.auth.service.PermissionService;
 import com.quick.auth.service.UserService;
 import com.quick.common.utils.ip.IpUtil;
-import com.quick.common.utils.redis.RedisClient;
 import com.quick.log.config.params.LogBackCoreParameters;
 import com.quick.log.config.params.internal.RecordSpecificPathInfo;
 import com.quick.log.entity.OperateLog;
@@ -51,9 +50,6 @@ public class ServerLogInterceptorHandler implements HandlerInterceptor {
 
     @Autowired
     UserService userService;
-
-    @Autowired
-    RedisClient redisClient;
 
     @Autowired
     PermissionService permissionService;

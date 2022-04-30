@@ -9,6 +9,7 @@ spring:
 
 # 阿里OSS云存储参数配置
 storage:
+  way: oss
   oss:
     # 访问路径中的Bucket
     bucket: quick-file-serve

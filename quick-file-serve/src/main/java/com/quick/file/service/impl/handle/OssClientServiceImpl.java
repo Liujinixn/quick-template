@@ -1,4 +1,4 @@
-package com.quick.file.service.impl;
+package com.quick.file.service.impl.handle;
 
 import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.date.DateUtil;
@@ -36,7 +36,7 @@ import java.util.List;
 @Service("ossClientService")
 public class OssClientServiceImpl implements FileStoreService {
 
-    @Autowired(required = false)
+    @Autowired
     OssStorageCoreParameters ossStorageCoreParameters;
 
     @Override

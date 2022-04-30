@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.context.annotation.Lazy;
 
 import javax.servlet.Filter;
 import java.util.LinkedHashMap;
@@ -38,6 +39,7 @@ public class ShiroConfig {
      * 安全对象  DefaultWebSecurityManager
      */
     @Bean(name = "securityManager")
+    @Lazy
     public DefaultWebSecurityManager getDefaultWebSecurityManager(@Qualifier("userRealm") UserRealm userRealm) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         // 关联UserRealm
@@ -65,6 +67,7 @@ public class ShiroConfig {
      * user	                用户拦截器	    11	            用户拦截器，用户已经身份验证 / 记住我登录的都可 - org.apache.shiro.web.filter.authc.UserFilter
      */
     @Bean
+    @Lazy
     public ShiroFilterFactoryBean getShiroFilterFactoryBean(@Qualifier("securityManager") DefaultWebSecurityManager defaultWebSecurityManager,
                                                             @Qualifier("shiroService") ShiroService shiroService) {
         ShiroFilterFactoryBean bean = new ShiroFilterFactoryBean();
@@ -91,6 +94,7 @@ public class ShiroConfig {
      * 创建 Realm对象 ，需要自定义Realm
      */
     @Bean
+    @Lazy
     public UserRealm userRealm(@Qualifier("hashedCredentialsMatcher") HashedCredentialsMatcher hashedCredentialsMatcher) {
         UserRealm userRealm = new UserRealm();
         userRealm.setCredentialsMatcher(hashedCredentialsMatcher);
@@ -101,6 +105,7 @@ public class ShiroConfig {
      * MD5加密
      */
     @Bean
+    @Lazy
     public HashedCredentialsMatcher hashedCredentialsMatcher() {
         ShiroCoreParameters shiroCoreParameters = getShiroCoreParameters();
         HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
@@ -113,6 +118,7 @@ public class ShiroConfig {
      * 会话管理器
      */
     @Bean
+    @Lazy
     public DefaultWebSessionManager sessionManager() {
         CustomSessionManager sessionManager = new CustomSessionManager();
         ShiroCoreParameters shiroCoreParameters = getShiroCoreParameters();
@@ -140,6 +146,7 @@ public class ShiroConfig {
      * 配置具体cache实现类
      */
     @Bean
+    @Lazy
     public RedisCacheManager cacheManager() {
         ShiroCoreParameters shiroCoreParameters = getShiroCoreParameters();
         RedisCacheManager redisCacheManager = new RedisCacheManager();
@@ -155,6 +162,7 @@ public class ShiroConfig {
      * 自定义session持久化
      */
     @Bean
+    @Lazy
     public RedisSessionDAO redisSessionDAO() {
         ShiroCoreParameters shiroCoreParameters = getShiroCoreParameters();
         RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
@@ -169,20 +177,9 @@ public class ShiroConfig {
      * 管理shiro一些bean的生命周期 即bean初始化 与销毁
      */
     @Bean
+    @Lazy
     public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
         return new LifecycleBeanPostProcessor();
-    }
-
-    /**
-     * 加入注解的使用，不加入这个AOP注解不生效(shiro的注解 例如 @RequiresGuest , 但是 一般使用配置文件的方式)
-     */
-    @Bean
-    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor() {
-        DefaultWebSecurityManager defaultWebSecurityManager = new DefaultWebSecurityManager();
-        AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new
-                AuthorizationAttributeSourceAdvisor();
-        authorizationAttributeSourceAdvisor.setSecurityManager(defaultWebSecurityManager);
-        return authorizationAttributeSourceAdvisor;
     }
 
     /**
@@ -190,12 +187,26 @@ public class ShiroConfig {
      * 要在LifecycleBeanPostProcessor创建后才可以创建
      */
     @Bean
+    @Lazy
     @DependsOn("lifecycleBeanPostProcessor")
     public DefaultAdvisorAutoProxyCreator getDefaultAdvisorAutoProxyCreator() {
         DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator = new
                 DefaultAdvisorAutoProxyCreator();
         defaultAdvisorAutoProxyCreator.setUsePrefix(true);
         return defaultAdvisorAutoProxyCreator;
+    }
+
+    /**
+     * 加入注解的使用，不加入这个AOP注解不生效(shiro的注解 例如 @RequiresGuest , 但是 一般使用配置文件的方式)
+     */
+    @Bean
+    @Lazy
+    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor() {
+        DefaultWebSecurityManager defaultWebSecurityManager = new DefaultWebSecurityManager();
+        AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new
+                AuthorizationAttributeSourceAdvisor();
+        authorizationAttributeSourceAdvisor.setSecurityManager(defaultWebSecurityManager);
+        return authorizationAttributeSourceAdvisor;
     }
 
     /**

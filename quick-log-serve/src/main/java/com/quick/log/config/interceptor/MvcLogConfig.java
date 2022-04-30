@@ -3,11 +3,13 @@ package com.quick.log.config.interceptor;
 import com.quick.auth.entity.Permission;
 import com.quick.auth.service.PermissionService;
 import com.quick.common.enumerate.PermissionTypeEnum;
+import com.quick.common.utils.redis.RedisClient;
 import com.quick.log.config.interceptor.handler.ServerLogInterceptorHandler;
 import com.quick.log.config.params.LogBackCoreParameters;
 import com.quick.log.config.params.RequestPrefixLogParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 

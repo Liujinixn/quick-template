@@ -6,7 +6,10 @@ import com.quick.auth.service.PermissionService;
 import com.quick.auth.utils.ShiroUtil;
 import com.quick.auth.vo.MenuVo;
 import com.quick.common.utils.constant.CoreConst;
+import com.quick.common.utils.constant.RedisDataCacheKey;
+import com.quick.common.utils.redis.RedisClient;
 import com.quick.common.utils.uuid.UUIDUtil;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,9 +22,18 @@ public class PermissionServiceImpl implements PermissionService {
     @Autowired
     private PermissionMapper permissionMapper;
 
+    @Autowired
+    RedisClient redisClient;
+
     @Override
     public List<Permission> findAllPermissionList() {
-        return permissionMapper.findAllPermissionList(CoreConst.STATUS_VALID);
+        List<Permission> permissionList = (List<Permission>) redisClient.get(RedisDataCacheKey.PERMISSION_ALL);
+        if (CollectionUtils.isNotEmpty(permissionList)) {
+            return permissionList;
+        }
+        permissionList = permissionMapper.findAllPermissionList(CoreConst.STATUS_VALID);
+        redisClient.set(RedisDataCacheKey.PERMISSION_ALL, permissionList, RedisDataCacheKey.EXPIRED_TEN_MINUTE);
+        return permissionList;
     }
 
     @Override

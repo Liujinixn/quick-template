@@ -1,7 +1,8 @@
-package com.quick.file.service.impl;
+package com.quick.file.service.impl.handle;
 
 import com.quick.file.enumerate.FileSuffixTypeEnum;
 import com.quick.file.service.FileStoreService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 /**
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
  *
  * @author Liujinxin
  */
+@Slf4j
 @Service("localClientService")
 public class LocalClientServiceImpl implements FileStoreService {
 

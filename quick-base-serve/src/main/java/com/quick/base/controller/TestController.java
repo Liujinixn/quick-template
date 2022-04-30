@@ -35,10 +35,7 @@ public class TestController {
     UserService userService;
 
     @Autowired
-    RedisClient redisClient;
-
-    @Autowired
-    FileStoreService ossClientService;
+    FileStoreService fileStoreService;
 
     /**
      * 测试 日志记录
@@ -134,21 +131,21 @@ public class TestController {
         byte[] bytes = file.getBytes();
         String type = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
         FileSuffixTypeEnum typeEnumBySuffix = FileSuffixTypeEnum.getTypeEnumBySuffix(type);
-        String fileName = ossClientService.uploadByByte(bytes, typeEnumBySuffix);
+        String fileName = fileStoreService.uploadByByte(bytes, typeEnumBySuffix);
         return fileName;
     }
 
     @PostMapping("/getAccessUrl")
     @ApiOperation(value = "测试接口-临时访问地址oss")
     public String getAccessUrl(String fileId) throws IOException {
-        String accessUrl = ossClientService.getAccessUrl(fileId, 20L);
+        String accessUrl = fileStoreService.getAccessUrl(fileId, 20L);
         return accessUrl;
     }
 
     @PostMapping("/getAccessUrlPermanent")
     @ApiOperation(value = "测试接口-访问地址oss")
     public String getAccessUrlPermanent(String fileId) throws IOException {
-        String accessUrl = ossClientService.getAccessUrl(fileId);
+        String accessUrl = fileStoreService.getAccessUrl(fileId);
         return accessUrl;
     }
 
@@ -162,7 +159,7 @@ public class TestController {
                     new String(fileId.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1));
             headers.add("Access-Control-Expose-Headers", "Content-Disposition");
             headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-            bytes = ossClientService.downloadStream(fileId);
+            bytes = fileStoreService.downloadStream(fileId);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -172,13 +169,13 @@ public class TestController {
     @GetMapping("/deleteFile")
     @ApiOperation(value = "测试接口-删除文件oss")
     public Object deleteFile(@RequestParam("fileId") List<String> fileIdList) {
-        return ossClientService.deleteFile(fileIdList.toArray(new String[]{}));
+        return fileStoreService.deleteFile(fileIdList.toArray(new String[]{}));
     }
 
     @GetMapping("/doesFileExist")
     @ApiOperation(value = "测试接口-检查文件是否存在oss")
     public Object doesFileExist(String fileId) {
-        return ossClientService.doesFileExist(fileId);
+        return fileStoreService.doesFileExist(fileId);
     }
 
 }
