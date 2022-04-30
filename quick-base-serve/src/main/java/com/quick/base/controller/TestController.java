@@ -23,6 +23,7 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.spec.InvalidParameterSpecException;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -140,14 +141,14 @@ public class TestController {
     @PostMapping("/getAccessUrl")
     @ApiOperation(value = "测试接口-临时访问地址oss")
     public String getAccessUrl(String fileId) throws IOException {
-        String accessUrl = ossClientService.getAccessUrl(fileId);
+        String accessUrl = ossClientService.getAccessUrl(fileId, 20L);
         return accessUrl;
     }
 
     @PostMapping("/getAccessUrlPermanent")
     @ApiOperation(value = "测试接口-访问地址oss")
     public String getAccessUrlPermanent(String fileId) throws IOException {
-        String accessUrl = ossClientService.getAccessUrlPermanent(fileId);
+        String accessUrl = ossClientService.getAccessUrl(fileId);
         return accessUrl;
     }
 
@@ -166,6 +167,18 @@ public class TestController {
             e.printStackTrace();
         }
         return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/deleteFile")
+    @ApiOperation(value = "测试接口-删除文件oss")
+    public Object deleteFile(@RequestParam("fileId") List<String> fileIdList) {
+        return ossClientService.deleteFile(fileIdList.toArray(new String[]{}));
+    }
+
+    @GetMapping("/doesFileExist")
+    @ApiOperation(value = "测试接口-检查文件是否存在oss")
+    public Object doesFileExist(String fileId) {
+        return ossClientService.doesFileExist(fileId);
     }
 
 }

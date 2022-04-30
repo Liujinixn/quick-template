@@ -26,6 +26,7 @@ shiro:
   excludeAuthPathList:
     - ${request.prefix.auth_server}/tourist/**
     - ${request.prefix.log_server}/logback/**
+    - ${request.prefix.base_server}/test/**
   # shiro-redis相关参数配置
   shiro-redis:
     host: ${spring.redis.host}:${spring.redis.port}

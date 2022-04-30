@@ -12,6 +12,7 @@ public enum FileSuffixTypeEnum {
 
     JPG("jpg", ".jpg"),
     PNG("png", ".png"),
+    JPEG("jpeg", ".jpeg"),
     TXT("txt", ".txt");
 
     /**
