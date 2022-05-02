@@ -1,5 +1,6 @@
 package com.quick.file.service.impl;
 
+import cn.hutool.extra.spring.SpringUtil;
 import com.quick.file.enumerate.FileSuffixTypeEnum;
 import com.quick.file.service.FileStoreService;
 import com.quick.file.service.impl.handle.LocalClientServiceImpl;
@@ -7,6 +8,7 @@ import com.quick.file.service.impl.handle.OssClientServiceImpl;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,7 +23,7 @@ public class FileStoreServiceImpl implements FileStoreService {
     /**
      * 自定义存储方式处理集合
      */
-    private static final Map<String, FileStoreService> handleWayMap = new HashMap<>();
+    private final Map<String, FileStoreService> handleWayMap = new HashMap<>();
 
     /**
      * 存储方式
@@ -29,9 +31,10 @@ public class FileStoreServiceImpl implements FileStoreService {
     @Value("${storage.way}")
     private String way;
 
-    static {
-        handleWayMap.put("oss", new OssClientServiceImpl());
-        handleWayMap.put("local", new LocalClientServiceImpl());
+    @PostConstruct
+    public void init() {
+        handleWayMap.put("oss", SpringUtil.getBean("ossClientService", OssClientServiceImpl.class));
+        handleWayMap.put("local", SpringUtil.getBean("localClientService", LocalClientServiceImpl.class));
     }
 
     @Override

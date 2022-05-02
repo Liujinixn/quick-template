@@ -43,7 +43,7 @@ public class OssClientServiceImpl implements FileStoreService {
     public String uploadByByte(byte[] content, FileSuffixTypeEnum fileSuffixTypeEnum) {
         String now = DateUtil.format(new Date(), "yyyy/MM/dd");
         // 填写Object完整路径，完整路径中不能包含Bucket名称，例如exampledir/exampleobject.txt。
-        String fileName = now + IdUtil.simpleUUID() + fileSuffixTypeEnum.getDescription();
+        String fileName = now + "/" + IdUtil.simpleUUID() + fileSuffixTypeEnum.getDescription();
 
         // 创建OSSClient实例。
         OSS ossClient = new OSSClientBuilder().build(

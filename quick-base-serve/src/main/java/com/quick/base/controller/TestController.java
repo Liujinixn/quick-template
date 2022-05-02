@@ -1,5 +1,7 @@
 package com.quick.base.controller;
 
+import cn.hutool.core.io.FileTypeUtil;
+import cn.hutool.core.io.FileUtil;
 import com.quick.auth.service.UserService;
 import com.quick.base.entity.FindDto;
 import com.quick.common.utils.redis.RedisClient;
@@ -20,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.spec.InvalidParameterSpecException;
@@ -126,7 +129,7 @@ public class TestController {
     }
 
     @PostMapping("/uploadFile")
-    @ApiOperation(value = "测试接口-上传文件到oss")
+    @ApiOperation(value = "测试接口-上传文件到")
     public String uploadFile(MultipartFile file) throws IOException {
         byte[] bytes = file.getBytes();
         String type = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
@@ -136,21 +139,21 @@ public class TestController {
     }
 
     @PostMapping("/getAccessUrl")
-    @ApiOperation(value = "测试接口-临时访问地址oss")
+    @ApiOperation(value = "测试接口-临时访问地址")
     public String getAccessUrl(String fileId) throws IOException {
         String accessUrl = fileStoreService.getAccessUrl(fileId, 20L);
         return accessUrl;
     }
 
     @PostMapping("/getAccessUrlPermanent")
-    @ApiOperation(value = "测试接口-访问地址oss")
+    @ApiOperation(value = "测试接口-访问地址")
     public String getAccessUrlPermanent(String fileId) throws IOException {
         String accessUrl = fileStoreService.getAccessUrl(fileId);
         return accessUrl;
     }
 
     @GetMapping("/downloadStream")
-    @ApiOperation(value = "测试接口-下载文件oss")
+    @ApiOperation(value = "测试接口-下载文件")
     public ResponseEntity<byte[]> downloadStream(String fileId) {
         byte[] bytes = null;
         HttpHeaders headers = new HttpHeaders();
@@ -167,13 +170,13 @@ public class TestController {
     }
 
     @GetMapping("/deleteFile")
-    @ApiOperation(value = "测试接口-删除文件oss")
+    @ApiOperation(value = "测试接口-删除文件")
     public Object deleteFile(@RequestParam("fileId") List<String> fileIdList) {
         return fileStoreService.deleteFile(fileIdList.toArray(new String[]{}));
     }
 
     @GetMapping("/doesFileExist")
-    @ApiOperation(value = "测试接口-检查文件是否存在oss")
+    @ApiOperation(value = "测试接口-检查文件是否存在")
     public Object doesFileExist(String fileId) {
         return fileStoreService.doesFileExist(fileId);
     }

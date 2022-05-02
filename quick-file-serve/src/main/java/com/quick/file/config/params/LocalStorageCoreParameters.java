@@ -20,11 +20,17 @@ import org.springframework.stereotype.Component;
 )
 public class LocalStorageCoreParameters {
 
-    public static final String LOCAL_PARAMETER_PREFIX = "local.oss";
+    public static final String LOCAL_PARAMETER_PREFIX = "storage.local";
 
     /**
      * 本地存储根路径位置
      */
     private String path;
 
+    public void setPath(String path) {
+        if (!path.endsWith("/")) {
+            path = path + "/";
+        }
+        this.path = path;
+    }
 }
