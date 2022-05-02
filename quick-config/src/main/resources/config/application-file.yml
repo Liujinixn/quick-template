@@ -26,4 +26,7 @@ storage:
     # 角色ARN
     role_arn: acs:ram::1954506457702280:role/quick-file-serve
   local:
+    # 本地存储根路径位置
     path: /file
+    # web容器存放文件地址 <协议>://<主机>:<端口>
+    url: http://localhost:8082

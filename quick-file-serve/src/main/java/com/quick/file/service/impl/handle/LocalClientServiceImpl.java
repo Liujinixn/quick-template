@@ -45,12 +45,12 @@ public class LocalClientServiceImpl implements FileStoreService {
 
     @Override
     public String getAccessUrl(String fileName) {
-        return null;
+        return localStorageCoreParameters.getUrl() + fileName;
     }
 
     @Override
     public String getAccessUrl(String fileName, Long expirationTime) {
-        return null;
+        return localStorageCoreParameters.getUrl() + fileName;
     }
 
     @Override

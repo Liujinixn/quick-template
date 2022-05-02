@@ -27,10 +27,22 @@ public class LocalStorageCoreParameters {
      */
     private String path;
 
+    /**
+     * web容器存放文件地址 <协议>://<主机>:<端口>
+     */
+    private String url;
+
     public void setPath(String path) {
         if (!path.endsWith("/")) {
             path = path + "/";
         }
         this.path = path;
+    }
+
+    public void setUrl(String url) {
+        if (!url.endsWith("/")) {
+            url = url + "/";
+        }
+        this.url = url;
     }
 }
