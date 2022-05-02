@@ -26,7 +26,12 @@ storage:
     # 角色ARN
     role_arn: acs:ram::1954506457702280:role/quick-file-serve
   local:
-    # 本地存储根路径位置
-    path: /file
-    # web容器存放文件地址 <协议>://<主机>:<端口>
-    url: http://localhost:8082
+    # 文件访问容器（用于生成文件访问地址）
+    web_host: http://47.102.144.221:80
+    # ftp主机
+    ftp_host: 47.102.144.221
+    ftp_port: 21
+    ftp_username: quick
+    ftp_password: 123456
+    ftp_base_path: /quick
+

@@ -1,18 +1,16 @@
 package com.quick.file.service.impl.handle;
 
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.io.file.FileReader;
-import cn.hutool.core.io.file.FileWriter;
 import cn.hutool.core.util.IdUtil;
 import com.quick.file.config.params.LocalStorageCoreParameters;
 import com.quick.file.enumerate.FileSuffixTypeEnum;
 import com.quick.file.service.FileStoreService;
+import com.quick.file.utils.local.FTPUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
+import java.io.ByteArrayInputStream;
 import java.util.Date;
 
 /**
@@ -30,39 +28,50 @@ public class LocalClientServiceImpl implements FileStoreService {
     @Override
     public String uploadByByte(byte[] content, FileSuffixTypeEnum fileSuffixTypeEnum) {
         String now = DateUtil.format(new Date(), "yyyy/MM/dd");
-        String fileName = now + "/" + IdUtil.simpleUUID() + fileSuffixTypeEnum.getDescription();
-
-        FileWriter fileWriter = new FileWriter(localStorageCoreParameters.getPath() + fileName);
-        fileWriter.write(content, 0, content.length);
-        return fileName;
+        String fileName = IdUtil.simpleUUID() + fileSuffixTypeEnum.getDescription();
+        boolean result = false;
+        try {
+            result = FTPUtil.constructFtpPrepareData().uploadFile(now, fileName, new ByteArrayInputStream(content));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result ? now + "/" + fileName : null;
     }
 
     @Override
     public byte[] downloadStream(String fileName) {
-        FileReader fileReader = new FileReader(localStorageCoreParameters.getPath() + fileName);
-        return fileReader.readBytes();
+        int index = fileName.lastIndexOf("/");
+        String remotePath = fileName.substring(0, index);
+        fileName = fileName.substring(index + 1);
+        return FTPUtil.constructFtpPrepareData().downloadFile(remotePath, fileName);
     }
 
     @Override
     public String getAccessUrl(String fileName) {
-        return localStorageCoreParameters.getUrl() + fileName;
+        return localStorageCoreParameters.getWebHost() + "/" + fileName;
     }
 
     @Override
     public String getAccessUrl(String fileName, Long expirationTime) {
-        return localStorageCoreParameters.getUrl() + fileName;
+        return localStorageCoreParameters.getWebHost() + "/" + fileName;
     }
 
     @Override
     public boolean deleteFile(String... fileName) {
         for (String name : fileName) {
-            return FileUtil.del(localStorageCoreParameters.getPath() + name);
+            int index = name.lastIndexOf("/");
+            String remotePath = name.substring(0, index);
+            name = name.substring(index + 1);
+            FTPUtil.constructFtpPrepareData().deleteFile(remotePath, name);
         }
         return true;
     }
 
     @Override
     public boolean doesFileExist(String fileName) {
-        return new File(localStorageCoreParameters.getPath() + fileName).exists();
+        int index = fileName.lastIndexOf("/");
+        String remotePath = fileName.substring(0, index);
+        fileName = fileName.substring(index + 1);
+        return FTPUtil.constructFtpPrepareData().doesFileExist(remotePath, fileName);
     }
 }

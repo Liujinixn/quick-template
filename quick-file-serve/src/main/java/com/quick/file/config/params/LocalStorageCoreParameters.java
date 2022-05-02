@@ -22,27 +22,22 @@ public class LocalStorageCoreParameters {
 
     public static final String LOCAL_PARAMETER_PREFIX = "storage.local";
 
-    /**
-     * 本地存储根路径位置
-     */
-    private String path;
+    private String webHost;
 
-    /**
-     * web容器存放文件地址 <协议>://<主机>:<端口>
-     */
-    private String url;
+    private String ftpHost;
 
-    public void setPath(String path) {
-        if (!path.endsWith("/")) {
-            path = path + "/";
+    private int ftpPort;
+
+    private String ftpUsername;
+
+    private String ftpPassword;
+
+    private String ftpBasePath;
+
+    public void setFtpBasePath(String ftpBasePath) {
+        if(!ftpBasePath.endsWith("/")){
+            ftpBasePath = ftpBasePath + "/";
         }
-        this.path = path;
-    }
-
-    public void setUrl(String url) {
-        if (!url.endsWith("/")) {
-            url = url + "/";
-        }
-        this.url = url;
+        this.ftpBasePath = ftpBasePath;
     }
 }

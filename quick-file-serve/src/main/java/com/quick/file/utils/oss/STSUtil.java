@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author Liujinxin
  */
 @Slf4j
-public class STSUtils {
+public class STSUtil {
 
     private final OssStorageCoreParameters ossStorageCoreParameters;
 
@@ -26,7 +26,7 @@ public class STSUtils {
      */
     private AssumeRoleResponse assumeRoleResponse;
 
-    private STSUtils(OssStorageCoreParameters ossStorageCoreParameters) {
+    private STSUtil(OssStorageCoreParameters ossStorageCoreParameters) {
         this.ossStorageCoreParameters = ossStorageCoreParameters;
     }
 
@@ -35,14 +35,14 @@ public class STSUtils {
      *
      * @return STSUtils STS处理工具对象
      */
-    public static STSUtils constructStsPrepareData() {
-        return new STSUtils(SpringUtil.getBean("ossStorageCoreParameters", OssStorageCoreParameters.class));
+    public static STSUtil constructStsPrepareData() {
+        return new STSUtil(SpringUtil.getBean("ossStorageCoreParameters", OssStorageCoreParameters.class));
     }
 
     /**
      * 获取 STS私有凭证
      */
-    public STSUtils assumeRole() {
+    public STSUtil assumeRole() {
         //构建一个阿里云客户端，用于发起请求。
         //构建阿里云客户端时需要设置AccessKey ID和AccessKey Secret。
         DefaultProfile profile = DefaultProfile.getProfile(

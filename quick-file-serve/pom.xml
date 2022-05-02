@@ -36,6 +36,11 @@
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
         </dependency>
+        <!--apache工具类-->
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+        </dependency>
         <!--阿里SDK OSS-->
         <dependency>
             <groupId>com.aliyun.oss</groupId>

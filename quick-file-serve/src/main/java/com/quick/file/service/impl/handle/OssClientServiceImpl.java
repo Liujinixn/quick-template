@@ -13,7 +13,7 @@ import com.aliyun.oss.model.*;
 import com.quick.file.config.params.OssStorageCoreParameters;
 import com.quick.file.enumerate.FileSuffixTypeEnum;
 import com.quick.file.service.FileStoreService;
-import com.quick.file.utils.oss.STSUtils;
+import com.quick.file.utils.oss.STSUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -124,15 +124,15 @@ public class OssClientServiceImpl implements FileStoreService {
 
     @Override
     public String getAccessUrl(String fileName, Long expirationTime) {
-        STSUtils stsUtils = STSUtils.constructStsPrepareData().assumeRole();
+        STSUtil stsUtil = STSUtil.constructStsPrepareData().assumeRole();
         String accessUrl = null;
         // 从STS服务获取临时访问凭证后，您可以通过临时访问密钥和安全令牌生成OSSClient。
         // 创建OSSClient实例。
         OSS ossClient = new OSSClientBuilder().build(
                 ossStorageCoreParameters.getEndpoint(),
-                stsUtils.getAccessKeyId(),
-                stsUtils.getAccessKeySecret(),
-                stsUtils.getSecurityToken());
+                stsUtil.getAccessKeyId(),
+                stsUtil.getAccessKeySecret(),
+                stsUtil.getSecurityToken());
         try {
             // 设置签名URL过期时间，默认为3600秒（1小时）。
             Date expiration = new Date(new Date().getTime() + (expirationTime == null ? 3600 * 1000 : expirationTime * 1000));
