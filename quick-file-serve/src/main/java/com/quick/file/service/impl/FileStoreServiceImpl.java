@@ -1,6 +1,5 @@
 package com.quick.file.service.impl;
 
-import cn.hutool.extra.spring.SpringUtil;
 import com.quick.file.enumerate.FileSuffixTypeEnum;
 import com.quick.file.service.FileStoreService;
 import com.quick.file.service.impl.handle.LocalClientServiceImpl;
@@ -28,13 +27,13 @@ public class FileStoreServiceImpl implements FileStoreService {
     /**
      * 存储方式
      */
-    @Value("${storage.way}")
+    @Value("${storage.way:local}")
     private String way;
 
     @PostConstruct
     public void init() {
-        handleWayMap.put("oss", SpringUtil.getBean("ossClientService", OssClientServiceImpl.class));
-        handleWayMap.put("local", SpringUtil.getBean("localClientService", LocalClientServiceImpl.class));
+        handleWayMap.put("oss", new OssClientServiceImpl());
+        handleWayMap.put("local", new LocalClientServiceImpl());
     }
 
     @Override

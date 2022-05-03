@@ -13,7 +13,10 @@ public enum FileSuffixTypeEnum {
     JPG("jpg", ".jpg"),
     PNG("png", ".png"),
     JPEG("jpeg", ".jpeg"),
-    TXT("txt", ".txt");
+    TXT("txt", ".txt"),
+    PDF("pdf", ".pdf"),
+    DOCX("docx", ".docx"),
+    XLSX("xlsx", ".xlsx");
 
     /**
      * 文件类型标识Code

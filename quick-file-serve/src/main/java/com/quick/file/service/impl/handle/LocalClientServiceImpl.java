@@ -8,32 +8,32 @@ import com.quick.file.service.FileStoreService;
 import com.quick.file.utils.local.FTPUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
 import java.util.Date;
 
 /**
- * 本地存储
+ * FTP 存储
  *
  * @author Liujinxin
  */
 @Slf4j
-@Service("localClientService")
 public class LocalClientServiceImpl implements FileStoreService {
 
-    @Autowired
+    @Autowired(required = false)
     LocalStorageCoreParameters localStorageCoreParameters;
 
     @Override
     public String uploadByByte(byte[] content, FileSuffixTypeEnum fileSuffixTypeEnum) {
         String now = DateUtil.format(new Date(), "yyyy/MM/dd");
         String fileName = IdUtil.simpleUUID() + fileSuffixTypeEnum.getDescription();
-        boolean result = false;
+
+        boolean result;
+        FTPUtil ftpUtil = FTPUtil.constructFtpPrepareData();
         try {
-            result = FTPUtil.constructFtpPrepareData().uploadFile(now, fileName, new ByteArrayInputStream(content));
-        } catch (Exception e) {
-            e.printStackTrace();
+            result = ftpUtil.uploadFile(now, fileName, new ByteArrayInputStream(content));
+        } finally {
+            ftpUtil.ftpLogout();
         }
         return result ? now + "/" + fileName : null;
     }
@@ -43,7 +43,15 @@ public class LocalClientServiceImpl implements FileStoreService {
         int index = fileName.lastIndexOf("/");
         String remotePath = fileName.substring(0, index);
         fileName = fileName.substring(index + 1);
-        return FTPUtil.constructFtpPrepareData().downloadFile(remotePath, fileName);
+
+        byte[] bytes;
+        FTPUtil ftpUtil = FTPUtil.constructFtpPrepareData();
+        try {
+            bytes = ftpUtil.downloadFile(remotePath, fileName);
+        } finally {
+            ftpUtil.ftpLogout();
+        }
+        return bytes;
     }
 
     @Override
@@ -58,12 +66,18 @@ public class LocalClientServiceImpl implements FileStoreService {
 
     @Override
     public boolean deleteFile(String... fileName) {
+        FTPUtil ftpUtil = FTPUtil.constructFtpPrepareData();
         for (String name : fileName) {
             int index = name.lastIndexOf("/");
             String remotePath = name.substring(0, index);
             name = name.substring(index + 1);
-            FTPUtil.constructFtpPrepareData().deleteFile(remotePath, name);
+            try {
+                FTPUtil.constructFtpPrepareData().deleteFile(remotePath, name);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+        ftpUtil.ftpLogout();
         return true;
     }
 
@@ -72,6 +86,14 @@ public class LocalClientServiceImpl implements FileStoreService {
         int index = fileName.lastIndexOf("/");
         String remotePath = fileName.substring(0, index);
         fileName = fileName.substring(index + 1);
-        return FTPUtil.constructFtpPrepareData().doesFileExist(remotePath, fileName);
+
+        boolean result;
+        FTPUtil ftpUtil = FTPUtil.constructFtpPrepareData();
+        try {
+            result = ftpUtil.doesFileExist(remotePath, fileName);
+        } finally {
+            ftpUtil.ftpLogout();
+        }
+        return result;
     }
 }

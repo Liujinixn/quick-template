@@ -33,10 +33,9 @@ import java.util.List;
  * @author Liujinxin
  */
 @Slf4j
-@Service("ossClientService")
 public class OssClientServiceImpl implements FileStoreService {
 
-    @Autowired
+    @Autowired(required = false)
     OssStorageCoreParameters ossStorageCoreParameters;
 
     @Override
