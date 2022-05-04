@@ -8,7 +8,7 @@
 
 ## 介绍
 SpringBoot多模块架构，争对企业级开发设计，已集成认证功能、文档功能，开箱即用。
-技术栈： springboot + redis + shiro + swagger
+技术栈： springboot + redis + shiro + swagger 
 
 <br>
 <hr>
