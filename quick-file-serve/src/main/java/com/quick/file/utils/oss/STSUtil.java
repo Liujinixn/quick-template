@@ -1,6 +1,5 @@
 package com.quick.file.utils.oss;
 
-import cn.hutool.extra.spring.SpringUtil;
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.IAcsClient;
 import com.aliyuncs.auth.sts.AssumeRoleRequest;
@@ -35,8 +34,8 @@ public class STSUtil {
      *
      * @return STSUtils STS处理工具对象
      */
-    public static STSUtil constructStsPrepareData() {
-        return new STSUtil(SpringUtil.getBean("ossStorageCoreParameters", OssStorageCoreParameters.class));
+    public static STSUtil constructStsPrepareData(OssStorageCoreParameters ossStorageCoreParameters) {
+        return new STSUtil(ossStorageCoreParameters);
     }
 
     /**

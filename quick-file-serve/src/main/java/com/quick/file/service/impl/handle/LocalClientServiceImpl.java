@@ -29,7 +29,7 @@ public class LocalClientServiceImpl implements FileStoreService {
         String fileName = IdUtil.simpleUUID() + fileSuffixTypeEnum.getDescription();
 
         boolean result;
-        FTPUtil ftpUtil = FTPUtil.constructFtpPrepareData();
+        FTPUtil ftpUtil = FTPUtil.constructFtpPrepareData(localStorageCoreParameters);
         try {
             result = ftpUtil.uploadFile(now, fileName, new ByteArrayInputStream(content));
         } finally {
@@ -45,7 +45,7 @@ public class LocalClientServiceImpl implements FileStoreService {
         fileName = fileName.substring(index + 1);
 
         byte[] bytes;
-        FTPUtil ftpUtil = FTPUtil.constructFtpPrepareData();
+        FTPUtil ftpUtil = FTPUtil.constructFtpPrepareData(localStorageCoreParameters);
         try {
             bytes = ftpUtil.downloadFile(remotePath, fileName);
         } finally {
@@ -66,13 +66,13 @@ public class LocalClientServiceImpl implements FileStoreService {
 
     @Override
     public boolean deleteFile(String... fileName) {
-        FTPUtil ftpUtil = FTPUtil.constructFtpPrepareData();
+        FTPUtil ftpUtil = FTPUtil.constructFtpPrepareData(localStorageCoreParameters);
         for (String name : fileName) {
             int index = name.lastIndexOf("/");
             String remotePath = name.substring(0, index);
             name = name.substring(index + 1);
             try {
-                FTPUtil.constructFtpPrepareData().deleteFile(remotePath, name);
+                ftpUtil.deleteFile(remotePath, name);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -88,7 +88,7 @@ public class LocalClientServiceImpl implements FileStoreService {
         fileName = fileName.substring(index + 1);
 
         boolean result;
-        FTPUtil ftpUtil = FTPUtil.constructFtpPrepareData();
+        FTPUtil ftpUtil = FTPUtil.constructFtpPrepareData(localStorageCoreParameters);
         try {
             result = ftpUtil.doesFileExist(remotePath, fileName);
         } finally {

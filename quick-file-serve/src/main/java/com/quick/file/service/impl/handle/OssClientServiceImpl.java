@@ -16,7 +16,6 @@ import com.quick.file.service.FileStoreService;
 import com.quick.file.utils.oss.STSUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
@@ -123,7 +122,7 @@ public class OssClientServiceImpl implements FileStoreService {
 
     @Override
     public String getAccessUrl(String fileName, Long expirationTime) {
-        STSUtil stsUtil = STSUtil.constructStsPrepareData().assumeRole();
+        STSUtil stsUtil = STSUtil.constructStsPrepareData(ossStorageCoreParameters).assumeRole();
         String accessUrl = null;
         // 从STS服务获取临时访问凭证后，您可以通过临时访问密钥和安全令牌生成OSSClient。
         // 创建OSSClient实例。

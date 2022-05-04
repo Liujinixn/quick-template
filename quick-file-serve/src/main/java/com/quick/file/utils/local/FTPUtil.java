@@ -1,6 +1,5 @@
 package com.quick.file.utils.local;
 
-import cn.hutool.extra.spring.SpringUtil;
 import com.quick.file.config.params.LocalStorageCoreParameters;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.net.ftp.FTP;
@@ -56,8 +55,8 @@ public class FTPUtil {
      *
      * @return STSUtils STS处理工具对象
      */
-    public static FTPUtil constructFtpPrepareData() {
-        return new FTPUtil(SpringUtil.getBean("localStorageCoreParameters", LocalStorageCoreParameters.class));
+    public static FTPUtil constructFtpPrepareData(LocalStorageCoreParameters localStorageCoreParameters) {
+        return new FTPUtil(localStorageCoreParameters);
     }
 
     /**

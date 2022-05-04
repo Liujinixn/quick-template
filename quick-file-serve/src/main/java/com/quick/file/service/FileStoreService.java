@@ -39,7 +39,7 @@ public interface FileStoreService {
      *
      * @param fileName       文件标识
      * @param expirationTime 过期时间（单位S）
-     * @return 访问地址
+     * @return 访问地址（存储方式为 "local" 类型时，失效时间设置无效）
      */
     String getAccessUrl(String fileName, Long expirationTime);
 
