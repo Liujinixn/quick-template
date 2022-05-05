@@ -7,24 +7,25 @@ spring:
       # request 携带文件最大大小（一次请求携带文件总大小）
       max-request-size: 1000MB
 
-# 阿里OSS云存储参数配置
+# 对象存储参数配置
 storage:
+  # 对象存储类型
   way: local
   oss:
-    # 访问路径中的Bucket
-    bucket: quick-file-serve
-    # 外网Endpoint
-    endpoint: oss-cn-beijing.aliyuncs.com
-    # Region ID
-    region_id: cn-beijing
     # 密钥ID
     access_key_id: LTAI5tPh3yDjA8WTwbinGYCD
     # 密钥
     access_key_secret: S3VXnGOPAHafEfjwOj91gSADocBYhB
+    # 外网Endpoint
+    endpoint: oss-cn-beijing.aliyuncs.com
+    # Region ID
+    region_id: cn-beijing
     # 角色名称
     role_session_name: quick-file-serve
     # 角色ARN
     role_arn: acs:ram::1954506457702280:role/quick-file-serve
+    # 访问路径中的Bucket
+    bucket: quick-file-serve
     # 存储基础路径
     oss_base_path: /quick
   local:
