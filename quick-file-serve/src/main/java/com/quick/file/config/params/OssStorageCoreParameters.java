@@ -65,4 +65,19 @@ public class OssStorageCoreParameters {
      */
     private String roleArn;
 
+    /**
+     * 存储基本路径
+     */
+    private String ossBasePath;
+
+    public void setOssBasePath(String ossBasePath) {
+        if (ossBasePath.startsWith("/")) {
+            ossBasePath = ossBasePath.replaceFirst("/", "");
+        }
+        if (!ossBasePath.endsWith("/")) {
+            ossBasePath = ossBasePath + "/";
+        }
+        this.ossBasePath = ossBasePath;
+    }
+
 }

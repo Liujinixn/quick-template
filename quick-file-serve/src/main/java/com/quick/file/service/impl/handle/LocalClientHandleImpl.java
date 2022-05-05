@@ -2,12 +2,12 @@ package com.quick.file.service.impl.handle;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.extra.spring.SpringUtil;
 import com.quick.file.config.params.LocalStorageCoreParameters;
 import com.quick.file.enumerate.FileSuffixTypeEnum;
-import com.quick.file.service.FileStoreService;
+import com.quick.file.service.FileStoreHandle;
 import com.quick.file.utils.local.FTPUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.ByteArrayInputStream;
 import java.util.Date;
@@ -18,13 +18,11 @@ import java.util.Date;
  * @author Liujinxin
  */
 @Slf4j
-public class LocalClientServiceImpl implements FileStoreService {
-
-    @Autowired(required = false)
-    LocalStorageCoreParameters localStorageCoreParameters;
+public class LocalClientHandleImpl implements FileStoreHandle {
 
     @Override
     public String uploadByByte(byte[] content, FileSuffixTypeEnum fileSuffixTypeEnum) {
+        LocalStorageCoreParameters localStorageCoreParameters = getLocalStorageCoreParameters();
         String now = DateUtil.format(new Date(), "yyyy/MM/dd");
         String fileName = IdUtil.simpleUUID() + fileSuffixTypeEnum.getDescription();
 
@@ -40,6 +38,7 @@ public class LocalClientServiceImpl implements FileStoreService {
 
     @Override
     public byte[] downloadStream(String fileName) {
+        LocalStorageCoreParameters localStorageCoreParameters = getLocalStorageCoreParameters();
         int index = fileName.lastIndexOf("/");
         String remotePath = fileName.substring(0, index);
         fileName = fileName.substring(index + 1);
@@ -56,16 +55,19 @@ public class LocalClientServiceImpl implements FileStoreService {
 
     @Override
     public String getAccessUrl(String fileName) {
+        LocalStorageCoreParameters localStorageCoreParameters = getLocalStorageCoreParameters();
         return localStorageCoreParameters.getWebHost() + "/" + fileName;
     }
 
     @Override
     public String getAccessUrl(String fileName, Long expirationTime) {
+        LocalStorageCoreParameters localStorageCoreParameters = getLocalStorageCoreParameters();
         return localStorageCoreParameters.getWebHost() + "/" + fileName;
     }
 
     @Override
     public boolean deleteFile(String... fileName) {
+        LocalStorageCoreParameters localStorageCoreParameters = getLocalStorageCoreParameters();
         FTPUtil ftpUtil = FTPUtil.constructFtpPrepareData(localStorageCoreParameters);
         for (String name : fileName) {
             int index = name.lastIndexOf("/");
@@ -83,6 +85,7 @@ public class LocalClientServiceImpl implements FileStoreService {
 
     @Override
     public boolean doesFileExist(String fileName) {
+        LocalStorageCoreParameters localStorageCoreParameters = getLocalStorageCoreParameters();
         int index = fileName.lastIndexOf("/");
         String remotePath = fileName.substring(0, index);
         fileName = fileName.substring(index + 1);
@@ -96,4 +99,9 @@ public class LocalClientServiceImpl implements FileStoreService {
         }
         return result;
     }
+
+    private LocalStorageCoreParameters getLocalStorageCoreParameters() {
+        return SpringUtil.getBean("localStorageCoreParameters", LocalStorageCoreParameters.class);
+    }
+
 }

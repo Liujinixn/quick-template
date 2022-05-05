@@ -1,14 +1,11 @@
 package com.quick.base.controller;
 
-import cn.hutool.core.io.FileTypeUtil;
-import cn.hutool.core.io.FileUtil;
 import com.quick.auth.service.UserService;
 import com.quick.base.entity.FindDto;
-import com.quick.common.utils.redis.RedisClient;
 import com.quick.common.utils.validator.BeanValidatorUtil;
 import com.quick.common.vo.Result;
 import com.quick.file.enumerate.FileSuffixTypeEnum;
-import com.quick.file.service.FileStoreService;
+import com.quick.file.service.FileStoreHandle;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.spec.InvalidParameterSpecException;
@@ -38,7 +34,7 @@ public class TestController {
     UserService userService;
 
     @Autowired
-    FileStoreService fileStoreService;
+    FileStoreHandle fileStoreHandle;
 
     /**
      * 测试 日志记录
@@ -129,26 +125,26 @@ public class TestController {
     }
 
     @PostMapping("/uploadFile")
-    @ApiOperation(value = "测试接口-上传文件到")
+    @ApiOperation(value = "测试接口-上传文件")
     public String uploadFile(MultipartFile file) throws IOException {
         byte[] bytes = file.getBytes();
         String type = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
         FileSuffixTypeEnum typeEnumBySuffix = FileSuffixTypeEnum.getTypeEnumBySuffix(type);
-        String fileName = fileStoreService.uploadByByte(bytes, typeEnumBySuffix);
+        String fileName = fileStoreHandle.uploadByByte(bytes, typeEnumBySuffix);
         return fileName;
     }
 
     @PostMapping("/getAccessUrl")
     @ApiOperation(value = "测试接口-临时访问地址")
     public String getAccessUrl(String fileId) throws IOException {
-        String accessUrl = fileStoreService.getAccessUrl(fileId, 20L);
+        String accessUrl = fileStoreHandle.getAccessUrl(fileId, 20L);
         return accessUrl;
     }
 
     @PostMapping("/getAccessUrlPermanent")
     @ApiOperation(value = "测试接口-访问地址")
     public String getAccessUrlPermanent(String fileId) throws IOException {
-        String accessUrl = fileStoreService.getAccessUrl(fileId);
+        String accessUrl = fileStoreHandle.getAccessUrl(fileId);
         return accessUrl;
     }
 
@@ -162,7 +158,7 @@ public class TestController {
                     new String(fileId.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1));
             headers.add("Access-Control-Expose-Headers", "Content-Disposition");
             headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-            bytes = fileStoreService.downloadStream(fileId);
+            bytes = fileStoreHandle.downloadStream(fileId);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -172,13 +168,13 @@ public class TestController {
     @GetMapping("/deleteFile")
     @ApiOperation(value = "测试接口-删除文件")
     public Object deleteFile(@RequestParam("fileId") List<String> fileIdList) {
-        return fileStoreService.deleteFile(fileIdList.toArray(new String[]{}));
+        return fileStoreHandle.deleteFile(fileIdList.toArray(new String[]{}));
     }
 
     @GetMapping("/doesFileExist")
     @ApiOperation(value = "测试接口-检查文件是否存在")
     public Object doesFileExist(String fileId) {
-        return fileStoreService.doesFileExist(fileId);
+        return fileStoreHandle.doesFileExist(fileId);
     }
 
 }

@@ -7,7 +7,7 @@ import com.quick.file.enumerate.FileSuffixTypeEnum;
  *
  * @author Liujinxin
  */
-public interface FileStoreService {
+public interface FileStoreHandle {
 
     /**
      * 文件上传
