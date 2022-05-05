@@ -29,8 +29,6 @@ storage:
     # 存储基础路径
     oss_base_path: /quick
   local:
-    # 文件访问容器（用于生成文件访问地址）
-    web_host: http://47.102.144.221:80
     # FTP主机地址
     ftp_host: 47.102.144.221
     # FTP连接端口
@@ -39,6 +37,8 @@ storage:
     ftp_username: quick
     # FTP连接密码
     ftp_password: 123456
+    # 文件访问容器（用于生成文件访问地址）
+    web_host: http://47.102.144.221:80
     # 存储基础路径
     ftp_base_path: /quick
 
