@@ -23,7 +23,7 @@ import java.util.List;
 public class PermissionController {
 
     @Autowired
-    PermissionService permissionService;
+    private PermissionService permissionService;
 
     /**
      * 获取权限列表数据

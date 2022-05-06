@@ -24,7 +24,7 @@ import java.util.Map;
 public class RoleServiceImpl implements RoleService {
 
     @Autowired
-    RoleMapper roleMapper;
+    private RoleMapper roleMapper;
 
     @Autowired
     private UserMapper userMapper;

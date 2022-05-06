@@ -19,7 +19,7 @@ import java.util.List;
 public class MenuController {
 
     @Autowired
-    PermissionService permissionService;
+    private PermissionService permissionService;
 
     /**
      * 获取当前登录用户的菜单

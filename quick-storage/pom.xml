@@ -9,8 +9,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>quick.file.serve</groupId>
-    <artifactId>quick-file-serve</artifactId>
+    <groupId>quick.storage</groupId>
+    <artifactId>quick-storage</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 

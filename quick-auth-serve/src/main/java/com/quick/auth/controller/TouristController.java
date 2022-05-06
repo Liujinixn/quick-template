@@ -28,7 +28,7 @@ import java.util.Map;
 public class TouristController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
     private ShiroCoreParameters shiroCoreParameters;

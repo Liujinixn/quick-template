@@ -26,16 +26,16 @@ import java.util.*;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    UserMapper userMapper;
+    private UserMapper userMapper;
 
     @Autowired
-    UserRoleMapper userRoleMapper;
+    private UserRoleMapper userRoleMapper;
 
     @Autowired
-    RedisClient redisClient;
+    private RedisClient redisClient;
 
     @Autowired
-    ShiroCoreParameters shiroCoreParameters;
+    private ShiroCoreParameters shiroCoreParameters;
 
     @Override
     public User findUserSimpleInfoByUsername(String username) {

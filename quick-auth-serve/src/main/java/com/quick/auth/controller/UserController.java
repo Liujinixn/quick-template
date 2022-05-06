@@ -40,10 +40,10 @@ import java.util.stream.Collectors;
 public class UserController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    ShiroCoreParameters shiroCoreParameters;
+    private ShiroCoreParameters shiroCoreParameters;
 
     /**
      * 获取用户列表数据

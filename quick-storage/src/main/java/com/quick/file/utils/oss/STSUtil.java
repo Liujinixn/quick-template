@@ -52,7 +52,7 @@ public class STSUtil {
 
         //构造请求，设置参数。关于参数含义和设置方法，请参见《API参考》。
         AssumeRoleRequest request = new AssumeRoleRequest();
-        request.setRegionId(ossStorageCoreParameters.getRegionId());
+        request.setSysRegionId(ossStorageCoreParameters.getRegionId());
         request.setRoleArn(ossStorageCoreParameters.getRoleArn());
         request.setRoleSessionName(ossStorageCoreParameters.getRoleSessionName());
 

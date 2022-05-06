@@ -23,7 +23,7 @@ public class PermissionServiceImpl implements PermissionService {
     private PermissionMapper permissionMapper;
 
     @Autowired
-    RedisClient redisClient;
+    private RedisClient redisClient;
 
     @Override
     public List<Permission> findAllPermissionList() {

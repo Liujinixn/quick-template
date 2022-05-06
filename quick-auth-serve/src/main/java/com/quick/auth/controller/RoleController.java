@@ -29,7 +29,7 @@ import java.util.List;
 public class RoleController {
 
     @Autowired
-    RoleService roleService;
+    private RoleService roleService;
 
     /**
      * 获取角色列表数据
