@@ -121,8 +121,8 @@ class SentinelConfig {
      * @return 处理后的url 格式会按照以 / 开始
      */
     private String urlHandle(String url) {
-        if (url.startsWith("//")) {
-            // 当前接口出现 “//**/**” 结构
+        if (url.contains("//")) {
+            // 当前接口出现 “//**//**” 或 “/**//**” 或 “//**/**” 结构
             return url.replace("//", "/");
         }
         if (!url.startsWith("/")) {
