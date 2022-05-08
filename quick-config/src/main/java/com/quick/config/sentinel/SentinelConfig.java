@@ -86,6 +86,7 @@ class SentinelConfig {
             Set<String> patterns = pattern.getPatterns();
             // 请求url
             for (String url : patterns) {
+                url = urlHandle(url);
                 flowRuleList.add(createFlowRuleInfo(url));
                 initMap.put("url", url);
                 initMap.put("name", url.replaceAll("/", "_").substring(1));
@@ -111,5 +112,23 @@ class SentinelConfig {
         // 每秒调用最大次数
         rule.setCount(sentinelFlowGradeQpsCount);
         return rule;
+    }
+
+    /**
+     * url路径处理
+     *
+     * @param url 目标url
+     * @return 处理后的url 格式会按照以 / 开始
+     */
+    private String urlHandle(String url) {
+        if (url.startsWith("//")) {
+            // 当前接口出现 “//**/**” 结构
+            return url.replace("//", "/");
+        }
+        if (!url.startsWith("/")) {
+            //当前接口出现 "**/**" 结构
+            return "/" + url;
+        }
+        return url;
     }
 }

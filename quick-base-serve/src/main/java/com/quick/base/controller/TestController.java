@@ -27,7 +27,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @Api(tags = "测试模块")
-@RequestMapping("/${request.prefix.base_server}/test")
+@RequestMapping("${request.prefix.base_server}/test")
 public class TestController {
 
     @Autowired
