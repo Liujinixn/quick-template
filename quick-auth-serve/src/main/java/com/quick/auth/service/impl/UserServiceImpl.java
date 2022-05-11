@@ -32,9 +32,6 @@ public class UserServiceImpl implements UserService {
     private UserRoleMapper userRoleMapper;
 
     @Autowired
-    private RedisClient redisClient;
-
-    @Autowired
     private ShiroCoreParameters shiroCoreParameters;
 
     @Override
@@ -150,13 +147,13 @@ public class UserServiceImpl implements UserService {
             // 获取在线用户的令牌，并删除认证信息
             LinkedList<Serializable> chcheOnlineUser = kickoutSessionControlFilter.getChcheOnlineUser(user.getUsername());
             for (Serializable serializable : chcheOnlineUser) {
-                redisClient.del(shiroCoreParameters.getShiroRedis().getPrefixUserAuth() + serializable.toString());
+                RedisClient.del(shiroCoreParameters.getShiroRedis().getPrefixUserAuth() + serializable.toString());
             }
             // 删除用户的在线人数信息
-            redisClient.del(shiroCoreParameters.getShiroRedis().getPrefixOnline() + user.getUsername());
+            RedisClient.del(shiroCoreParameters.getShiroRedis().getPrefixOnline() + user.getUsername());
             // 删除用户的授权信息缓存
             String classUrl = UserRealm.class.getName();
-            redisClient.del(shiroCoreParameters.getShiroRedis().getPrefixOther()
+            RedisClient.del(shiroCoreParameters.getShiroRedis().getPrefixOther()
                     + classUrl + ".authorizationCache:" + user.getId());
         }
     }

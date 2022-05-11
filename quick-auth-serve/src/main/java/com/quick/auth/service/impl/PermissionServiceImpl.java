@@ -22,17 +22,14 @@ public class PermissionServiceImpl implements PermissionService {
     @Autowired
     private PermissionMapper permissionMapper;
 
-    @Autowired
-    private RedisClient redisClient;
-
     @Override
     public List<Permission> findAllPermissionList() {
-        List<Permission> permissionList = (List<Permission>) redisClient.get(RedisDataCacheKey.PERMISSION_ALL);
+        List<Permission> permissionList = (List<Permission>) RedisClient.get(RedisDataCacheKey.PERMISSION_ALL);
         if (CollectionUtils.isNotEmpty(permissionList)) {
             return permissionList;
         }
         permissionList = permissionMapper.findAllPermissionList(CoreConst.STATUS_VALID);
-        redisClient.set(RedisDataCacheKey.PERMISSION_ALL, permissionList, RedisDataCacheKey.EXPIRED_TEN_MINUTE);
+        RedisClient.set(RedisDataCacheKey.PERMISSION_ALL, permissionList, RedisDataCacheKey.EXPIRED_TEN_MINUTE);
         return permissionList;
     }
 
