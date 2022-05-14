@@ -6,14 +6,14 @@ auth:
 # shiro核心参数 ShiroCoreParameters类
 shiro:
   # 是否开启系统权限认证功能
+  # 哈希加密迭代次数
+  hash_iterations: 2
+  # 同一个帐号最大会话数
   enable: true
   # 令牌过期时间（单位：秒）
   token_expiration_time: 3800
   # 加密名称（当前必填:md5，否者需要修改UserController代码）
   hash_algorithm_name: md5
-  # 哈希加密迭代次数
-  hash_iterations: 2
-  # 同一个帐号最大会话数
   max_session: 2
   # false顶掉当前登录的用户/true顶掉之前登录的用户
   kickout_after: true
@@ -43,5 +43,3 @@ shiro:
     prefix_online: "system_name:shiro:online_user:"
     # 其他信息缓存前缀
     prefix_other: "system_name:shiro:"
-mybatis:
-  config-location:
