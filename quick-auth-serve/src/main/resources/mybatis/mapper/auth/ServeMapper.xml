@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.quick.auth.mapper.ServeMapper">
+
+    <sql id="Base_Column_List">
+        id, serve_id, serve_name, access_key
+    </sql>
+
+    <select id="findServeInfoByServeName" resultType="com.quick.auth.entity.Serve">
+        SELECT <include refid="Base_Column_List"/>
+        FROM <include refid="com.quick.auth.mapper.SomeSqlMapper.serve"/>
+        WHERE serve_name = #{serveName}
+    </select>
+</mapper>

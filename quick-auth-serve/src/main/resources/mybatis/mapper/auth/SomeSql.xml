@@ -17,5 +17,8 @@
     <sql id="user">
         `sys_user`
     </sql>
+    <sql id="serve">
+        `sys_serve`
+    </sql>
 
 </mapper>

@@ -4,14 +4,16 @@
 
     <insert id="batchInstall">
         INSERT INTO <include refid="com.quick.auth.mapper.SomeSqlMapper.role_permission"/>
-        (role_id, permission_id)
+        (role_id, permission_id, serve_name)
         VALUES
         <foreach collection="list" item="rp" separator=",">
-            (#{rp.roleId} , #{rp.permissionId})
+            (#{rp.roleId} , #{rp.permissionId}, ${serveName})
         </foreach>
     </insert>
 
     <delete id="delete">
-        DELETE FROM <include refid="com.quick.auth.mapper.SomeSqlMapper.role_permission"/> WHERE role_id = #{roleId}
+        DELETE FROM <include refid="com.quick.auth.mapper.SomeSqlMapper.role_permission"/>
+        WHERE role_id = #{roleId}
+        AND serve_name = ${serveName}
     </delete>
 </mapper>

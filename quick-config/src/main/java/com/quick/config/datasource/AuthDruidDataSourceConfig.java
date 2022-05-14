@@ -7,9 +7,7 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.*;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
@@ -28,8 +26,8 @@ public class AuthDruidDataSourceConfig {
     @Value("${spring.datasource.auth.druid.authMapperLocations}")
     private String authMapperLocations;
 
-    @Value("${auth.project_name:''}")
-    private String projectName;
+    @Value("${auth.serve_name:''}")
+    private String serveName;
 
     @ConfigurationProperties(prefix = "spring.datasource.auth.druid")
     @Bean(name = "authDataSource")
@@ -57,7 +55,7 @@ public class AuthDruidDataSourceConfig {
 
         /*设置配置属性*/
         Properties properties = new Properties();
-        properties.setProperty("projectName", "'" + projectName + "'");
+        properties.setProperty("serveName", "'" + serveName + "'");
         sqlSessionFactoryBean.setConfigurationProperties(properties);
 
         return sqlSessionFactoryBean.getObject();

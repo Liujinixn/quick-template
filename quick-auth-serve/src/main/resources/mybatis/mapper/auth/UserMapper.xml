@@ -122,6 +122,7 @@
         LEFT JOIN <include refid="com.quick.auth.mapper.SomeSqlMapper.role_permission"/> rp ON rp.role_id = r.role_id
         LEFT JOIN <include refid="com.quick.auth.mapper.SomeSqlMapper.permission"/> p ON p.permission_id = rp.permission_id
         WHERE u.user_id=#{userId} AND u.status = #{status}
+        AND u.serve_name = ${serveName}
     </select>
 
     <select id="findUserSimpleInfoByUsername" resultType="com.quick.auth.entity.User">
@@ -129,16 +130,22 @@
         <include refid="Base_Column_List"/>
         FROM <include refid="com.quick.auth.mapper.SomeSqlMapper.user"/>
         WHERE username = #{username} AND status = #{status}
+        AND serve_name = ${serveName}
     </select>
 
     <select id="findUserByUserId" resultType="com.quick.auth.entity.User">
         SELECT
         <include refid="Base_Column_List"/>
-        FROM <include refid="com.quick.auth.mapper.SomeSqlMapper.user"/> WHERE user_id = #{userId,jdbcType=VARCHAR} AND status = #{status}
+        FROM <include refid="com.quick.auth.mapper.SomeSqlMapper.user"/>
+        WHERE user_id = #{userId,jdbcType=VARCHAR} AND status = #{status}
+        AND serve_name = ${serveName}
     </select>
 
     <update id="updateLastLoginTime" parameterType="com.quick.auth.entity.User">
-        UPDATE <include refid="com.quick.auth.mapper.SomeSqlMapper.user"/> SET last_login_time = now() , login_ip_address = #{loginIpAddress} WHERE user_id = #{userId}
+        UPDATE <include refid="com.quick.auth.mapper.SomeSqlMapper.user"/>
+        SET last_login_time = now() , login_ip_address = #{loginIpAddress}
+        WHERE user_id = #{userId}
+        AND serve_name = ${serveName}
     </update>
 
     <update id="updateByUserId" parameterType="com.quick.auth.entity.User">
@@ -185,6 +192,7 @@
         </if>
         update_time = now()
         WHERE user_id = #{userId,jdbcType=BIGINT}
+        AND serve_name = ${serveName}
     </update>
 
     <update id="updateStatusBatch" parameterType="map">
@@ -197,6 +205,7 @@
         <foreach collection="userIds" item="item" index="index" open="(" separator="," close=")">
             #{item}
         </foreach>
+        AND serve_name = ${serveName}
     </update>
 
     <select id="findByRoleId" resultType="com.quick.auth.entity.User">
@@ -205,6 +214,7 @@
         FROM <include refid="com.quick.auth.mapper.SomeSqlMapper.user"/> u
         INNER JOIN <include refid="com.quick.auth.mapper.SomeSqlMapper.user_role"/> ur ON u.user_id = ur.user_id
         WHERE ur.role_id = #{roleId,jdbcType=VARCHAR}
+        AND u.serve_name = ${serveName}
     </select>
 
     <select id="findByRoleIds" resultType="com.quick.auth.entity.User">
@@ -216,6 +226,7 @@
         <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
             #{item}
         </foreach>
+        AND u.serve_name = ${serveName}
     </select>
 
     <resultMap id="UserInfoAndRoleInfo" type="com.quick.auth.entity.User">
@@ -277,6 +288,7 @@
         <if test="phone !=null and phone !='' and phone !='null' ">
             AND u.phone LIKE concat('%', #{phone}, '%')
         </if>
+        AND u.serve_name = ${serveName}
     </select>
 
     <select id="findUserAndRoleByUserId" resultMap="UserInfoAndRoleInfo">
@@ -306,6 +318,7 @@
         LEFT JOIN <include refid="com.quick.auth.mapper.SomeSqlMapper.role"/> r ON r.role_id = ur.role_id
         WHERE
         u.status = #{status} AND u.user_id = #{userId}
+        AND u.serve_name = ${serveName}
     </select>
 
     <select id="findUsersWhetherExistByUsernameOrUserId" resultType="java.lang.Integer">
@@ -313,6 +326,7 @@
         <if test="userId != null">
             AND user_id != #{userId}
         </if>
+        AND u.serve_name = ${serveName}
     </select>
 
     <insert id="insertUser">
@@ -358,7 +372,8 @@
             head_portrait,
         </if>
         create_time,
-        update_time
+        update_time,
+        serve_name
         )
         VALUES(
         <if test="id != null">
@@ -401,7 +416,8 @@
             #{headPortrait},
         </if>
         now(),
-        now()
+        now(),
+        ${serveName}
         )
     </insert>
 

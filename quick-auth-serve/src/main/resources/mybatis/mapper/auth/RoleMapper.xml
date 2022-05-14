@@ -14,13 +14,16 @@
         <if test="name != null and name != '' and name!='null' ">
             AND name LIKE concat('%', #{name}, '%')
         </if>
+        AND serve_name = ${serveName}
     </select>
 
     <select id="findRolesWhetherExistByRoleNameOrRoleId" resultType="java.lang.Integer">
-        SELECT count(id) FROM <include refid="com.quick.auth.mapper.SomeSqlMapper.role"/> WHERE name = #{name} AND status = #{status}
+        SELECT count(id) FROM <include refid="com.quick.auth.mapper.SomeSqlMapper.role"/>
+        WHERE name = #{name} AND status = #{status}
         <if test="roleId != null">
             AND role_id != #{roleId}
         </if>
+        AND serve_name = ${serveName}
     </select>
 
     <insert id="insertRole">
@@ -42,7 +45,8 @@
             status,
         </if>
         create_time,
-        update_time
+        update_time,
+        serve_name
         )
         VALUES(
         <if test="id != null">
@@ -61,7 +65,8 @@
             #{status},
         </if>
         now(),
-        now()
+        now(),
+        ${serveName}
         )
     </insert>
 
@@ -75,6 +80,7 @@
         <foreach collection="roleIds" item="item" index="index" open="(" separator="," close=")">
             #{item}
         </foreach>
+        AND serve_name = ${serveName}
     </update>
 
     <update id="updateByRoleId">
@@ -99,6 +105,7 @@
         update_time = now()
         WHERE
         role_id = #{roleId}
+        AND serve_name = ${serveName}
     </update>
 
 </mapper>

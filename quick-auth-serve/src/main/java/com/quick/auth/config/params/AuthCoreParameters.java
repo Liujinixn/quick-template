@@ -25,6 +25,10 @@ public class AuthCoreParameters {
     /**
      * 认证服务名称
      */
-    private String projectName;
+    private String serveName;
 
+    /**
+     * 服务密钥
+     */
+    private String accessKey;
 }
