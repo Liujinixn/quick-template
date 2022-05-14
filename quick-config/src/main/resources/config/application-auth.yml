@@ -1,3 +1,8 @@
+# 认证服务配置
+auth:
+  # 认证服务所属系统
+  project_name: quick
+
 # shiro核心参数 ShiroCoreParameters类
 shiro:
   # 是否开启系统权限认证功能
@@ -38,3 +43,5 @@ shiro:
     prefix_online: "system_name:shiro:online_user:"
     # 其他信息缓存前缀
     prefix_other: "system_name:shiro:"
+mybatis:
+  config-location:

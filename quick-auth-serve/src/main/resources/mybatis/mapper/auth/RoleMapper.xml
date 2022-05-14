@@ -2,22 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.quick.auth.mapper.RoleMapper">
 
-    <sql id="permission">
-        `sys_permission`
-    </sql>
-    <sql id="role_permission">
-        `sys_role_permission`
-    </sql>
-    <sql id="role">
-        `sys_role`
-    </sql>
-    <sql id="user_role">
-        `sys_user_role`
-    </sql>
-    <sql id="user">
-        `sys_user`
-    </sql>
-
     <sql id="Base_Column_List">
         id, role_id, name, description, status, create_time, update_time
     </sql>
@@ -25,7 +9,7 @@
     <select id="findRoles" resultType="com.quick.auth.entity.Role">
         SELECT
         <include refid="Base_Column_List"/>
-        FROM <include refid="role"/>
+        FROM <include refid="com.quick.auth.mapper.SomeSqlMapper.role"/>
         WHERE status = #{status}
         <if test="name != null and name != '' and name!='null' ">
             AND name LIKE concat('%', #{name}, '%')
@@ -33,14 +17,14 @@
     </select>
 
     <select id="findRolesWhetherExistByRoleNameOrRoleId" resultType="java.lang.Integer">
-        SELECT count(id) FROM <include refid="role"/> WHERE name = #{name} AND status = #{status}
+        SELECT count(id) FROM <include refid="com.quick.auth.mapper.SomeSqlMapper.role"/> WHERE name = #{name} AND status = #{status}
         <if test="roleId != null">
             AND role_id != #{roleId}
         </if>
     </select>
 
     <insert id="insertRole">
-        INSERT INTO <include refid="role"/>
+        INSERT INTO <include refid="com.quick.auth.mapper.SomeSqlMapper.role"/>
         (
         <if test="id != null">
             id,
@@ -83,7 +67,7 @@
 
     <update id="updateStatusBatch" parameterType="map">
         UPDATE
-        <include refid="role"/>
+        <include refid="com.quick.auth.mapper.SomeSqlMapper.role"/>
         SET
         status=#{status}, update_time=now()
         WHERE
@@ -95,7 +79,7 @@
 
     <update id="updateByRoleId">
         UPDATE
-        <include refid="role"/>
+        <include refid="com.quick.auth.mapper.SomeSqlMapper.role"/>
         SET
         <if test="id != null">
             id = #{id},

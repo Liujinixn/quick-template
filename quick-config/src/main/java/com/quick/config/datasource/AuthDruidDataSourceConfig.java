@@ -14,6 +14,7 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import javax.sql.DataSource;
+import java.util.Properties;
 
 /**
  * 系统基础数据库-数据源配置
@@ -26,6 +27,9 @@ public class AuthDruidDataSourceConfig {
 
     @Value("${spring.datasource.auth.druid.authMapperLocations}")
     private String authMapperLocations;
+
+    @Value("${auth.project_name:''}")
+    private String projectName;
 
     @ConfigurationProperties(prefix = "spring.datasource.auth.druid")
     @Bean(name = "authDataSource")
@@ -50,6 +54,12 @@ public class AuthDruidDataSourceConfig {
         configuration.setMapUnderscoreToCamelCase(true);
         configuration.setLogImpl(org.apache.ibatis.logging.stdout.StdOutImpl.class);
         sqlSessionFactoryBean.setConfiguration(configuration);
+
+        /*设置配置属性*/
+        Properties properties = new Properties();
+        properties.setProperty("projectName", "'" + projectName + "'");
+        sqlSessionFactoryBean.setConfigurationProperties(properties);
+
         return sqlSessionFactoryBean.getObject();
     }
 

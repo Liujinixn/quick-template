@@ -2,24 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.quick.auth.mapper.RolePermissionMapper">
 
-    <sql id="permission">
-        `sys_permission`
-    </sql>
-    <sql id="role_permission">
-        `sys_role_permission`
-    </sql>
-    <sql id="role">
-        `sys_role`
-    </sql>
-    <sql id="user_role">
-        `sys_user_role`
-    </sql>
-    <sql id="user">
-        `sys_user`
-    </sql>
-
     <insert id="batchInstall">
-        INSERT INTO <include refid="role_permission"/>
+        INSERT INTO <include refid="com.quick.auth.mapper.SomeSqlMapper.role_permission"/>
         (role_id, permission_id)
         VALUES
         <foreach collection="list" item="rp" separator=",">
@@ -28,6 +12,6 @@
     </insert>
 
     <delete id="delete">
-        DELETE FROM <include refid="role_permission"/> WHERE role_id = #{roleId}
+        DELETE FROM <include refid="com.quick.auth.mapper.SomeSqlMapper.role_permission"/> WHERE role_id = #{roleId}
     </delete>
 </mapper>

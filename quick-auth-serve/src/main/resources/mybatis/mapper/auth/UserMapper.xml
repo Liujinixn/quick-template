@@ -4,22 +4,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.quick.auth.mapper.UserMapper">
 
-    <sql id="permission">
-        `sys_permission`
-    </sql>
-    <sql id="role_permission">
-        `sys_role_permission`
-    </sql>
-    <sql id="role">
-        `sys_role`
-    </sql>
-    <sql id="user_role">
-        `sys_user_role`
-    </sql>
-    <sql id="user">
-        `sys_user`
-    </sql>
-
     <sql id="Base_Column_List">
         id, user_id, username, `password`, salt, email, phone, sex, age, `status`,
         create_time, update_time, last_login_time, head_portrait
@@ -92,11 +76,11 @@
             p.icon,
             p.order_num
         FROM
-            <include refid="user"/> u
-        LEFT JOIN <include refid="user_role"/> ur ON u.user_id = ur.user_id
-        LEFT JOIN <include refid="role"/> r ON ur.role_id = r.role_id
-        LEFT JOIN <include refid="role_permission"/> rp ON rp.role_id = r.role_id
-        LEFT JOIN <include refid="permission"/> p ON p.permission_id = rp.permission_id
+            <include refid="com.quick.auth.mapper.SomeSqlMapper.user"/> u
+        LEFT JOIN <include refid="com.quick.auth.mapper.SomeSqlMapper.user_role"/> ur ON u.user_id = ur.user_id
+        LEFT JOIN <include refid="com.quick.auth.mapper.SomeSqlMapper.role"/> r ON ur.role_id = r.role_id
+        LEFT JOIN <include refid="com.quick.auth.mapper.SomeSqlMapper.role_permission"/> rp ON rp.role_id = r.role_id
+        LEFT JOIN <include refid="com.quick.auth.mapper.SomeSqlMapper.permission"/> p ON p.permission_id = rp.permission_id
         WHERE u.username=#{username} AND u.status = #{status}
     </select>
 
@@ -132,33 +116,33 @@
             p.icon,
             p.order_num
         FROM
-            <include refid="user"/> u
-        LEFT JOIN <include refid="user_role"/> ur ON u.user_id = ur.user_id
-        LEFT JOIN <include refid="role"/> r ON ur.role_id = r.role_id
-        LEFT JOIN <include refid="role_permission"/> rp ON rp.role_id = r.role_id
-        LEFT JOIN <include refid="permission"/> p ON p.permission_id = rp.permission_id
+            <include refid="com.quick.auth.mapper.SomeSqlMapper.user"/> u
+        LEFT JOIN <include refid="com.quick.auth.mapper.SomeSqlMapper.user_role"/> ur ON u.user_id = ur.user_id
+        LEFT JOIN <include refid="com.quick.auth.mapper.SomeSqlMapper.role"/> r ON ur.role_id = r.role_id
+        LEFT JOIN <include refid="com.quick.auth.mapper.SomeSqlMapper.role_permission"/> rp ON rp.role_id = r.role_id
+        LEFT JOIN <include refid="com.quick.auth.mapper.SomeSqlMapper.permission"/> p ON p.permission_id = rp.permission_id
         WHERE u.user_id=#{userId} AND u.status = #{status}
     </select>
 
     <select id="findUserSimpleInfoByUsername" resultType="com.quick.auth.entity.User">
         SELECT
         <include refid="Base_Column_List"/>
-        FROM <include refid="user"/>
+        FROM <include refid="com.quick.auth.mapper.SomeSqlMapper.user"/>
         WHERE username = #{username} AND status = #{status}
     </select>
 
     <select id="findUserByUserId" resultType="com.quick.auth.entity.User">
         SELECT
         <include refid="Base_Column_List"/>
-        FROM <include refid="user"/> WHERE user_id = #{userId,jdbcType=VARCHAR} AND status = #{status}
+        FROM <include refid="com.quick.auth.mapper.SomeSqlMapper.user"/> WHERE user_id = #{userId,jdbcType=VARCHAR} AND status = #{status}
     </select>
 
     <update id="updateLastLoginTime" parameterType="com.quick.auth.entity.User">
-        UPDATE <include refid="user"/> SET last_login_time = now() , login_ip_address = #{loginIpAddress} WHERE user_id = #{userId}
+        UPDATE <include refid="com.quick.auth.mapper.SomeSqlMapper.user"/> SET last_login_time = now() , login_ip_address = #{loginIpAddress} WHERE user_id = #{userId}
     </update>
 
     <update id="updateByUserId" parameterType="com.quick.auth.entity.User">
-        UPDATE <include refid="user"/>
+        UPDATE <include refid="com.quick.auth.mapper.SomeSqlMapper.user"/>
         SET
         <if test="id != null">
             id = #{id},
@@ -205,7 +189,7 @@
 
     <update id="updateStatusBatch" parameterType="map">
         UPDATE
-        <include refid="user"/>
+        <include refid="com.quick.auth.mapper.SomeSqlMapper.user"/>
         SET
         status=#{status}, update_time=now()
         WHERE
@@ -218,16 +202,16 @@
     <select id="findByRoleId" resultType="com.quick.auth.entity.User">
         SELECT u.id, u.user_id, u.username, u.password, u.salt, u.email, u.phone, u.sex, u.age, u.status,
         u.create_time, u.update_time, u.last_login_time, u.head_portrait
-        FROM <include refid="user"/> u
-        INNER JOIN <include refid="user_role"/> ur ON u.user_id = ur.user_id
+        FROM <include refid="com.quick.auth.mapper.SomeSqlMapper.user"/> u
+        INNER JOIN <include refid="com.quick.auth.mapper.SomeSqlMapper.user_role"/> ur ON u.user_id = ur.user_id
         WHERE ur.role_id = #{roleId,jdbcType=VARCHAR}
     </select>
 
     <select id="findByRoleIds" resultType="com.quick.auth.entity.User">
         SELECT u.id, u.user_id, u.username, u.password, u.salt, u.email, u.phone, u.sex, u.age, u.status,
         u.create_time, u.update_time, u.last_login_time, u.head_portrait
-        FROM <include refid="user"/> u
-        INNER JOIN <include refid="user_role"/> ur ON u.user_id = ur.user_id
+        FROM <include refid="com.quick.auth.mapper.SomeSqlMapper.user"/> u
+        INNER JOIN <include refid="com.quick.auth.mapper.SomeSqlMapper.user_role"/> ur ON u.user_id = ur.user_id
         WHERE ur.role_id IN
         <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
             #{item}
@@ -279,9 +263,9 @@
         r.description,
         r.status AS roleStatus
 
-        FROM <include refid="user"/> u
-        LEFT JOIN <include refid="user_role"/> ur ON ur.user_id = u.user_id
-        LEFT JOIN <include refid="role"/> r ON r.role_id = ur.role_id
+        FROM <include refid="com.quick.auth.mapper.SomeSqlMapper.user"/> u
+        LEFT JOIN <include refid="com.quick.auth.mapper.SomeSqlMapper.user_role"/> ur ON ur.user_id = u.user_id
+        LEFT JOIN <include refid="com.quick.auth.mapper.SomeSqlMapper.role"/> r ON r.role_id = ur.role_id
         WHERE
         u.status = #{status}
         <if test="username !=null and username !='' and username !='null' ">
@@ -317,22 +301,22 @@
         r.description,
         r.status AS roleStatus
 
-        FROM <include refid="user"/> u
-        LEFT JOIN <include refid="user_role"/> ur ON ur.user_id = u.user_id
-        LEFT JOIN <include refid="role"/> r ON r.role_id = ur.role_id
+        FROM <include refid="com.quick.auth.mapper.SomeSqlMapper.user"/> u
+        LEFT JOIN <include refid="com.quick.auth.mapper.SomeSqlMapper.user_role"/> ur ON ur.user_id = u.user_id
+        LEFT JOIN <include refid="com.quick.auth.mapper.SomeSqlMapper.role"/> r ON r.role_id = ur.role_id
         WHERE
         u.status = #{status} AND u.user_id = #{userId}
     </select>
 
     <select id="findUsersWhetherExistByUsernameOrUserId" resultType="java.lang.Integer">
-        SELECT count(id) FROM <include refid="user"/> WHERE username = #{username} AND status = #{status}
+        SELECT count(id) FROM <include refid="com.quick.auth.mapper.SomeSqlMapper.user"/> WHERE username = #{username} AND status = #{status}
         <if test="userId != null">
             AND user_id != #{userId}
         </if>
     </select>
 
     <insert id="insertUser">
-        INSERT INTO <include refid="user"/>
+        INSERT INTO <include refid="com.quick.auth.mapper.SomeSqlMapper.user"/>
         (
         <if test="id != null">
             id,
