@@ -15,12 +15,12 @@ import java.util.UUID;
  */
 public class FileBaseUtil {
 
-    private static final Logger log = LoggerFactory.getLogger(FileBaseUtil.class);
-
     /**
      * 临时目录
      */
-    public static final String TEMPORARY_DIRECTORY_PATH = "/tmp/";
+    public static final String TEMPORARY_DIRECTORY_PATH = System.getProperty("java.io.tmpdir");
+
+    private static final Logger log = LoggerFactory.getLogger(FileBaseUtil.class);
 
     /**
      * windows标识
@@ -105,9 +105,13 @@ public class FileBaseUtil {
      */
     public static boolean deleteFile(String fileName) {
         File file = new File(fileName);
-        if (file.isFile() && file.exists()) {
-            file.delete();
-            return true;
+        try {
+            if (file.isFile() && file.exists()) {
+                file.delete();
+                return true;
+            }
+        } catch (Exception e) {
+            log.warn("文件删除失败, fileName = {}", fileName);
         }
         return false;
     }
@@ -268,11 +272,13 @@ public class FileBaseUtil {
             fileName = UUID.randomUUID().toString();
             // 设置所有图片文件强制为jpg格式
             fileName = fileName + ".jpg";
-            File imageFile = new File(TEMPORARY_DIRECTORY_PATH + fileName);
-            //创建输出流
-            outStream = new FileOutputStream(imageFile);
-            //写入数据
-            outStream.write(data);
+            // 创建文件临时文件输出流
+            outStream = new FileOutputStream(TEMPORARY_DIRECTORY_PATH + fileName);
+            // 通过 ByteArrayOutputStream 记录获取到的流
+            ByteArrayOutputStream imageFileStream = new ByteArrayOutputStream();
+            imageFileStream.write(data);
+            // 将 ByteArrayOutputStream 写入本地临时文件中
+            outStream.write(imageFileStream.toByteArray());
         } catch (Exception e) {
             log.error("{} 图片地址，保存到临时文件目录失败", urlAddress, e);
             return null;

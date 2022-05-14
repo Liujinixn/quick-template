@@ -34,13 +34,11 @@ import java.util.regex.Pattern;
  */
 public class WordTemplateUtil {
 
-    private static final Logger log = LoggerFactory.getLogger(WordTemplateUtil.class);
-
     /**
      * 系统模板文件路径 (resources路径开始)
      */
     public static final String TEMPLATE_FILE_PATH = "template_file/";
-
+    private static final Logger log = LoggerFactory.getLogger(WordTemplateUtil.class);
     /**
      * 模板文件变量规则 例：${name}
      */
@@ -220,18 +218,18 @@ public class WordTemplateUtil {
         double height = MapUtils.getDouble(infoImg, "h");
 
         Integer documentType;
+        InputStream inputStream = null;
         if (StringUtils.isBlank(src)) {
             log.warn("未找到 {} 图片文件", src);
             return;
         }
-        String suffix = src.substring(src.lastIndexOf("."));
-        documentType = MapUtils.getInteger(DOCUMENT_TYPE_MAP, suffix);
-        if (documentType == null) {
-            log.warn("不支持的图片: imgUrl = {}. 可选格式 emf|wmf|pict|jpeg|jpg|png|dib|gif|tiff|eps|bmp|wpg", src);
-            return;
-        }
-        InputStream inputStream = null;
         try {
+            String suffix = src.substring(src.lastIndexOf("."));
+            documentType = MapUtils.getInteger(DOCUMENT_TYPE_MAP, suffix);
+            if (documentType == null) {
+                log.warn("不支持的图片: imgUrl = {}. 可选格式 emf|wmf|pict|jpeg|jpg|png|dib|gif|tiff|eps|bmp|wpg", src);
+                return;
+            }
             inputStream = new FileInputStream(src);
             runs.get(0).addPicture(inputStream, documentType, src, Units.toEMU(width), Units.toEMU(height));
         } catch (FileNotFoundException e) {
