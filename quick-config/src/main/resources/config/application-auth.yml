@@ -1,8 +1,10 @@
 # 认证服务配置
 auth:
-  # 认证服务所属系统，不同的项目该参数绝对不可重复
+  # 认证服务名称 （用于标识所属系统，不同的项目该参数绝对不可重复）
   serve_name: quick
-  access_key: 123123
+  # 认证服务密钥
+  access_key: 4728276AFDC24F82
+
 # shiro核心参数 ShiroCoreParameters类
 shiro:
   # 是否开启系统权限认证功能

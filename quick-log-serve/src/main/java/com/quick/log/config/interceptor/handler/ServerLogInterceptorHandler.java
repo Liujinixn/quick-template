@@ -5,7 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.quick.auth.entity.Permission;
 import com.quick.auth.entity.User;
 import com.quick.auth.service.PermissionService;
-import com.quick.auth.service.UserService;
+import com.quick.auth.utils.ShiroUtil;
 import com.quick.common.utils.ip.IpUtil;
 import com.quick.log.config.params.LogBackCoreParameters;
 import com.quick.log.config.params.internal.RecordSpecificPathInfo;
@@ -49,9 +49,6 @@ public class ServerLogInterceptorHandler implements HandlerInterceptor {
     private static final String APPLICATION_JSON = "application/json";
 
     @Autowired
-    UserService userService;
-
-    @Autowired
     PermissionService permissionService;
 
     @Autowired
@@ -62,7 +59,8 @@ public class ServerLogInterceptorHandler implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        log.info(">> 执行请求前拦截操作");
+        log.info("---------------鉴权接口接入---------------");
+        log.info(">> 执行请求前操作");
         log.info("Request请求前，当前系统时间记录Attribute[{}]中", REQUEST_START_TIME);
         request.setAttribute(REQUEST_START_TIME, System.currentTimeMillis());
         if (ServletFileUpload.isMultipartContent(request)) {
@@ -77,9 +75,9 @@ public class ServerLogInterceptorHandler implements HandlerInterceptor {
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception exception)
             throws Exception {
-        log.info(">> 执行请求后拦截操作");
+        log.info(">> 执行请求完成后操作");
         Permission permissionInfo = getPermission(request);
-        User userInfo = userService.getLoginUserAllInfo();
+        User userInfo = ShiroUtil.getLoginUserInfo();
         if (null == userInfo) {
             userInfo = new User();
         }
