@@ -44,7 +44,7 @@ public class ResponseInterceptHandler implements ResponseBodyAdvice<Object> {
                                   Class<? extends HttpMessageConverter<?>> aClass,
                                   ServerHttpRequest serverHttpRequest,
                                   ServerHttpResponse serverHttpResponse) {
-        log.info(">> 执行响应拦截器");
+        // log.info(">> 执行响应拦截器");
         ServletServerHttpResponse responseTemp = (ServletServerHttpResponse) serverHttpResponse;
         HttpServletResponse resp = responseTemp.getServletResponse();
         ServletServerHttpRequest sshr = (ServletServerHttpRequest) serverHttpRequest;

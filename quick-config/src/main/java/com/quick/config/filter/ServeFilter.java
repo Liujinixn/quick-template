@@ -25,7 +25,7 @@ public class ServeFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        log.info(">> 接口执行过滤器，Request请求头信息包装（解决拦截器读取流后出现失效）");
+        // log.info(">> 接口执行过滤器，Request请求头信息包装（解决拦截器读取流后出现失效）");
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         if (ServletFileUpload.isMultipartContent(httpServletRequest)) {
             // 存在上传文件，此时不重写 Requets
