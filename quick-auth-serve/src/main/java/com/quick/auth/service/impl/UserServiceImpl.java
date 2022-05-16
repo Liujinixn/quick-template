@@ -4,7 +4,7 @@ import cn.hutool.extra.spring.SpringUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.quick.auth.config.params.ShiroCoreParameters;
-import com.quick.auth.constant.AuthDBCoreConst;
+import com.quick.auth.constant.AuthServeCoreConst;
 import com.quick.auth.entity.User;
 import com.quick.auth.entity.UserRole;
 import com.quick.auth.mapper.UserMapper;
@@ -36,17 +36,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserSimpleInfoByUsername(String username) {
-        return userMapper.findUserSimpleInfoByUsername(username, AuthDBCoreConst.STATUS_VALID);
+        return userMapper.findUserSimpleInfoByUsername(username, AuthServeCoreConst.STATUS_VALID);
     }
 
     @Override
     public User findUserAllInfoInfoByUsername(String username) {
-        return userMapper.findUserAllInfoInfoByUsername(username, AuthDBCoreConst.STATUS_VALID);
+        return userMapper.findUserAllInfoInfoByUsername(username, AuthServeCoreConst.STATUS_VALID);
     }
 
     @Override
     public User findUserAllInfoInfoByUserId(String userId) {
-        return userMapper.findUserAllInfoInfoByUserId(userId, AuthDBCoreConst.STATUS_VALID);
+        return userMapper.findUserAllInfoInfoByUserId(userId, AuthServeCoreConst.STATUS_VALID);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public PageInfo<User> findUsers(User user, int page, int limit) {
         PageHelper.startPage(page, limit);
-        user.setStatus(AuthDBCoreConst.STATUS_VALID);
+        user.setStatus(AuthServeCoreConst.STATUS_VALID);
         List<User> users = userMapper.findUsers(user);
 
         KickoutSessionControlFilter kickoutSessionControlFilter =
@@ -68,10 +68,10 @@ public class UserServiceImpl implements UserService {
             LinkedList<Serializable> chcheOnlineUser = kickoutSessionControlFilter.getChcheOnlineUser(username);
             if (chcheOnlineUser == null || chcheOnlineUser.size() <= 0) {
                 // 不在线
-                userInfo.setOnlineStatusAndOnlineQuantity(AuthDBCoreConst.NOT_ONLINE);
+                userInfo.setOnlineStatusAndOnlineQuantity(AuthServeCoreConst.NOT_ONLINE);
             } else {
                 // 在线
-                userInfo.setOnlineStatusAndOnlineQuantity(AuthDBCoreConst.ONLINE, chcheOnlineUser.size());
+                userInfo.setOnlineStatusAndOnlineQuantity(AuthServeCoreConst.ONLINE, chcheOnlineUser.size());
             }
         }
         return new PageInfo<>(users);
@@ -79,13 +79,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserByUserId(String userId) {
-        return userMapper.findUserByUserId(userId, AuthDBCoreConst.STATUS_VALID);
+        return userMapper.findUserByUserId(userId, AuthServeCoreConst.STATUS_VALID);
     }
 
     @Override
     public int insertUser(User user) {
         user.setUserId(UUIDUtil.getUniqueIdByUUId());
-        user.setStatus(AuthDBCoreConst.STATUS_VALID);
+        user.setStatus(AuthServeCoreConst.STATUS_VALID);
         return userMapper.insertUser(user);
     }
 
@@ -93,7 +93,7 @@ public class UserServiceImpl implements UserService {
     public int updateStatusBatch(List<String> userIds) {
         Map<String, Object> params = new HashMap<String, Object>(2);
         params.put("userIds", userIds);
-        params.put("status", AuthDBCoreConst.STATUS_INVALID);
+        params.put("status", AuthServeCoreConst.STATUS_INVALID);
         return userMapper.updateStatusBatch(params);
     }
 
@@ -120,7 +120,7 @@ public class UserServiceImpl implements UserService {
         if (null == loginUserId) {
             return null;
         }
-        User userInfo = userMapper.findUserAndRoleByUserId(loginUserId, AuthDBCoreConst.STATUS_VALID);
+        User userInfo = userMapper.findUserAndRoleByUserId(loginUserId, AuthServeCoreConst.STATUS_VALID);
 
         // 获取用户在线情况
         KickoutSessionControlFilter kickoutSessionControlFilter =
@@ -128,10 +128,10 @@ public class UserServiceImpl implements UserService {
         LinkedList<Serializable> chcheOnlineUser = kickoutSessionControlFilter.getChcheOnlineUser(userInfo.getUsername());
         if (chcheOnlineUser == null || chcheOnlineUser.size() <= 0) {
             // 不在线
-            userInfo.setOnlineStatusAndOnlineQuantity(AuthDBCoreConst.NOT_ONLINE);
+            userInfo.setOnlineStatusAndOnlineQuantity(AuthServeCoreConst.NOT_ONLINE);
         } else {
             // 在线
-            userInfo.setOnlineStatusAndOnlineQuantity(AuthDBCoreConst.ONLINE, chcheOnlineUser.size());
+            userInfo.setOnlineStatusAndOnlineQuantity(AuthServeCoreConst.ONLINE, chcheOnlineUser.size());
         }
         return userInfo;
     }
@@ -143,7 +143,7 @@ public class UserServiceImpl implements UserService {
         KickoutSessionControlFilter kickoutSessionControlFilter =
                 SpringUtil.getBean("kickoutSessionControlFilter", KickoutSessionControlFilter.class);
         for (String userIdVal : userIdArray) {
-            User user = userMapper.findUserByUserId(userIdVal, AuthDBCoreConst.STATUS_VALID);
+            User user = userMapper.findUserByUserId(userIdVal, AuthServeCoreConst.STATUS_VALID);
             // 获取在线用户的令牌，并删除认证信息
             LinkedList<Serializable> chcheOnlineUser = kickoutSessionControlFilter.getChcheOnlineUser(user.getUsername());
             for (Serializable serializable : chcheOnlineUser) {
@@ -160,7 +160,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int findUsersWhetherExistByUsernameOrUserId(String username, String userId) {
-        return userMapper.findUsersWhetherExistByUsernameOrUserId(username, userId, AuthDBCoreConst.STATUS_VALID);
+        return userMapper.findUsersWhetherExistByUsernameOrUserId(username, userId, AuthServeCoreConst.STATUS_VALID);
     }
 
 }

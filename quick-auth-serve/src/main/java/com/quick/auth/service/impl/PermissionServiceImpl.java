@@ -1,7 +1,7 @@
 package com.quick.auth.service.impl;
 
-import com.quick.auth.constant.AuthDBCoreConst;
 import com.quick.auth.constant.AuthRedisDataCacheKey;
+import com.quick.auth.constant.AuthServeCoreConst;
 import com.quick.auth.entity.Permission;
 import com.quick.auth.enumerate.PermissionTypeEnum;
 import com.quick.auth.mapper.PermissionMapper;
@@ -30,7 +30,7 @@ public class PermissionServiceImpl implements PermissionService {
         if (CollectionUtils.isNotEmpty(permissionList)) {
             return permissionList;
         }
-        permissionList = permissionMapper.findAllPermissionList(AuthDBCoreConst.STATUS_VALID);
+        permissionList = permissionMapper.findAllPermissionList(AuthServeCoreConst.STATUS_VALID);
         RedisClient.set(AuthRedisDataCacheKey.PERMISSION_ALL, permissionList, AuthRedisDataCacheKey.EXPIRED_TEN_MINUTE);
         return permissionList;
     }
@@ -39,7 +39,7 @@ public class PermissionServiceImpl implements PermissionService {
     public List<Permission> findAllButtonPermissionList() {
         List<Permission> permissionList = (List<Permission>) RedisClient.get(AuthRedisDataCacheKey.PERMISSION_ALL);
         if (CollectionUtils.isEmpty(permissionList)) {
-            permissionList = permissionMapper.findAllPermissionList(AuthDBCoreConst.STATUS_VALID);
+            permissionList = permissionMapper.findAllPermissionList(AuthServeCoreConst.STATUS_VALID);
             RedisClient.set(AuthRedisDataCacheKey.PERMISSION_ALL, permissionList, AuthRedisDataCacheKey.EXPIRED_TEN_MINUTE);
         }
         return permissionList.stream()
@@ -49,14 +49,14 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     public List<Permission> findAllPermissionListLevel(Integer parentId) {
-        return permissionMapper.findAllPermissionListLevel(parentId, AuthDBCoreConst.STATUS_VALID);
+        return permissionMapper.findAllPermissionListLevel(parentId, AuthServeCoreConst.STATUS_VALID);
     }
 
     @Override
     public List<MenuVo> findAllMenuInfoLevel(Integer parentId) {
         // 获取当前登录用户的ID
         String loginUserId = ShiroUtil.getLoginUserId();
-        return permissionMapper.findAllMenuInfoLevel(loginUserId, parentId, AuthDBCoreConst.STATUS_VALID);
+        return permissionMapper.findAllMenuInfoLevel(loginUserId, parentId, AuthServeCoreConst.STATUS_VALID);
     }
 
     @Override
@@ -64,13 +64,13 @@ public class PermissionServiceImpl implements PermissionService {
         if (StringUtils.isBlank(url)) {
             return null;
         }
-        return permissionMapper.findPermissionSimpleInfoByUrl(url, AuthDBCoreConst.STATUS_VALID);
+        return permissionMapper.findPermissionSimpleInfoByUrl(url, AuthServeCoreConst.STATUS_VALID);
     }
 
     @Override
     public int installPermission(Permission permission) {
         permission.setPermissionId(UUIDUtil.getUniqueIdByUUId());
-        permission.setStatus(AuthDBCoreConst.STATUS_VALID);
+        permission.setStatus(AuthServeCoreConst.STATUS_VALID);
         return permissionMapper.insertPermission(permission);
     }
 
@@ -81,17 +81,17 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     public int deletePermission(String permissionId) {
-        return permissionMapper.updatePermissionStatus(permissionId, AuthDBCoreConst.STATUS_INVALID);
+        return permissionMapper.updatePermissionStatus(permissionId, AuthServeCoreConst.STATUS_INVALID);
     }
 
     @Override
     public int selectSubPermsByPermissionId(String parentId) {
-        return permissionMapper.selectSubPermsByPermissionId(parentId, AuthDBCoreConst.STATUS_VALID);
+        return permissionMapper.selectSubPermsByPermissionId(parentId, AuthServeCoreConst.STATUS_VALID);
     }
 
     @Override
     public int findPermissionsWhetherExistByPermissionNameOrPermissionId(String name, String permissionId) {
-        return permissionMapper.findPermissionsWhetherExistByPermissionNameOrPermissionId(name, permissionId, AuthDBCoreConst.STATUS_VALID);
+        return permissionMapper.findPermissionsWhetherExistByPermissionNameOrPermissionId(name, permissionId, AuthServeCoreConst.STATUS_VALID);
     }
 
 }

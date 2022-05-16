@@ -3,7 +3,7 @@ package com.quick.auth.controller;
 import cn.hutool.extra.spring.SpringUtil;
 import com.github.pagehelper.PageInfo;
 import com.quick.auth.config.params.ShiroCoreParameters;
-import com.quick.auth.constant.AuthDBCoreConst;
+import com.quick.auth.constant.AuthServeCoreConst;
 import com.quick.auth.dto.ChangePasswordDTO;
 import com.quick.auth.dto.UserAddOperateDTO;
 import com.quick.auth.dto.UserUpdateOperateDTO;
@@ -250,7 +250,7 @@ public class UserController {
                     role.getRoleId(),
                     role.getName(),
                     role.getDescription() == null ? "" : role.getDescription(),
-                    Objects.equals(AuthDBCoreConst.STATUS_VALID, role.getStatus()) ? "有效" : "无效");
+                    Objects.equals(AuthServeCoreConst.STATUS_VALID, role.getStatus()) ? "有效" : "无效");
         }
         wordToPdfTemplateParams.putTableParams("table", tableAttr);
 

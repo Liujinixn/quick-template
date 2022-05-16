@@ -7,7 +7,7 @@ import com.quick.common.utils.constant.CoreConst;
  *
  * @author Liujinxin
  */
-public class AuthDBCoreConst extends CoreConst {
+public class AuthServeCoreConst extends CoreConst {
 
     /**
      * 状态有效（正常状态）

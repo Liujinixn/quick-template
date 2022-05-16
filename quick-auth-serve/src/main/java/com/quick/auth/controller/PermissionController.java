@@ -1,6 +1,6 @@
 package com.quick.auth.controller;
 
-import com.quick.auth.constant.AuthDBCoreConst;
+import com.quick.auth.constant.AuthServeCoreConst;
 import com.quick.auth.dto.PermissionAddOperateDTO;
 import com.quick.auth.dto.PermissionUpdateOperateDTO;
 import com.quick.auth.entity.Permission;
@@ -31,7 +31,7 @@ public class PermissionController {
     @GetMapping("/list")
     @ApiOperation("获取权限列表")
     public Result<List<Permission>> permissionList() {
-        List<Permission> permissionList = permissionService.findAllPermissionListLevel(AuthDBCoreConst.TOP_MENU_ID);
+        List<Permission> permissionList = permissionService.findAllPermissionListLevel(AuthServeCoreConst.TOP_MENU_ID);
         return Result.ok(permissionList);
     }
 
@@ -103,7 +103,7 @@ public class PermissionController {
     @ApiOperation(value = "附属-获取所有权限列表")
     public Result<List<Permission>> permissionAllList() {
         List<Permission> permissionList =
-                permissionService.findAllPermissionListLevel(AuthDBCoreConst.TOP_MENU_ID);
+                permissionService.findAllPermissionListLevel(AuthServeCoreConst.TOP_MENU_ID);
         return Result.ok(permissionList);
     }
 
