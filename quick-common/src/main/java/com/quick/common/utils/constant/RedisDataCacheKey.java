@@ -7,6 +7,8 @@ package com.quick.common.utils.constant;
  */
 public class RedisDataCacheKey {
 
+    /**************************** 过期时间 ****************************/
+
     /**
      * 10分钟（单位S）
      */
@@ -17,13 +19,7 @@ public class RedisDataCacheKey {
      */
     public final static long EXPIRED_ONE_HOUR = 60 * 60;
 
-    /*******************************************************************/
-    /*******************************************************************/
-
-    /**
-     * 所有权限列表
-     */
-    public final static String PERMISSION_ALL = "permission:all";
+    /**************************** Key ****************************/
 
 
 }

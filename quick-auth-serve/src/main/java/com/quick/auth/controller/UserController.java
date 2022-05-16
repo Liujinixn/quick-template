@@ -3,6 +3,7 @@ package com.quick.auth.controller;
 import cn.hutool.extra.spring.SpringUtil;
 import com.github.pagehelper.PageInfo;
 import com.quick.auth.config.params.ShiroCoreParameters;
+import com.quick.auth.constant.AuthDBCoreConst;
 import com.quick.auth.dto.ChangePasswordDTO;
 import com.quick.auth.dto.UserAddOperateDTO;
 import com.quick.auth.dto.UserUpdateOperateDTO;
@@ -11,7 +12,6 @@ import com.quick.auth.entity.User;
 import com.quick.auth.service.UserService;
 import com.quick.auth.shiro.realm.UserRealm;
 import com.quick.auth.utils.ShiroUtil;
-import com.quick.common.utils.constant.CoreConst;
 import com.quick.common.utils.flie.WordToPdfUtil;
 import com.quick.common.utils.flie.dto.ImagesAttr;
 import com.quick.common.utils.flie.dto.TableAttr;
@@ -217,6 +217,48 @@ public class UserController {
     }
 
     /**
+     * 导出用户基本信息 Pdf
+     *
+     * @param userId 用户ID
+     */
+    @GetMapping("/export/info/pdf")
+    @ApiOperation(value = "导出用户基本信息 Pdf", produces = "application/octet-stream")
+    @ApiImplicitParam(name = "userId", value = "用户ID", required = true, dataType = "string", paramType = "query")
+    public void exportUserBasicInfoPdf(String userId, HttpServletResponse response) throws Exception {
+        User userInfo = userService.findUserAllInfoInfoByUserId(userId);
+
+        WordToPdfUtil.setResponseInfo(response, "用户信息" + userInfo.getUsername() + ".pdf");
+        // 替换文本
+        WordTemplateVariable wordToPdfTemplateParams = WordTemplateVariable.createTemplateParams("userInfo.docx");
+        wordToPdfTemplateParams.putTextParams("name", userInfo.getUsername());
+        wordToPdfTemplateParams.putTextParams("userId", userInfo.getUserId());
+        wordToPdfTemplateParams.putTextParams("phone", userInfo.getPhone());
+        wordToPdfTemplateParams.putTextParams("email", userInfo.getEmail());
+        wordToPdfTemplateParams.putTextParams("sex", userInfo.getSex().equals(1) ? "男" : "女");
+        wordToPdfTemplateParams.putTextParams("age", userInfo.getAge());
+        wordToPdfTemplateParams.putTextParams("status", userInfo.getStatus().equals(1) ? "有效" : "删除");
+        wordToPdfTemplateParams.putTextParams("roleName", userInfo.getRoles().stream().map(o -> o.getName()).collect(Collectors.joining("、")));
+
+        // 替换图片
+        ImagesAttr imagesAttr = new ImagesAttr(userInfo.getHeadPortrait(), 110, 130);
+        wordToPdfTemplateParams.putImageParams("headPortrait", imagesAttr);
+
+        // 替换自定义表格
+        TableAttr tableAttr = new TableAttr("角色ID", "角色名称", "角色描述", "状态");
+        for (Role role : userInfo.getRoles()) {
+            tableAttr.addRow(
+                    role.getRoleId(),
+                    role.getName(),
+                    role.getDescription() == null ? "" : role.getDescription(),
+                    Objects.equals(AuthDBCoreConst.STATUS_VALID, role.getStatus()) ? "有效" : "无效");
+        }
+        wordToPdfTemplateParams.putTableParams("table", tableAttr);
+
+        byte[] bytes = WordToPdfUtil.wordTemplateGeneratePdf(wordToPdfTemplateParams);
+        response.getOutputStream().write(bytes);
+    }
+
+    /**
      * 附属-获取当前登录用户的信息（含角色信息，不包含角色的权限信息）
      */
     @GetMapping("/loginUserInfo")
@@ -259,48 +301,6 @@ public class UserController {
         userRealm.removeCachedAuthenticationInfo(userIds);
         /*SecurityUtils.getSubject().logout();*/
         return Result.ok("修改密码成功");
-    }
-
-    /**
-     * 导出用户基本信息 Pdf
-     *
-     * @param userId 用户ID
-     */
-    @GetMapping("/export/info/pdf")
-    @ApiOperation(value = "导出用户基本信息 Pdf", produces = "application/octet-stream")
-    @ApiImplicitParam(name = "userId", value = "用户ID", required = true, dataType = "string", paramType = "query")
-    public void exportUserBasicInfoPdf(String userId, HttpServletResponse response) throws Exception {
-        User userInfo = userService.findUserAllInfoInfoByUserId(userId);
-
-        WordToPdfUtil.setResponseInfo(response, "用户信息" + userInfo.getUsername() + ".pdf");
-        // 替换文本
-        WordTemplateVariable wordToPdfTemplateParams = WordTemplateVariable.createTemplateParams("userInfo.docx");
-        wordToPdfTemplateParams.putTextParams("name", userInfo.getUsername());
-        wordToPdfTemplateParams.putTextParams("userId", userInfo.getUserId());
-        wordToPdfTemplateParams.putTextParams("phone", userInfo.getPhone());
-        wordToPdfTemplateParams.putTextParams("email", userInfo.getEmail());
-        wordToPdfTemplateParams.putTextParams("sex", userInfo.getSex().equals(1) ? "男" : "女");
-        wordToPdfTemplateParams.putTextParams("age", userInfo.getAge());
-        wordToPdfTemplateParams.putTextParams("status", userInfo.getStatus().equals(1) ? "有效" : "删除");
-        wordToPdfTemplateParams.putTextParams("roleName", userInfo.getRoles().stream().map(o -> o.getName()).collect(Collectors.joining("、")));
-
-        // 替换图片
-        ImagesAttr imagesAttr = new ImagesAttr(userInfo.getHeadPortrait(), 110, 130);
-        wordToPdfTemplateParams.putImageParams("headPortrait", imagesAttr);
-
-        // 替换自定义表格
-        TableAttr tableAttr = new TableAttr("角色ID", "角色名称", "角色描述", "状态");
-        for (Role role : userInfo.getRoles()) {
-            tableAttr.addRow(
-                    role.getRoleId(),
-                    role.getName(),
-                    role.getDescription() == null ? "" : role.getDescription(),
-                    Objects.equals(CoreConst.STATUS_VALID, role.getStatus()) ? "有效" : "无效");
-        }
-        wordToPdfTemplateParams.putTableParams("table", tableAttr);
-
-        byte[] bytes = WordToPdfUtil.wordTemplateGeneratePdf(wordToPdfTemplateParams);
-        response.getOutputStream().write(bytes);
     }
 
 }

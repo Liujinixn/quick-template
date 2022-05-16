@@ -1,10 +1,10 @@
 package com.quick.auth.shiro.realm;
 
+import com.quick.auth.constant.AuthDBCoreConst;
 import com.quick.auth.entity.Permission;
 import com.quick.auth.entity.Role;
 import com.quick.auth.entity.User;
 import com.quick.auth.service.UserService;
-import com.quick.common.utils.constant.CoreConst;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
@@ -69,7 +69,7 @@ public class UserRealm extends AuthorizingRealm {
         if (user == null) {
             return null;
         }
-        if (CoreConst.STATUS_INVALID.equals(user.getStatus())) {
+        if (AuthDBCoreConst.STATUS_INVALID.equals(user.getStatus())) {
             // 帐号锁定
             throw new LockedAccountException();
         }

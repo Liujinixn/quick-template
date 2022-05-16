@@ -1,9 +1,9 @@
 package com.quick.auth.controller;
 
+import com.quick.auth.constant.AuthDBCoreConst;
 import com.quick.auth.service.PermissionService;
 import com.quick.auth.vo.MenuVo;
 import com.quick.common.vo.Result;
-import com.quick.common.utils.constant.CoreConst;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class MenuController {
     @GetMapping("/list")
     @ApiOperation(value = "获取菜单列表")
     public Result<List<MenuVo>> findMenus() {
-        return Result.ok(permissionService.findAllMenuInfoLevel(CoreConst.TOP_MENU_ID));
+        return Result.ok(permissionService.findAllMenuInfoLevel(AuthDBCoreConst.TOP_MENU_ID));
     }
 
 }
