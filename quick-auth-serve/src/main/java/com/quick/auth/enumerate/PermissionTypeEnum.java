@@ -1,4 +1,4 @@
-package com.quick.common.enumerate;
+package com.quick.auth.enumerate;
 
 import lombok.AllArgsConstructor;
 

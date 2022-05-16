@@ -9,10 +9,19 @@ public interface PermissionService {
 
     /**
      * 查询全部权限
+     * 存在10分钟缓存时间
      *
      * @return list 无层级关系
      */
     List<Permission> findAllPermissionList();
+
+    /**
+     * 查询全部按钮权限信息（即PermissionTypeEnum.BUTTON类型）
+     * 存在10分钟缓存时间
+     *
+     * @return list 无层级关系
+     */
+    List<Permission> findAllButtonPermissionList();
 
     /**
      * 查询全部权限

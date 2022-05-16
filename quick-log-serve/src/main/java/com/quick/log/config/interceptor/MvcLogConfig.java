@@ -2,7 +2,6 @@ package com.quick.log.config.interceptor;
 
 import com.quick.auth.entity.Permission;
 import com.quick.auth.service.PermissionService;
-import com.quick.common.enumerate.PermissionTypeEnum;
 import com.quick.log.config.interceptor.handler.ServerLogInterceptorHandler;
 import com.quick.log.config.params.LogBackCoreParameters;
 import com.quick.log.config.params.RequestPrefixLogParams;
@@ -41,11 +40,10 @@ public class MvcLogConfig implements WebMvcConfigurer {
             // 服务关闭日志记录
             return;
         }
-        List<Permission> allPermissionList = permissionService.findAllPermissionList();
+        List<Permission> allPermissionList = permissionService.findAllButtonPermissionList();
 
         // 拦截的接口列表
         List<String> urlList = allPermissionList.stream()
-                .filter(o -> o.getType().equals(PermissionTypeEnum.BUTTON.getCode()))
                 .map(o -> o.getUrl())
                 .collect(Collectors.toList());
 

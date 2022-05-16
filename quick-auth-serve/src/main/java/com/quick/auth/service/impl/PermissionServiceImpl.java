@@ -1,6 +1,7 @@
 package com.quick.auth.service.impl;
 
 import com.quick.auth.entity.Permission;
+import com.quick.auth.enumerate.PermissionTypeEnum;
 import com.quick.auth.mapper.PermissionMapper;
 import com.quick.auth.service.PermissionService;
 import com.quick.auth.utils.ShiroUtil;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PermissionServiceImpl implements PermissionService {
@@ -34,6 +36,18 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
+    public List<Permission> findAllButtonPermissionList() {
+        List<Permission> permissionList = (List<Permission>) RedisClient.get(RedisDataCacheKey.PERMISSION_ALL);
+        if (CollectionUtils.isEmpty(permissionList)) {
+            permissionList = permissionMapper.findAllPermissionList(CoreConst.STATUS_VALID);
+            RedisClient.set(RedisDataCacheKey.PERMISSION_ALL, permissionList, RedisDataCacheKey.EXPIRED_TEN_MINUTE);
+        }
+        return permissionList.stream()
+                .filter(o -> o.getType().equals(PermissionTypeEnum.BUTTON.getCode()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<Permission> findAllPermissionListLevel(Integer parentId) {
         return permissionMapper.findAllPermissionListLevel(parentId, CoreConst.STATUS_VALID);
     }
@@ -47,10 +61,10 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     public Permission findPermissionSimpleInfoByUrl(String url) {
-        if(StringUtils.isBlank(url)){
+        if (StringUtils.isBlank(url)) {
             return null;
         }
-        return permissionMapper.findPermissionSimpleInfoByUrl(url,CoreConst.STATUS_VALID);
+        return permissionMapper.findPermissionSimpleInfoByUrl(url, CoreConst.STATUS_VALID);
     }
 
     @Override
