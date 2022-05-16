@@ -15,12 +15,12 @@ import java.util.UUID;
  */
 public class FileBaseUtil {
 
+    private static final Logger log = LoggerFactory.getLogger(FileBaseUtil.class);
+
     /**
      * 临时目录
      */
     public static final String TEMPORARY_DIRECTORY_PATH = System.getProperty("java.io.tmpdir");
-
-    private static final Logger log = LoggerFactory.getLogger(FileBaseUtil.class);
 
     /**
      * windows标识

@@ -15,6 +15,7 @@ import java.util.Enumeration;
  */
 @SuppressWarnings("all")
 public class IpUtil {
+
     private static final String LOCAL_IP = "127.0.0.1";
 
     private static final Logger log = LoggerFactory.getLogger(IpUtil.class);

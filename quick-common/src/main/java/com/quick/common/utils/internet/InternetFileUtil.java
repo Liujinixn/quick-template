@@ -50,9 +50,9 @@ public class InternetFileUtil {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setConnectTimeout(5 * 1000);
-            // 通过输入流获取图片数据
+            // 通过输入流获取数据
             InputStream inStream = conn.getInputStream();
-            // 得到图片的二进制数据
+            // 得到的二进制数据
             byte[] btImg = readInputStream(inStream);
             return btImg;
         } catch (Exception e) {
