@@ -20,7 +20,7 @@ public class RedisClient {
 
     public static RedisTemplate<String, Object> getRedisTemplate() {
         if (redisTemplate == null) {
-            // 此处可控制单机获取集群
+            // 此处可控制单机或者集群
             redisTemplate = SpringUtil.getBean("redisTemplate");
         }
         return redisTemplate;
