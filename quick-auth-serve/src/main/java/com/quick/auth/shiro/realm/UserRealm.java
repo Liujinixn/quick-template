@@ -54,7 +54,7 @@ public class UserRealm extends AuthorizingRealm {
         }
         /***********************************************************************/
 
-        //将用户的角色 和 用户的权限 集合传进去 别返回SimpleAuthorizationInfo对象
+        //将用户的角色 和 用户的权限 集合传进去，返回SimpleAuthorizationInfo对象
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
         simpleAuthorizationInfo.setRoles(stringRoleList);
         simpleAuthorizationInfo.setStringPermissions(stringPermissionList);
