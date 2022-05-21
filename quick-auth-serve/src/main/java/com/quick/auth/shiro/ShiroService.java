@@ -20,10 +20,10 @@ import java.util.Map;
 public class ShiroService {
 
     @Autowired
-    PermissionService permissionService;
+    private PermissionService permissionService;
 
     @Autowired
-    ShiroCoreParameters shiroCoreParameters;
+    private ShiroCoreParameters shiroCoreParameters;
 
     /**
      * 初始化权限

@@ -28,7 +28,7 @@ import java.util.*;
 public class UserRealm extends AuthorizingRealm {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
     private RedisSessionDAO redisSessionDAO;

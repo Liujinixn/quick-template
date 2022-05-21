@@ -26,12 +26,12 @@ import java.util.Map;
 public class AuthErrorResponseInterceptor implements HandlerInterceptor {
 
     @Autowired
-    RequestPrefixAuthParams requestPrefixAuthParams;
+    private RequestPrefixAuthParams requestPrefixAuthParams;
 
     @Autowired
-    ShiroCoreParameters shiroCoreParameters;
+    private ShiroCoreParameters shiroCoreParameters;
 
-    Map<String, String> pathAndDescMap = new HashMap<>(8);
+    private Map<String, String> pathAndDescMap = new HashMap<>(8);
 
     @PostConstruct
     public void init() {

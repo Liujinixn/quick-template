@@ -20,7 +20,7 @@ import java.util.List;
 public class MvcAuthorizationFailedConfig implements WebMvcConfigurer {
 
     @Autowired
-    ShiroCoreParameters shiroCoreParameters;
+    private ShiroCoreParameters shiroCoreParameters;
 
     /**
      * 注入拦截器到bean
