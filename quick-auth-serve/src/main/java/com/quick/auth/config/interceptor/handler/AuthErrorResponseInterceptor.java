@@ -1,7 +1,6 @@
 package com.quick.auth.config.interceptor.handler;
 
 import com.alibaba.fastjson.JSON;
-import com.quick.auth.config.params.RequestPrefixAuthParams;
 import com.quick.auth.config.params.ShiroCoreParameters;
 import com.quick.common.vo.Result;
 import org.apache.commons.collections4.MapUtils;
@@ -24,9 +23,6 @@ import java.util.Map;
  * @author Liujinxin
  */
 public class AuthErrorResponseInterceptor implements HandlerInterceptor {
-
-    @Autowired
-    private RequestPrefixAuthParams requestPrefixAuthParams;
 
     @Autowired
     private ShiroCoreParameters shiroCoreParameters;
