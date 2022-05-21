@@ -3,6 +3,7 @@ package com.quick.common.utils.flie.detail;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.quick.common.utils.flie.FileBaseUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -13,8 +14,6 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTc;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTcPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STJc;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STVerticalJc;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -32,13 +31,14 @@ import java.util.regex.Pattern;
  *
  * @author Liujinxin
  */
+@Slf4j
 public class WordTemplateUtil {
 
     /**
      * 系统模板文件路径 (resources路径开始)
      */
     public static final String TEMPLATE_FILE_PATH = "template_file/";
-    private static final Logger log = LoggerFactory.getLogger(WordTemplateUtil.class);
+
     /**
      * 模板文件变量规则 例：${name}
      */

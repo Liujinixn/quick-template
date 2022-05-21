@@ -1,7 +1,6 @@
 package com.quick.common.utils.flie;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -13,9 +12,8 @@ import java.util.UUID;
  *
  * @author Liujinxin
  */
+@Slf4j
 public class FileBaseUtil {
-
-    private static final Logger log = LoggerFactory.getLogger(FileBaseUtil.class);
 
     /**
      * 临时目录

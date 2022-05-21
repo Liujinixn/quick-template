@@ -7,9 +7,8 @@ import com.quick.common.utils.flie.detail.WordTemplateUtil;
 import com.quick.common.utils.flie.dto.ImagesAttr;
 import com.quick.common.utils.flie.dto.TableAttr;
 import com.quick.common.utils.flie.dto.WordTemplateVariable;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.CollectionUtils;
 
@@ -27,9 +26,8 @@ import java.util.UUID;
  *
  * @author Liujinxin
  */
+@Slf4j
 public class WordToPdfUtil {
-
-    private static final Logger log = LoggerFactory.getLogger(WordToPdfUtil.class);
 
     /**
      * 模板文件格式后缀 | 模板转换后的临时word文件后缀名

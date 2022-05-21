@@ -1,7 +1,6 @@
 package com.quick.common.utils.ip;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.*;
@@ -14,11 +13,10 @@ import java.util.Enumeration;
  * @Description: 获取IP的方法
  */
 @SuppressWarnings("all")
+@Slf4j
 public class IpUtil {
 
     private static final String LOCAL_IP = "127.0.0.1";
-
-    private static final Logger log = LoggerFactory.getLogger(IpUtil.class);
 
     /**
      * 获取IP地址
