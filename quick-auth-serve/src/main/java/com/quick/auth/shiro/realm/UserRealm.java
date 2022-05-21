@@ -40,7 +40,7 @@ public class UserRealm extends AuthorizingRealm {
         /********查询出 当前用户的所有详细信息 包括用户的角色和权限 ***************/
         User userallInfo = userService.findUserAllInfoInfoByUsername(user.getUsername());
 
-        //将用户的角色 和 所有的权限 都存储到这两个集合中即可，自己调用service层代码
+        //将用户的角色 和 所有的权限 都存储到这两个集合中即可，调用service层代码
         Set<String> stringRoleList = new HashSet<>();
         Set<String> stringPermissionList = new HashSet<>();
 
