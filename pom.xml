@@ -34,8 +34,12 @@
         <guava.version>20.0</guava.version>
         <easyexcel.version>3.0.5</easyexcel.version>
         <itext-asian.version>5.2.0</itext-asian.version>
+        <httpclient.version>4.5.13</httpclient.version>
+        <httpmime.version>4.5.13</httpmime.version>
         <hutool-all.version>5.7.22</hutool-all.version>
         <common.version>2.6</common.version>
+        <commons-lang3.version>3.3.2</commons-lang3.version>
+        <commons-io.version>2.4</commons-io.version>
         <assertj-core.version>1.6.1</assertj-core.version>
         <commons-collections4.version>4.4</commons-collections4.version>
         <validation-api.version>1.1.0.Final</validation-api.version>
@@ -155,6 +159,16 @@
                 <artifactId>commons-lang</artifactId>
                 <version>${common.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io.version}</version>
+            </dependency>
             <!-- 工具类 就是封装平常用的方法 -->
             <dependency>
                 <groupId>com.google.guava</groupId>
@@ -178,6 +192,17 @@
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-all</artifactId>
                 <version>${hutool-all.version}</version>
+            </dependency>
+            <!--http工具类-->
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>${httpclient.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpmime</artifactId>
+                <version>${httpmime.version}</version>
             </dependency>
             <!-- 断言神器 -->
             <dependency>
@@ -244,6 +269,7 @@
         <module>quick-base-serve</module>
         <module>quick-log-serve</module>
         <module>quick-storage</module>
+        <module>quick-job</module>
     </modules>
 
 </project>

@@ -1,0 +1,20 @@
+xxl:
+  job:
+    # 是否启动 xxl-job 功能
+    enable: true
+    # 调度中心和执行器进行安全性校验，双方AccessToken匹配才允许通讯
+    accessToken: ''
+    admin:
+      # xxl-job 服务地址
+      addresses: http://47.102.144.221:8092/xxl-job-admin
+    executor:
+      # 执行器ID （需要对应xxl_job_group表中执行器的ID）
+      jobGroupId: 4
+      # 执行器名称
+      appname: quick-dev
+      # 执行器服务端口
+      port: 10010
+      address: ''
+      ip: ''
+      logpath: ../log/${spring.application.name}/jobhandler
+      logretentiondays: 3
