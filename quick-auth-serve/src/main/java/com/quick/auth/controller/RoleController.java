@@ -1,5 +1,6 @@
 package com.quick.auth.controller;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import com.github.pagehelper.PageInfo;
 import com.quick.auth.dto.RoleAddOperateDTO;
@@ -22,6 +23,7 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("${request.prefix.auth_server}/role")
@@ -80,10 +82,17 @@ public class RoleController {
     @ApiOperation(value = "删除角色信息")
     @ApiImplicitParam(name = "roleId", value = "角色ID", required = true, dataType = "string", paramType = "query")
     public Result deleteRole(String roleId) {
+        List<String> roleIdsList = Arrays.asList(roleId);
+
+        List<Role> prohibitDeleteRoleList = roleService.checkRolesThatCannotDeleted(roleIdsList);
+        if (CollectionUtil.isNotEmpty(prohibitDeleteRoleList)) {
+            String roleName = prohibitDeleteRoleList.stream().map(o -> o.getName()).collect(Collectors.joining("、"));
+            return Result.build("删除失败,角色【" + roleName + "】不可删除");
+        }
         if (roleService.findByRoleId(roleId).size() > 0) {
             return Result.build("删除失败,该角色下存在用户");
         }
-        List<String> roleIdsList = Arrays.asList(roleId);
+
         if (roleService.updateStatusBatch(roleIdsList) <= 0) {
             return Result.build("删除角色失败");
         }
@@ -101,9 +110,16 @@ public class RoleController {
     public Result batchDeleteRole(String roleIdStr) {
         String[] roleIds = roleIdStr.split(",");
         List<String> roleIdsList = Arrays.asList(roleIds);
+
+        List<Role> prohibitDeleteRoleList = roleService.checkRolesThatCannotDeleted(roleIdsList);
+        if (CollectionUtil.isNotEmpty(prohibitDeleteRoleList)) {
+            String roleName = prohibitDeleteRoleList.stream().map(o -> o.getName()).collect(Collectors.joining("、"));
+            return Result.build("删除失败,角色【" + roleName + "】不可删除");
+        }
         if (roleService.findByRoleIds(roleIdsList).size() > 0) {
             return Result.build("删除失败,选择的角色下存在用户");
         }
+
         if (roleService.updateStatusBatch(roleIdsList) <= 0) {
             return Result.build("删除角色失败");
         }

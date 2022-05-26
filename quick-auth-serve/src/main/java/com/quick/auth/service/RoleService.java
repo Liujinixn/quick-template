@@ -77,9 +77,18 @@ public interface RoleService {
     int findRolesWhetherExistByRoleNameOrRoleId(String name, String roleId);
 
     /**
+     * 检查 {roleIds} 不能删除的角色
+     *
+     * @param roleIds 角色ID
+     * @return 不能删除的角色基本信息
+     */
+    List<Role> checkRolesThatCannotDeleted(List<String> roleIds);
+
+    /**
      * 查询所有角色列表（只包含角色ID角色名称）
      *
      * @return 角色列表
      */
     List<Role> findRoleAllList();
+
 }

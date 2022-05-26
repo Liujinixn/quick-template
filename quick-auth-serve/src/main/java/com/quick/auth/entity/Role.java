@@ -43,6 +43,12 @@ public class Role extends PublicTime implements Serializable {
     private Integer status;
 
     /**
+     * 是否可以删除：0不可删除、1可删除
+     */
+    @ApiModelProperty(value = "是否可删除[0不可删除、1可删除]")
+    private Integer canDelete;
+
+    /**
      * 权限
      */
     @ApiModelProperty(value = "权限")

@@ -3,7 +3,7 @@
 <mapper namespace="com.quick.auth.mapper.RoleMapper">
 
     <sql id="Base_Column_List">
-        id, role_id, name, description, status, create_time, update_time
+        id, role_id, name, description, status, can_delete, create_time, update_time
     </sql>
 
     <select id="findRoles" resultType="com.quick.auth.entity.Role">
@@ -26,6 +26,21 @@
         AND serve_name = ${serveName}
     </select>
 
+    <select id="findRolesThatCannotDeletedByRoleId" resultType="com.quick.auth.entity.Role">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM <include refid="com.quick.auth.mapper.SomeSqlMapper.role"/>
+        WHERE
+        can_delete = #{notCanDelete}
+        <if test="roleIds != null and roleIds.size > 0">
+            AND role_id IN
+            <foreach collection="roleIds" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        AND serve_name = ${serveName}
+    </select>
+
     <insert id="insertRole">
         INSERT INTO <include refid="com.quick.auth.mapper.SomeSqlMapper.role"/>
         (
@@ -43,6 +58,9 @@
         </if>
         <if test="status != null">
             status,
+        </if>
+        <if test="canDelete != null">
+            can_delete,
         </if>
         create_time,
         update_time,
@@ -63,6 +81,9 @@
         </if>
         <if test="status != null">
             #{status},
+        </if>
+        <if test="canDelete != null">
+            #{canDelete},
         </if>
         now(),
         now(),

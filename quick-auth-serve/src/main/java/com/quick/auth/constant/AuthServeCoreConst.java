@@ -20,6 +20,16 @@ public class AuthServeCoreConst extends CoreConst {
     public static final Integer STATUS_INVALID = 0;
 
     /**
+     * 可删除
+     */
+    public static final Integer CAN_DELETE = 1;
+
+    /**
+     * 不可删除
+     */
+    public static final Integer NOT_CAN_DELETE = 0;
+
+    /**
      * 顶层菜单ID
      */
     public static Integer TOP_MENU_ID = 0;

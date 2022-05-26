@@ -49,4 +49,13 @@ public interface RoleMapper {
      * @return int 数量
      */
     int findRolesWhetherExistByRoleNameOrRoleId(String name, String roleId, Integer status);
+
+    /**
+     * 查询 {roleIds} 中不能删除的角色信息
+     *
+     * @param roleIds      角色ID列表
+     * @param notCanDelete 是否运行删除标识
+     * @return 角色信息列表
+     */
+    List<Role> findRolesThatCannotDeletedByRoleId(List<String> roleIds, Integer notCanDelete);
 }

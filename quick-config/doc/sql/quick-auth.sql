@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50736
 File Encoding         : 65001
 
-Date: 2022-05-15 17:55:20
+Date: 2022-05-26 18:14:35
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -76,20 +76,21 @@ CREATE TABLE `sys_role` (
   `role_id` varchar(20) NOT NULL COMMENT '角色id',
   `name` varchar(50) NOT NULL COMMENT '角色名称',
   `description` varchar(255) DEFAULT NULL COMMENT '角色描述',
-  `status` int(5) NOT NULL COMMENT '状态：1有效；2删除',
+  `status` int(5) NOT NULL COMMENT '状态：1有效、0删除',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `can_delete` int(5) DEFAULT NULL COMMENT '是否可以删除：0不可删除、1可删除',
   `serve_name` varchar(60) DEFAULT NULL COMMENT '所属服务名称',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='角色表';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='角色表';
 
 -- ----------------------------
 -- Records of sys_role
 -- ----------------------------
-INSERT INTO `sys_role` VALUES ('1', '1', '系统管理员', '超级管理员', '1', '2017-06-28 20:30:05', '2017-06-28 20:30:10', 'quick');
-INSERT INTO `sys_role` VALUES ('2', '2', '管理员', '管理员', '1', '2017-06-30 23:35:19', '2017-10-11 09:32:33', 'quick');
-INSERT INTO `sys_role` VALUES ('3', '3', '普通用户', '普通用户', '1', '2017-06-30 23:35:44', '2018-07-13 11:44:06', 'quick');
-INSERT INTO `sys_role` VALUES ('4', '4', '数据库管理员', '数据库管理员', '1', '2017-07-12 11:50:22', '2017-10-09 17:38:02', 'quick');
+INSERT INTO `sys_role` VALUES ('1', '1', '系统管理员', '超级管理员', '1', '2017-06-28 20:30:05', '2017-06-28 20:30:10', '0', 'quick');
+INSERT INTO `sys_role` VALUES ('2', '2', '管理员', '管理员', '1', '2017-06-30 23:35:19', '2017-10-11 09:32:33', '1', 'quick');
+INSERT INTO `sys_role` VALUES ('3', '3', '普通用户', '普通用户', '1', '2017-06-30 23:35:44', '2018-07-13 11:44:06', '1', 'quick');
+INSERT INTO `sys_role` VALUES ('4', '4', '数据库管理员', '数据库管理员', '1', '2017-07-12 11:50:22', '2022-05-26 17:34:46', '1', 'quick');
 
 -- ----------------------------
 -- Table structure for sys_role_permission
@@ -177,7 +178,7 @@ CREATE TABLE `sys_user` (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES ('1', '1', 'admin', '43442676c74ae59f219c2d87fd6bad52', null, '523179414@qq.com', '187888899991', '1', '27', '1', '2018-05-23 21:22:06', '2022-04-14 22:29:47', '2022-05-15 09:13:42', '127.0.0.1', 'https://img1.baidu.com/it/u=2381799888,2910666530&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500', 'quick');
+INSERT INTO `sys_user` VALUES ('1', '1', 'admin', '43442676c74ae59f219c2d87fd6bad52', null, '523179414@qq.com', '187888899991', '1', '27', '1', '2018-05-23 21:22:06', '2022-04-14 22:29:47', '2022-05-26 17:34:15', '127.0.0.1', 'https://img1.baidu.com/it/u=2381799888,2910666530&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500', 'quick');
 
 -- ----------------------------
 -- Table structure for sys_user_role

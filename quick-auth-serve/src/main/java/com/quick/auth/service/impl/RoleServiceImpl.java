@@ -44,6 +44,7 @@ public class RoleServiceImpl implements RoleService {
     public int insertRole(Role role) {
         role.setRoleId(UUIDUtil.getUniqueIdByUUId());
         role.setStatus(AuthServeCoreConst.STATUS_VALID);
+        role.setCanDelete(AuthServeCoreConst.CAN_DELETE);
         return roleMapper.insertRole(role);
     }
 
@@ -87,6 +88,11 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public int findRolesWhetherExistByRoleNameOrRoleId(String name, String roleId) {
         return roleMapper.findRolesWhetherExistByRoleNameOrRoleId(name, roleId, AuthServeCoreConst.STATUS_VALID);
+    }
+
+    @Override
+    public List<Role> checkRolesThatCannotDeleted(List<String> roleIds) {
+        return roleMapper.findRolesThatCannotDeletedByRoleId(roleIds, AuthServeCoreConst.NOT_CAN_DELETE);
     }
 
     @Override
