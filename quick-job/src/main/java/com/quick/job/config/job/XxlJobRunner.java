@@ -51,6 +51,8 @@ public class XxlJobRunner implements ApplicationRunner {
             for (Map.Entry<String, Object> entry : controllers.entrySet()) {
                 Object value = entry.getValue();
                 Class<?> aClass = AopUtils.getTargetClass(value);
+                // 下行注释的代码，可以获取当前对象声明的注解获取到注解后，还可以获取注解中的属性值
+                // JobHandlers jobHandlers = aClass.getDeclaredAnnotation(JobHandlers.class);
                 Method[] methods = aClass.getDeclaredMethods();
                 for (Method method : methods) {
                     CronJob cronJob = method.getAnnotation(CronJob.class);

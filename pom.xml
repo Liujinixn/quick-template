@@ -14,10 +14,11 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <spring-boot-starter-web.version>2.6.4</spring-boot-starter-web.version>
-        <mybatis-springboot.version>2.1.3</mybatis-springboot.version>
-        <spring-boot-starter-jdbc.version>2.6.4</spring-boot-starter-jdbc.version>
-        <spring-boot-starter-log4j2.version>2.6.4</spring-boot-starter-log4j2.version>
+        <spring-boot-starter-web.version>2.6.6</spring-boot-starter-web.version>
+        <spring-boot-starter-mybatis.version>2.1.3</spring-boot-starter-mybatis.version>
+        <spring-boot-starter-jdbc.version>2.6.6</spring-boot-starter-jdbc.version>
+        <spring-boot-starter-aop.version>2.6.6</spring-boot-starter-aop.version>
+        <spring-boot-starter-log4j2.version>2.6.6</spring-boot-starter-log4j2.version>
         <spring-boot-starter-test.version>2.6.4</spring-boot-starter-test.version>
         <alibaba-druid.version>1.1.16</alibaba-druid.version>
         <shiro-spring.version>1.4.1</shiro-spring.version>
@@ -67,13 +68,19 @@
             <dependency>
                 <groupId>org.mybatis.spring.boot</groupId>
                 <artifactId>mybatis-spring-boot-starter</artifactId>
-                <version>${mybatis-springboot.version}</version>
+                <version>${spring-boot-starter-mybatis.version}</version>
             </dependency>
             <!--springboot jdbc启动器-->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-jdbc</artifactId>
                 <version>${spring-boot-starter-jdbc.version}</version>
+            </dependency>
+            <!--springboot AOP依赖-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-aop</artifactId>
+                <version>${spring-boot-starter-aop.version}</version>
             </dependency>
             <!--junit测试-->
             <dependency>

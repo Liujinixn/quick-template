@@ -1,6 +1,7 @@
 package com.quick.base.controller;
 
 import com.quick.auth.service.UserService;
+import com.quick.base.annotation.AopMethod;
 import com.quick.base.entity.FindDto;
 import com.quick.common.utils.validator.BeanValidatorUtil;
 import com.quick.common.vo.Result;
@@ -43,6 +44,17 @@ public class TestController {
     @ApiOperation(value = "测试接口")
     public Result test() {
         log.info("访问测试接口");
+        return Result.ok(true);
+    }
+
+    /**
+     * 测试 AOP切面功能
+     */
+    @AopMethod(value = "aop测试")
+    @GetMapping("/testAop")
+    @ApiOperation(value = "测试AOP切面功能接口")
+    public Result testAop() {
+        log.info("测试AOP切面功能");
         return Result.ok(true);
     }
 
