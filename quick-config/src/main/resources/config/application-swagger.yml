@@ -1,0 +1,4 @@
+# swagger相关配置
+swagger:
+  # swagger开关
+  enable: true
