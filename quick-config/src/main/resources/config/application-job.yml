@@ -1,7 +1,7 @@
 xxl:
   job:
     # 是否启动 xxl-job 功能
-    enable: true
+    enable: false
     # 调度中心和执行器进行安全性校验，双方AccessToken匹配才允许通讯
     accessToken: ''
     admin:

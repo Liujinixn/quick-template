@@ -1,5 +1,7 @@
 package com.quick.job.annotation;
 
+import com.xxl.job.core.handler.annotation.XxlJob;
+
 import java.lang.annotation.*;
 
 /**

@@ -21,7 +21,7 @@
         <spring-boot-starter-log4j2.version>2.6.6</spring-boot-starter-log4j2.version>
         <spring-boot-starter-test.version>2.6.4</spring-boot-starter-test.version>
         <alibaba-druid.version>1.1.16</alibaba-druid.version>
-        <shiro-spring.version>1.4.1</shiro-spring.version>
+        <shiro-spring.version>1.9.0</shiro-spring.version>
         <shiro-redis.version>3.2.3</shiro-redis.version>
         <!--shiro-redis 底层使用的时 jedis ,（注意 Shiro-redis 已经不再维护了，目前需要手动引入 jedis的 2.9.3 版本,
            否者调用 redisSessionDAO.getActiveSessions()方法，也就是获取活动会话会报错）。-->
@@ -30,7 +30,7 @@
         <pagehelper.version>1.4.1</pagehelper.version>
         <mysql-connector-java.version>8.0.22</mysql-connector-java.version>
         <lombok.version>1.18.16</lombok.version>
-        <fastjson.version>1.2.73</fastjson.version>
+        <fastjson.version>2.0.5</fastjson.version>
         <hibernate-validator>5.2.4.Final</hibernate-validator>
         <guava.version>20.0</guava.version>
         <easyexcel.version>3.0.5</easyexcel.version>
