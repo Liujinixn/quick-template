@@ -28,10 +28,10 @@
         <jedis.version>2.9.3</jedis.version>
         <jackson-databind.version>2.13.1</jackson-databind.version>
         <pagehelper.version>1.4.1</pagehelper.version>
-        <mysql-connector-java.version>8.0.22</mysql-connector-java.version>
+        <mysql-connector-java.version>8.0.28</mysql-connector-java.version>
         <lombok.version>1.18.16</lombok.version>
         <fastjson.version>2.0.5</fastjson.version>
-        <hibernate-validator>5.2.4.Final</hibernate-validator>
+        <hibernate-validator>6.0.19.Final</hibernate-validator>
         <guava.version>20.0</guava.version>
         <easyexcel.version>3.0.5</easyexcel.version>
         <itext-asian.version>5.2.0</itext-asian.version>
@@ -40,7 +40,7 @@
         <hutool-all.version>5.7.22</hutool-all.version>
         <common.version>2.6</common.version>
         <commons-lang3.version>3.3.2</commons-lang3.version>
-        <commons-io.version>2.4</commons-io.version>
+        <commons-io.version>2.7</commons-io.version>
         <assertj-core.version>1.6.1</assertj-core.version>
         <commons-collections4.version>4.4</commons-collections4.version>
         <validation-api.version>1.1.0.Final</validation-api.version>
