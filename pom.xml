@@ -31,8 +31,8 @@
         <mysql-connector-java.version>8.0.28</mysql-connector-java.version>
         <lombok.version>1.18.16</lombok.version>
         <fastjson.version>2.0.5</fastjson.version>
-        <hibernate-validator>6.0.19.Final</hibernate-validator>
-        <guava.version>20.0</guava.version>
+        <hibernate-validator>5.2.4.Final</hibernate-validator>
+        <guava.version>30.0-jre</guava.version>
         <easyexcel.version>3.0.5</easyexcel.version>
         <itext-asian.version>5.2.0</itext-asian.version>
         <httpclient.version>4.5.13</httpclient.version>

@@ -10,20 +10,16 @@ import java.util.Map;
  * 在JDK的Collections和Guava的Collections2后, 命名为Collections3.
  * 函数主要由两部分组成，一是自反射提取元素的功能，二是源自Apache Commons Collection, 争取不用在项目里引入它。
  *
- * @author Tian Peng
- * @date 2018\5\24
+ * @author Liujinxin
  */
 public class CollectionsUtil {
-
-
 
     /**
      * 转换Collection所有元素(通过toString())为String, 中间以 separator分隔。
      */
     public static String convertToString(final Collection<?> collection, final String separator) {
-    	return StringUtils.join(collection, separator);
+        return StringUtils.join(collection, separator);
     }
-
 
     /**
      * 判断是否为空.
@@ -35,7 +31,7 @@ public class CollectionsUtil {
     /**
      * 判断是否为空.
      */
-    public static boolean isEmpty(Map<?,?> map) {
+    public static boolean isEmpty(Map<?, ?> map) {
         return (map == null) || map.isEmpty();
     }
 
