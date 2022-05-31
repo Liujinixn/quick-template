@@ -45,7 +45,7 @@
         <commons-collections4.version>4.4</commons-collections4.version>
         <validation-api.version>1.1.0.Final</validation-api.version>
         <springfox-swagger2.version>2.9.2</springfox-swagger2.version>
-        <springfox-swagger-ui.version>2.9.2</springfox-swagger-ui.version>
+        <springfox-swagger-ui.version>2.10.0</springfox-swagger-ui.version>
         <knife4j-spring-boot-starter.version>2.0.2</knife4j-spring-boot-starter.version>
         <springfox-bean-validators.version>2.9.2</springfox-bean-validators.version>
         <spring-cloud-starter-alibaba-sentinel.version>2.1.0.RELEASE</spring-cloud-starter-alibaba-sentinel.version>
