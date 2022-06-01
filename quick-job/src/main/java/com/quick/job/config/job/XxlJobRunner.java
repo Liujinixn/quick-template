@@ -5,8 +5,7 @@ import com.quick.common.utils.collection.CollectionsUtil;
 import com.quick.common.utils.request.HttpClientUtil;
 import com.quick.job.annotation.CronJob;
 import com.quick.job.annotation.JobHandlers;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
@@ -26,11 +25,10 @@ import java.util.Map;
  *
  * @author Liujinxin
  */
+@Slf4j
 @Component
 @ConditionalOnProperty(prefix = "xxl.job", name = "enable", havingValue = "true", matchIfMissing = true)
 public class XxlJobRunner implements ApplicationRunner {
-
-    private final Logger logger = LoggerFactory.getLogger(XxlJobRunner.class);
 
     @Resource
     private ApplicationContext applicationContext;
@@ -83,12 +81,12 @@ public class XxlJobRunner implements ApplicationRunner {
 
             if (CollectionsUtil.isNotEmpty(joblist)) {
                 String res = HttpClientUtil.sendHttpPostByJson(adminAddresses + "/api/registJobs", joblist.toString(), new HashMap<>());
-                logger.info("job新增成功id=" + res);
+                log.info("job新增成功id=" + res);
             }
 
-            logger.info("增加job方法执行时间:" + (System.currentTimeMillis() - millisStart) / 1000 + "秒");
+            log.info("增加job方法执行时间:" + (System.currentTimeMillis() - millisStart) / 1000 + "秒");
         } catch (Exception e) {
-            logger.error("job regist error", e);
+            log.error("job regist error", e);
         }
     }
 
