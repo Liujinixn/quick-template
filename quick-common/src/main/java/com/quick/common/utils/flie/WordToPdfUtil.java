@@ -93,7 +93,7 @@ public class WordToPdfUtil {
         try {
             response.setHeader("Content-disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
         } catch (UnsupportedEncodingException e) {
-            log.error("不支持的编码 encode = {}", "UTF-8", e);
+            log.warn("不支持的编码 encode = {}", "UTF-8", e);
         }
     }
 

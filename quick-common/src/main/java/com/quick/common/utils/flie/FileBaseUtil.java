@@ -178,7 +178,7 @@ public class FileBaseUtil {
             // 删除空文件夹
             myFilePath.delete();
         } catch (Exception e) {
-            log.error("删除文件夹失败, folderPath = {}", folderPath, e);
+            log.warn("删除文件夹失败, folderPath = {}", folderPath, e);
         }
     }
 
@@ -278,7 +278,7 @@ public class FileBaseUtil {
             // 将 ByteArrayOutputStream 写入本地临时文件中
             outStream.write(imageFileStream.toByteArray());
         } catch (Exception e) {
-            log.error("{} 图片地址，保存到临时文件目录失败", urlAddress, e);
+            log.warn("{} 图片地址，保存到临时文件目录失败", urlAddress, e);
             return null;
         } finally {
             close(outStream);
