@@ -5,6 +5,7 @@
 
 `master分支处于开发阶段，请colne对应分支的稳定版本。`
 
+**注意后续更新版本仓库移直至 https://gitee.com/schema-template/quick-template**
 
 ## 介绍
 SpringBoot多模块架构，争对企业级开发设计，已集成认证功能、文档功能，开箱即用。
