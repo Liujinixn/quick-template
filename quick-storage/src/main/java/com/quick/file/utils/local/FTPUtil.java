@@ -45,6 +45,8 @@ public class FTPUtil {
                 ftp.disconnect();
                 log.error("FTP连接失败");
             }
+            // 解决 读取文件名时中文乱码的问题
+            ftp.setControlEncoding("UTF-8");
         } catch (IOException e) {
             log.error("FTP连接前出现出现异常", e);
         }

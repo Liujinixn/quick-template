@@ -39,9 +39,12 @@ public class LocalClientHandleImpl implements FileStoreHandle {
     @Override
     public byte[] downloadStream(String fileName) {
         LocalStorageCoreParameters localStorageCoreParameters = getLocalStorageCoreParameters();
-        int index = fileName.lastIndexOf("/");
-        String remotePath = fileName.substring(0, index);
-        fileName = fileName.substring(index + 1);
+        String remotePath = "";
+        if (fileName.contains("/")) {
+            int index = fileName.lastIndexOf("/");
+            remotePath = fileName.substring(0, index);
+            fileName = fileName.substring(index + 1);
+        }
 
         byte[] bytes;
         FTPUtil ftpUtil = FTPUtil.constructFtpPrepareData(localStorageCoreParameters);
@@ -70,9 +73,12 @@ public class LocalClientHandleImpl implements FileStoreHandle {
         LocalStorageCoreParameters localStorageCoreParameters = getLocalStorageCoreParameters();
         FTPUtil ftpUtil = FTPUtil.constructFtpPrepareData(localStorageCoreParameters);
         for (String name : fileName) {
-            int index = name.lastIndexOf("/");
-            String remotePath = name.substring(0, index);
-            name = name.substring(index + 1);
+            String remotePath = "";
+            if (name.contains("/")) {
+                int index = name.lastIndexOf("/");
+                remotePath = name.substring(0, index);
+                name = name.substring(index + 1);
+            }
             try {
                 ftpUtil.deleteFile(remotePath, name);
             } catch (Exception e) {
@@ -86,9 +92,12 @@ public class LocalClientHandleImpl implements FileStoreHandle {
     @Override
     public boolean doesFileExist(String fileName) {
         LocalStorageCoreParameters localStorageCoreParameters = getLocalStorageCoreParameters();
-        int index = fileName.lastIndexOf("/");
-        String remotePath = fileName.substring(0, index);
-        fileName = fileName.substring(index + 1);
+        String remotePath = "";
+        if (fileName.contains("/")) {
+            int index = fileName.lastIndexOf("/");
+            remotePath = fileName.substring(0, index);
+            fileName = fileName.substring(index + 1);
+        }
 
         boolean result;
         FTPUtil ftpUtil = FTPUtil.constructFtpPrepareData(localStorageCoreParameters);
