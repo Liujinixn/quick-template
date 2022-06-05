@@ -3,7 +3,7 @@ package com.quick.base.annotation;
 import java.lang.annotation.*;
 
 /**
- * 自定义AOP切面接口
+ * 自定义AOP切面 注解
  *
  * @author Liujinxin
  */
