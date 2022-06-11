@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
+import redis.clients.jedis.Protocol;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -103,6 +104,11 @@ public class ShiroCoreParameters {
          * 设置redis使用的db库
          */
         private int database = 0;
+
+        /**
+         * 设置redis超时时间（单位：毫秒）
+         */
+        private int timeout = 10000;
 
         /**
          * 在线用户token令牌缓存前缀

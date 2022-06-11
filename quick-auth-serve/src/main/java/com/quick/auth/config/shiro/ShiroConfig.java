@@ -71,11 +71,11 @@ public class ShiroConfig {
     public ShiroFilterFactoryBean getShiroFilterFactoryBean(@Qualifier("securityManager") DefaultWebSecurityManager defaultWebSecurityManager,
                                                             @Qualifier("shiroService") ShiroService shiroService) {
         ShiroFilterFactoryBean bean = new ShiroFilterFactoryBean();
-        //设置安全管理器
+        // 设置安全管理器
         bean.setSecurityManager(defaultWebSecurityManager);
-        //自定义拦截器
+        // 自定义拦截器
         Map<String, Filter> filtersMap = new LinkedHashMap<String, Filter>();
-        //限制同一帐号同时在线的个数。
+        // 限制同一帐号同时在线的个数。
         filtersMap.put("kickout", kickoutSessionControlFilter());
         bean.setFilters(filtersMap);
 
@@ -139,6 +139,7 @@ public class ShiroConfig {
         redisManager.setHost(shiroCoreParameters.getShiroRedis().getHost());
         redisManager.setPassword(shiroCoreParameters.getShiroRedis().getPassword());
         redisManager.setDatabase(shiroCoreParameters.getShiroRedis().getDatabase());
+        redisManager.setTimeout(shiroCoreParameters.getShiroRedis().getTimeout());
         return redisManager;
     }
 
@@ -151,9 +152,9 @@ public class ShiroConfig {
         ShiroCoreParameters shiroCoreParameters = getShiroCoreParameters();
         RedisCacheManager redisCacheManager = new RedisCacheManager();
         redisCacheManager.setRedisManager(getRedisManager());
-        //设置redis过期时间，单位是秒
+        // 设置redis过期时间，单位是秒
         redisCacheManager.setExpire(shiroCoreParameters.getTokenExpirationTime());
-        //设置权限信息缓存的名称前缀
+        // 设置权限信息缓存的名称前缀
         redisCacheManager.setKeyPrefix(shiroCoreParameters.getShiroRedis().getPrefixOther());
         return redisCacheManager;
     }
@@ -168,7 +169,7 @@ public class ShiroConfig {
         RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
         redisSessionDAO.setRedisManager(getRedisManager());
         redisSessionDAO.setExpire(shiroCoreParameters.getTokenExpirationTime());
-        //设置session缓存的名称前缀
+        // 设置session缓存的名称前缀
         redisSessionDAO.setKeyPrefix(shiroCoreParameters.getShiroRedis().getPrefixUserAuth());
         return redisSessionDAO;
     }

@@ -4,11 +4,24 @@ spring:
     host: 47.102.144.221
     password: 123456
     port: 6379
+    # 读取数据超时时间,这 {timeout} 秒查不到数据就超时
     timeout: PT10S
+    # 当前所使用的DB库
     database: 0
+    # 客户端类型
+    client-type: lettuce
+    #这里采用lettuce作为客户端
     lettuce:
       pool:
-        max-active: 1024
-        max-idle: 200
-        max-wait: PT10S
-        min-idle: 0
+        # 最大连接数,这个直接设置成并发量就行，自己看着设置，一般设置成100就可以了，除非你是大项目
+        max-active: 100
+        # redis最大空闲连接数量 表示即使没有数据连接时依然可以保持50个空闲的连接而不被清除,随时处于待命状态
+        max-idle: 10
+        # 等待连接超时时间,如果在等待的连接时间超过了这个时间就舍弃掉,这里配置5分钟
+        max-wait: PT5M
+        # redis最小空闲连接数量,当空闲连接小于这个数之后会去申请空闲连接直到最大的空闲连接数量
+        min-idle: 5
+        # 当连接等待超时做废弃连接的清理工作,这里配置5分钟检查一次
+        time-between-eviction-runs: PT5M
+      # 关闭超时连接的时间,这里配置10秒
+      shutdown-timeout: PT15S

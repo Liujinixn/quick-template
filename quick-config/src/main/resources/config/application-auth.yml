@@ -39,6 +39,8 @@ shiro:
     host: ${spring.redis.host}:${spring.redis.port}
     password: ${spring.redis.password}
     database: ${spring.redis.database}
+    # 设置redis超时时间（单位：毫秒）
+    timeout: 10000
     # 在线用户token缓存前缀
     prefix_user_auth: "system_name:shiro:session:"
     # 账号异地在线数量缓存前缀
