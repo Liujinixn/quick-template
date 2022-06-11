@@ -14,6 +14,7 @@ import java.util.Date;
 
 /**
  * FTP 存储
+ * FTP服务安装 https://blog.csdn.net/weixin_40516924/article/details/124657218?spm=1001.2014.3001.5501
  *
  * @author Liujinxin
  */

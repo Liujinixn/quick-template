@@ -1,7 +1,5 @@
 package com.quick.job.annotation;
 
-import com.xxl.job.core.handler.annotation.XxlJob;
-
 import java.lang.annotation.*;
 
 /**
@@ -14,7 +12,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CronJob {
 
-    String cron() default "";
+    String cron();
 
     String name() default ""; // 跟这个注解里面值一样 @XxlJob("")
 
