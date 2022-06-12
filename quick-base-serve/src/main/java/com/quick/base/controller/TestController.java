@@ -19,8 +19,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.spec.InvalidParameterSpecException;
 import java.util.List;
@@ -161,20 +164,19 @@ public class TestController {
     }
 
     @GetMapping("/downloadStream")
-    @ApiOperation(value = "测试接口-下载文件")
-    public ResponseEntity<byte[]> downloadStream(String fileId) {
+    @ApiOperation(value = "测试接口-下载文件", produces = "application/octet-stream")
+    public void downloadStream(String fileId, HttpServletResponse response) throws IOException {
         byte[] bytes = null;
-        HttpHeaders headers = new HttpHeaders();
         try {
-            headers.setContentDispositionFormData("attachment",
-                    new String(fileId.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1));
-            headers.add("Access-Control-Expose-Headers", "Content-Disposition");
-            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+            String[] filePath = fileId.split("/");
+            response.setContentType("application/pdf");
+            response.setHeader("Content-disposition", "attachment;filename=" + URLEncoder.encode(filePath[filePath.length - 1], "UTF-8"));
+
             bytes = fileStoreHandle.downloadStream(fileId);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
+        response.getOutputStream().write(bytes);
     }
 
     @GetMapping("/deleteFile")

@@ -27,7 +27,7 @@ storage:
     # 访问路径中的Bucket
     bucket: quick-file-serve
     # 存储基础路径
-    oss_base_path: /quick
+    oss_base_path: /quick-template
   local:
     # FTP主机地址
     ftp_host: 47.102.144.221
@@ -40,5 +40,5 @@ storage:
     # 文件访问容器（用于生成文件访问地址）
     web_host: http://47.102.144.221:80
     # 存储基础路径
-    ftp_base_path: /quick
+    ftp_base_path: /quick-template
 

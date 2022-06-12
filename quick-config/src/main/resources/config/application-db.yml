@@ -16,7 +16,7 @@ spring:
         timeBetweenEvictionRunsMillis: 60000
         url: jdbc:mysql://47.102.144.221:3306/quick-auth?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=GMT%2B8
         username: root
-        password: ark123
+        password: ark531200
         validationQuery: SELECT 1 FROM DUAL
     # base 数据源（注意数据库的时区设置 sql: set global time_zone='+8:00'; flush privileges; 即设置数据库时区+8小时）
     base:
@@ -34,7 +34,7 @@ spring:
         timeBetweenEvictionRunsMillis: 60000
         url: jdbc:mysql://47.102.144.221:3306/quick-base?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=GMT%2B8
         username: root
-        password: ark123
+        password: ark531200
         validationQuery: SELECT 1 FROM DUAL
     # log 数据源（注意数据库的时区设置 sql: set global time_zone='+8:00'; flush privileges; 即设置数据库时区+8小时）
     log:
@@ -52,7 +52,7 @@ spring:
         timeBetweenEvictionRunsMillis: 60000
         url: jdbc:mysql://47.102.144.221:3306/quick-log?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=GMT%2B8
         username: root
-        password: ark123
+        password: ark531200
         validationQuery: SELECT 1 FROM DUAL
     # druid监控
     druid:
