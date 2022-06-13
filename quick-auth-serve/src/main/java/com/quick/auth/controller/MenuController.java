@@ -24,8 +24,8 @@ public class MenuController {
     /**
      * 获取当前登录用户的菜单
      */
-    @GetMapping("/list")
-    @ApiOperation(value = "获取菜单列表")
+    @GetMapping("/list/tree")
+    @ApiOperation(value = "获取菜单列表（基本Tree结构）")
     public Result<List<MenuVo>> findMenus() {
         return Result.ok(permissionService.findAllMenuInfoLevel(AuthServeCoreConst.TOP_MENU_ID));
     }
