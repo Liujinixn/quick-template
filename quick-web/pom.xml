@@ -35,8 +35,8 @@
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>quick.file.serve</groupId>
-            <artifactId>quick-file-serve</artifactId>
+            <groupId>quick.job</groupId>
+            <artifactId>quick-job</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <!--springboot web启动器-->

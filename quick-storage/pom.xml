@@ -52,6 +52,13 @@
             <groupId>com.aliyun.oss</groupId>
             <artifactId>aliyun-sdk-oss</artifactId>
             <version>${aliyun-sdk-oss.version}</version>
+            <exclusions>
+                <!--aliyun-java-sdk-core依赖中包含更高版本-->
+                <exclusion>
+                    <artifactId>aliyun-java-sdk-core</artifactId>
+                    <groupId>com.aliyun</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!--阿里STS服务-->
         <dependency>

@@ -20,11 +20,6 @@
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>quick.job</groupId>
-            <artifactId>quick-job</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
             <groupId>quick.storage</groupId>
             <artifactId>quick-storage</artifactId>
             <version>0.0.1-SNAPSHOT</version>
