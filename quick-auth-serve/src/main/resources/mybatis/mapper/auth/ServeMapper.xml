@@ -3,7 +3,7 @@
 <mapper namespace="com.quick.auth.mapper.ServeMapper">
 
     <sql id="Base_Column_List">
-        id, serve_id, serve_name, access_key
+        serve_id, serve_name, access_key
     </sql>
 
     <select id="findServeInfoByServeName" resultType="com.quick.auth.entity.Serve">

@@ -5,12 +5,11 @@
 <mapper namespace="com.quick.auth.mapper.UserMapper">
 
     <sql id="Base_Column_List">
-        id, user_id, username, `password`, salt, email, phone, sex, age, `status`,
+        user_id, username, `password`, salt, email, phone, sex, age, `status`,
         create_time, update_time, last_login_time, head_portrait
     </sql>
 
     <resultMap id="AllInfo" type="com.quick.auth.entity.User">
-        <id column="uId" property="id"/>
         <id column="user_id" property="userId"/>
         <result column="username" property="username"/>
         <result column="password" property="password"/>
@@ -25,12 +24,10 @@
         <result column="last_login_time" property="lastLoginTime"/>
         <result column="head_portrait" property="headPortrait"/>
         <collection property="roles" ofType="com.quick.auth.entity.Role" javaType="java.util.List">
-            <result column="rId" property="id"/>
             <result column="role_id" property="roleId"/>
             <result column="roleName" property="name"/>
             <result column="status" property="status"/>
             <collection property="permissions" ofType="com.quick.auth.entity.Permission" javaType="java.util.List">
-                <result column="pId" property="id"/>
                 <result column="permission_id" property="permissionId"/>
                 <result column="permissionName" property="name"/>
                 <result column="url" property="url"/>
@@ -46,7 +43,6 @@
 
     <select id="findUserAllInfoInfoByUsername" resultMap="AllInfo">
         SELECT
-            u.id AS uId,
             u.user_id,
             u.username,
             u.password,
@@ -61,12 +57,10 @@
             u.last_login_time,
             u.head_portrait,
 
-            r.id AS rId,
             r.role_id,
             r.name AS roleName,
             r.status,
 
-            p.id AS pId,
             p.permission_id,
             p.name AS permissionName,
             p.url,
@@ -86,7 +80,6 @@
 
     <select id="findUserAllInfoInfoByUserId" resultMap="AllInfo">
         SELECT
-            u.id AS uId,
             u.user_id,
             u.username,
             u.password,
@@ -101,12 +94,10 @@
             u.last_login_time,
             u.head_portrait,
 
-            r.id AS rId,
             r.role_id,
             r.name AS roleName,
             r.status,
 
-            p.id AS pId,
             p.permission_id,
             p.name AS permissionName,
             p.url,
@@ -151,9 +142,6 @@
     <update id="updateByUserId" parameterType="com.quick.auth.entity.User">
         UPDATE <include refid="com.quick.auth.mapper.SomeSqlMapper.user"/>
         SET
-        <if test="id != null">
-            id = #{id},
-        </if>
         <if test="userId != null and userId != '' ">
             user_id = #{userId},
         </if>
@@ -209,7 +197,7 @@
     </update>
 
     <select id="findByRoleId" resultType="com.quick.auth.entity.User">
-        SELECT u.id, u.user_id, u.username, u.password, u.salt, u.email, u.phone, u.sex, u.age, u.status,
+        SELECT u.user_id, u.username, u.password, u.salt, u.email, u.phone, u.sex, u.age, u.status,
         u.create_time, u.update_time, u.last_login_time, u.head_portrait
         FROM <include refid="com.quick.auth.mapper.SomeSqlMapper.user"/> u
         INNER JOIN <include refid="com.quick.auth.mapper.SomeSqlMapper.user_role"/> ur ON u.user_id = ur.user_id
@@ -218,7 +206,7 @@
     </select>
 
     <select id="findByRoleIds" resultType="com.quick.auth.entity.User">
-        SELECT u.id, u.user_id, u.username, u.password, u.salt, u.email, u.phone, u.sex, u.age, u.status,
+        SELECT u.user_id, u.username, u.password, u.salt, u.email, u.phone, u.sex, u.age, u.status,
         u.create_time, u.update_time, u.last_login_time, u.head_portrait
         FROM <include refid="com.quick.auth.mapper.SomeSqlMapper.user"/> u
         INNER JOIN <include refid="com.quick.auth.mapper.SomeSqlMapper.user_role"/> ur ON u.user_id = ur.user_id
@@ -230,7 +218,6 @@
     </select>
 
     <resultMap id="UserInfoAndRoleInfo" type="com.quick.auth.entity.User">
-        <id column="uId" property="id"/>
         <id column="user_id" property="userId"/>
         <result column="username" property="username"/>
         <result column="email" property="email"/>
@@ -244,7 +231,6 @@
         <result column="login_ip_address" property="loginIpAddress"/>
         <result column="head_portrait" property="headPortrait"/>
         <collection property="roles" ofType="com.quick.auth.entity.Role" javaType="java.util.List">
-            <result column="rId" property="id"/>
             <result column="role_id" property="roleId"/>
             <result column="roleName" property="name"/>
             <result column="roleStatus" property="status"/>
@@ -254,7 +240,6 @@
 
     <select id="findUsers" resultMap="UserInfoAndRoleInfo">
         SELECT
-        u.id AS uId,
         u.user_id,
         u.username,
         u.email,
@@ -268,7 +253,6 @@
         u.login_ip_address,
         u.head_portrait,
 
-        r.id AS rId,
         r.role_id,
         r.name AS roleName,
         r.description,
@@ -293,7 +277,6 @@
 
     <select id="findUserAndRoleByUserId" resultMap="UserInfoAndRoleInfo">
         SELECT
-        u.id AS uId,
         u.user_id,
         u.username,
         u.email,
@@ -307,7 +290,6 @@
         u.login_ip_address,
         u.head_portrait,
 
-        r.id AS rId,
         r.role_id,
         r.name AS roleName,
         r.description,
@@ -322,7 +304,7 @@
     </select>
 
     <select id="findUsersWhetherExistByUsernameOrUserId" resultType="java.lang.Integer">
-        SELECT count(id) FROM <include refid="com.quick.auth.mapper.SomeSqlMapper.user"/> WHERE username = #{username} AND status = #{status}
+        SELECT count(*) FROM <include refid="com.quick.auth.mapper.SomeSqlMapper.user"/> WHERE username = #{username} AND status = #{status}
         <if test="userId != null">
             AND user_id != #{userId}
         </if>
@@ -332,9 +314,6 @@
     <insert id="insertUser">
         INSERT INTO <include refid="com.quick.auth.mapper.SomeSqlMapper.user"/>
         (
-        <if test="id != null">
-            id,
-        </if>
         <if test="userId != null and userId != '' ">
             user_id,
         </if>
@@ -376,9 +355,6 @@
         serve_name
         )
         VALUES(
-        <if test="id != null">
-            #{id},
-        </if>
         <if test="userId != null and userId != '' ">
             #{userId},
         </if>

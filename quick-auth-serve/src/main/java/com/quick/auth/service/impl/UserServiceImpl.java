@@ -154,7 +154,7 @@ public class UserServiceImpl implements UserService {
             // 删除用户的授权信息缓存
             String classUrl = UserRealm.class.getName();
             RedisClient.del(shiroCoreParameters.getShiroRedis().getPrefixOther()
-                    + classUrl + ".authorizationCache:" + user.getId());
+                    + classUrl + ".authorizationCache:" + user.getUserId());
         }
     }
 

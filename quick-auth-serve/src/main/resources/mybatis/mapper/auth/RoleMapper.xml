@@ -3,7 +3,7 @@
 <mapper namespace="com.quick.auth.mapper.RoleMapper">
 
     <sql id="Base_Column_List">
-        id, role_id, name, description, status, can_delete, create_time, update_time
+        role_id, name, description, status, can_delete, create_time, update_time
     </sql>
 
     <select id="findRoles" resultType="com.quick.auth.entity.Role">
@@ -18,7 +18,7 @@
     </select>
 
     <select id="findRolesWhetherExistByRoleNameOrRoleId" resultType="java.lang.Integer">
-        SELECT count(id) FROM <include refid="com.quick.auth.mapper.SomeSqlMapper.role"/>
+        SELECT count(*) FROM <include refid="com.quick.auth.mapper.SomeSqlMapper.role"/>
         WHERE name = #{name} AND status = #{status}
         <if test="roleId != null">
             AND role_id != #{roleId}
@@ -44,9 +44,6 @@
     <insert id="insertRole">
         INSERT INTO <include refid="com.quick.auth.mapper.SomeSqlMapper.role"/>
         (
-        <if test="id != null">
-            id,
-        </if>
         <if test="roleId != null and roleId != ''">
             role_id,
         </if>
@@ -67,9 +64,6 @@
         serve_name
         )
         VALUES(
-        <if test="id != null">
-            #{id},
-        </if>
         <if test="roleId != null and roleId != ''">
             #{roleId},
         </if>
@@ -108,9 +102,6 @@
         UPDATE
         <include refid="com.quick.auth.mapper.SomeSqlMapper.role"/>
         SET
-        <if test="id != null">
-            id = #{id},
-        </if>
         <if test="roleId != null and roleId != ''">
             role_id = #{roleId},
         </if>

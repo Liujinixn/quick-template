@@ -16,8 +16,8 @@ public class User extends Online implements Serializable {
 
     private static final long serialVersionUID = -8736616045315083846L;
 
-    @ApiModelProperty(value = "id标识")
-    private Integer id;
+    @ApiModelProperty(value = "id标识（用户id）")
+    private String id;
 
     /**
      * 用户id
@@ -95,6 +95,11 @@ public class User extends Online implements Serializable {
      * 角色
      */
     private List<Role> roles;
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+        this.id = userId;
+    }
 
     public User(String userId, String password) {
         this.userId = userId;

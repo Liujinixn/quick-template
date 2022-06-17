@@ -20,8 +20,8 @@ public class MenuVo {
     /**
      * 菜单ID（主键）
      */
-    @ApiModelProperty(value = "id标识")
-    private Integer id;
+    @ApiModelProperty(value = "菜单ID")
+    private String permissionId;
 
     /**
      * 菜单（权限）名称

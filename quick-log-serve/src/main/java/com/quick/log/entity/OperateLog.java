@@ -14,9 +14,6 @@ import java.util.Date;
 @ToString
 public class OperateLog {
 
-    @ApiModelProperty(value = "id标识")
-    private Integer id;
-
     @ApiModelProperty(value = "操作日志ID")
     private String operateLogId;
 

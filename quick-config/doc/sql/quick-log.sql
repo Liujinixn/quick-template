@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 47.102.144.221 - ark123
-Source Server Version : 50736
+Source Server         : 47.102.144.221 - ark531200
+Source Server Version : 50738
 Source Host           : 47.102.144.221:3306
 Source Database       : quick-log
 
 Target Server Type    : MYSQL
-Target Server Version : 50736
+Target Server Version : 50738
 File Encoding         : 65001
 
-Date: 2022-04-13 23:19:38
+Date: 2022-06-18 01:40:15
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -20,8 +20,7 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_operate_log`;
 CREATE TABLE `sys_operate_log` (
-  `id` int(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `operate_log_id` varchar(20) DEFAULT NULL COMMENT '操作日志ID',
+  `operate_log_id` varchar(20) NOT NULL COMMENT '操作日志ID',
   `url` varchar(255) DEFAULT NULL COMMENT '请求路径',
   `description` varchar(100) DEFAULT NULL COMMENT '请求描述',
   `request_type` varchar(10) DEFAULT NULL COMMENT '请求类型',
@@ -34,5 +33,5 @@ CREATE TABLE `sys_operate_log` (
   `consuming_time` int(20) unsigned DEFAULT NULL COMMENT '耗时 单位ms',
   `operating_account` varchar(50) DEFAULT NULL COMMENT '操作人名称',
   `create_time` datetime DEFAULT NULL COMMENT '操作时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=241 DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`operate_log_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

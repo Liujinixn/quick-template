@@ -15,9 +15,6 @@ public class Permission extends PublicTime implements Serializable {
 
     private static final long serialVersionUID = 609166403451181567L;
 
-    @ApiModelProperty(value = "id标识")
-    private Integer id;
-
     /**
      * 权限id
      */

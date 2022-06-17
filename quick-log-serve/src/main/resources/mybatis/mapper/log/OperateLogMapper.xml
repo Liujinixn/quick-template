@@ -4,19 +4,16 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.quick.log.mapper.OperateLogMapper">
 
-    <sql id="operateLog">
-        `sys_operate_log`
-    </sql>
-
     <sql id="Base_Column_List">
-        id, operate_log_id, url, description, request_type, request_content_type, client_ip, user_agent, request_params,
+         operate_log_id, url, description, request_type, request_content_type, client_ip, user_agent, request_params,
          response_content_type, response_params, consuming_time, operating_account, create_time
     </sql>
 
     <select id="findList" resultType="com.quick.log.entity.OperateLog">
         SELECT
         <include refid="Base_Column_List"/>
-        FROM <include refid="operateLog"/>
+        FROM
+        <include refid="com.quick.auth.mapper.SomeSqlMapper.operate_log"/>
         <where>
             <if test="url != null and url != ''">
                 AND url LIKE concat('%', #{url}, '%')
@@ -42,11 +39,8 @@
 
     <insert id="insertOperateLog">
         INSERT INTO
-        <include refid="operateLog"/>
+        <include refid="com.quick.auth.mapper.SomeSqlMapper.operate_log"/>
         (
-        <if test="id != null">
-            id,
-        </if>
         <if test="operateLogId != null and operateLogId != ''">
             operate_log_id,
         </if>
@@ -86,9 +80,6 @@
         create_time
         )
         VALUES(
-        <if test="id != null">
-            #{id},
-        </if>
         <if test="operateLogId != null and operateLogId != ''">
             #{operateLogId},
         </if>

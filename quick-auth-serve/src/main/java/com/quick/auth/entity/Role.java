@@ -15,9 +15,6 @@ public class Role extends PublicTime implements Serializable {
 
     private static final long serialVersionUID = 8981844145479424700L;
 
-    @ApiModelProperty(value = "id标识")
-    private Integer id;
-
     /**
      * 角色id
      */
