@@ -33,12 +33,12 @@ public class ValidationAuthServe {
      */
     public void validationServeAccessKey() {
         log.info("---------------auth服务认证---------------");
-        Serve serveInfoByServeName = serveMapper.findServeInfoByServeName(authCoreParameters.getServeName());
-        if (null == serveInfoByServeName) {
+        Serve serve = serveMapper.findServeInfoByServeName(authCoreParameters.getServeName());
+        if (null == serve) {
             log.error("auth服务不存在, serveName = {}", authCoreParameters.getServeName());
             System.exit(SpringApplication.exit(context, () -> 0));
         }
-        if (StringUtils.isBlank(authCoreParameters.getAccessKey()) || !authCoreParameters.getAccessKey().equals(serveInfoByServeName.getAccessKey())) {
+        if (StringUtils.isBlank(authCoreParameters.getAccessKey()) || !authCoreParameters.getAccessKey().equals(serve.getAccessKey())) {
             log.error("auth服务密钥错误, serveName = {}", authCoreParameters.getServeName());
             System.exit(SpringApplication.exit(context, () -> 0));
         }
